@@ -11,42 +11,99 @@ namespace PeterJuhasz.AspNetCore.Extensions.Security
         /// </summary>
         public CspDirective BaseUri { get; set; }
 
+        /// <summary>
+        /// Serves as a fallback for the other fetch directives.
+        /// </summary>
         public CspDirective DefaultSrc { get; set; } = CspDirective.None;
 
+        /// <summary>
+        /// Specifies valid sources for stylesheets.
+        /// </summary>
         public StyleCspDirective StyleSrc { get; set; }
 
+        /// <summary>
+        /// Specifies valid sources for JavaScript.
+        /// </summary>
         public ScriptCspDirective ScriptSrc { get; set; }
 
+        /// <summary>
+        /// Specifies valid sources of images and favicons
+        /// </summary>
         public CspDirective ImgSrc { get; set; }
 
+        /// <summary>
+        /// Specifies valid sources for fonts loaded using @font-face.
+        /// </summary>
         public CspDirective FontSrc { get; set; }
 
+        /// <summary>
+        /// Restricts the URLs which can be loaded using script interfaces.
+        /// </summary>
         public CspDirective ConnectSrc { get; set; }
 
+        /// <summary>
+        /// Specifies valid sources for the &lt;object&gt;, &lt;embed&gt;, and &lt;applet&gt; elements.
+        /// </summary>
         public CspDirective ObjectSrc { get; set; }
 
+        /// <summary>
+        /// Specifies valid sources for loading media using the &lt;audio&gt; and &lt;video&gt; elements.
+        /// </summary>
         public CspDirective MediaSrc { get; set; }
 
+        /// <summary>
+        /// Specifies valid sources of application manifest files.
+        /// </summary>
         public CspDirective ManifestSrc { get; set; }
 
+        /// <summary>
+        /// Specifies valid sources for nested browsing contexts loading using elements such as &lt;frame&gt; and &lt;iframe&gt;.
+        /// </summary>
         public CspDirective FrameSrc { get; set; }
 
+        /// <summary>
+        /// Defines the valid sources for web workers and nested browsing contexts loaded using elements such as &lt;frame&gt; and &lt;iframe&gt;.
+        /// </summary>
         public CspDirective ChildSrc { get; set; }
 
+        /// <summary>
+        /// Restricts the URLs which can be used as the target of a form submissions from a given context.
+        /// </summary>
         public CspDirective FormAction { get; set; }
 
+        /// <summary>
+        /// Specifies valid parents that may embed a page using &lt;frame&gt;, &lt;iframe&gt;, &lt;object&gt;, &lt;embed&gt;, or &lt;applet&gt;.
+        /// </summary>
         public CspDirective FrameAncestors { get; set; }
 
+        /// <summary>
+        /// Specifies valid sources for Worker, SharedWorker, or ServiceWorker scripts.
+        /// </summary>
         public CspDirective WorkerSrc { get; set; }
 
+        /// <summary>
+        /// Restricts the URLs to which a document can navigate by any means (a, form, window.location, window.open, etc.).
+        /// </summary>
         public CspDirective NavigationTo { get; set; }
 
+        /// <summary>
+        /// Enables a sandbox for the requested resource similar to the &lt;iframe&gt; sandbox attribute.
+        /// </summary>
         public CspSandboxRules? Sandbox { get; set; }
 
+        /// <summary>
+        /// Restricts the set of plugins that can be embedded into a document by limiting the types of resources which can be loaded.
+        /// </summary>
         public IReadOnlyCollection<string> PluginTypes { get; set; }
 
+        /// <summary>
+        /// Requires the use of SRI for scripts or styles on the page.
+        /// </summary>
         public CspRequireSRIResources? RequireSriFor { get; set; }
 
+        /// <summary>
+        /// Instructs a user agent to activate or deactivate any heuristics used to filter or block reflected cross-site scripting attacks, equivalent to the effects of the non-standard X-XSS-Protection header.
+        /// </summary>
         public CspReflectedXss? ReflectedXss { get; set; } = CspReflectedXss.Block;
 
         /// <summary>
@@ -61,6 +118,39 @@ namespace PeterJuhasz.AspNetCore.Extensions.Security
 
         [Obsolete]
         public Uri ReportUri { get; set; }
+
+
+        public CspOptions Clone()
+        {
+            return new CspOptions
+            {
+                BaseUri = this.BaseUri,
+                BlockAllMixedContent = this.BlockAllMixedContent,
+                ChildSrc = this.ChildSrc,
+                ConnectSrc = this.ConnectSrc,
+                DefaultSrc = this.DefaultSrc,
+                FontSrc = this.FontSrc,
+                FormAction = this.FormAction,
+                FrameAncestors = this.FrameAncestors,
+                FrameSrc = this.FrameSrc,
+                ImgSrc = this.ImgSrc,
+                ManifestSrc = this.ManifestSrc,
+                MediaSrc = this.MediaSrc,
+                NavigationTo = this.NavigationTo,
+                ObjectSrc = this.ObjectSrc,
+                PluginTypes = this.PluginTypes,
+                ReflectedXss = this.ReflectedXss,
+                RequireSriFor = this.RequireSriFor,
+                Sandbox = this.Sandbox,
+                ScriptSrc = this.ScriptSrc,
+                StyleSrc = this.StyleSrc,
+                UpgradeInsecureRequests = this.UpgradeInsecureRequests,
+                WorkerSrc = this.WorkerSrc,
+#pragma warning disable CS0612
+                ReportUri = this.ReportUri,
+#pragma warning restore CS0612
+            };
+        }
 
 
         public override string ToString()

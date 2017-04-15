@@ -17,7 +17,7 @@ namespace Microsoft.AspNetCore.Builder
         }
 
 
-        private sealed class ReferrerPolicyMiddleware
+        internal sealed class ReferrerPolicyMiddleware
         {
             public ReferrerPolicyMiddleware(RequestDelegate next, ReferrerPolicy policy)
             {
@@ -27,8 +27,9 @@ namespace Microsoft.AspNetCore.Builder
             }
 
             private readonly RequestDelegate _next;
-            public ReferrerPolicy Policy { get; }
             private readonly string _headerValue;
+
+            public ReferrerPolicy Policy { get; }
 
             private static readonly IReadOnlyDictionary<ReferrerPolicy, string> HeaderValues = new Dictionary<ReferrerPolicy, string>
             {

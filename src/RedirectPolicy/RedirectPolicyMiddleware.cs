@@ -53,7 +53,7 @@ namespace Microsoft.AspNetCore.Builder
         }
 
 
-        private sealed class RedirectFilterMiddleware
+        internal sealed class RedirectFilterMiddleware
         {
             public RedirectFilterMiddleware(RequestDelegate next, IReadOnlyCollection<Uri> allowedBaseUris)
             {

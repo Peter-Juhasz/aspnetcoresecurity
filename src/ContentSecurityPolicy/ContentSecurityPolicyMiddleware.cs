@@ -41,19 +41,21 @@ namespace Microsoft.AspNetCore.Builder
 
                     if (response.GetTypedHeaders().ContentType?.MediaType?.Equals("text/html", StringComparison.OrdinalIgnoreCase) ?? false)
                     {
-                        string csp = Options.ToString();
+                        var options = Options;
 
                         // allow inline styles and scripts for developer exception page
                         if (_environment.IsDevelopment())
                         {
                             if (response.StatusCode == (int)HttpStatusCode.InternalServerError)
                             {
-                                csp = csp
-                                    .Replace("style-src", "style-src 'unsafe-inline'")
-                                    .Replace("script-src", "script-src 'unsafe-inline'")
-                                ;
+                                var developerOptions = Options.Clone();
+                                developerOptions.StyleSrc = developerOptions.StyleSrc.AddUnsafeInline();
+                                developerOptions.ScriptSrc = developerOptions.ScriptSrc.AddUnsafeInline();
+                                options = developerOptions;
                             }
                         }
+
+                        string csp = options.ToString();
 
                         response.Headers["Content-Security-Policy"] = csp;
                         response.Headers["X-Content-Security-Policy"] = csp;
