@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26403.3
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeterJuhasz.AspNetCore.Extensions.Security", "src\PeterJuhasz.AspNetCore.Extensions.Security\PeterJuhasz.AspNetCore.Extensions.Security.csproj", "{3352FBF1-317B-48A0-8D11-46550C62539A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PeterJuhasz.AspNetCore.Extensions.Security", "src\PeterJuhasz.AspNetCore.Extensions.Security\PeterJuhasz.AspNetCore.Extensions.Security.csproj", "{3352FBF1-317B-48A0-8D11-46550C62539A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XXSSProtectionHeader", "src\XXSSProtectionHeader\XXSSProtectionHeader.csproj", "{1653137C-AA19-4C68-847E-02B2494B35F3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XXSSProtectionHeader", "src\XXSSProtectionHeader\XXSSProtectionHeader.csproj", "{1653137C-AA19-4C68-847E-02B2494B35F3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XDownloadOptionsHeader", "XDownloadOptionsHeader\XDownloadOptionsHeader.csproj", "{C20660CF-D100-4BC5-956D-25B06B4056E7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{1653137C-AA19-4C68-847E-02B2494B35F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1653137C-AA19-4C68-847E-02B2494B35F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1653137C-AA19-4C68-847E-02B2494B35F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C20660CF-D100-4BC5-956D-25B06B4056E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C20660CF-D100-4BC5-956D-25B06B4056E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C20660CF-D100-4BC5-956D-25B06B4056E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C20660CF-D100-4BC5-956D-25B06B4056E7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
