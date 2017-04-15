@@ -18,6 +18,13 @@ namespace Microsoft.AspNetCore.Builder
             app.UseMiddleware<XXSSProtectionMiddleware>(options);
         }
 
+        /// <summary>
+        /// Adds the X-XSS-Protection header to each response with text/html media type.
+        /// </summary>
+        /// <param name="app"></param>
+        /// <param name="enabled">Enables XSS protection.</param>
+        /// <param name="block">Sets Block mode.</param>
+        /// <param name="reportUri">Sets the URI the browser is going to report violations to.</param>
         public static void UseXXSSProtectionHeader(
             this IApplicationBuilder app,
             bool enabled = true,

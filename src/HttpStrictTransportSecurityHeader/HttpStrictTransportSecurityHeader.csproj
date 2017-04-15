@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard1.4</TargetFramework>
-    <AssemblyName>PeterJuhasz.AspNetCore.Security.Extensions.FrameOptionsHeader</AssemblyName>
+    <AssemblyName>PeterJuhasz.AspNetCore.Security.Extensions.HttpStrictTransportSecurityHeader</AssemblyName>
     <RootNamespace>Microsoft.AspNetCore.Builder</RootNamespace>
   </PropertyGroup>
 

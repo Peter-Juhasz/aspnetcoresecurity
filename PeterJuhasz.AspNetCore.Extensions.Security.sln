@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XUACompatibleHeader", "src\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FrameOptionsHeader", "src\FrameOptionsHeader\FrameOptionsHeader.csproj", "{3C625D82-90DA-48CC-82AD-8C2D1C0A1D55}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HttpStrictTransportSecurityHeader", "src\HttpStrictTransportSecurityHeader\HttpStrictTransportSecurityHeader.csproj", "{27EC8EF4-73C8-4DD5-947A-B92B0765F6A0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{3C625D82-90DA-48CC-82AD-8C2D1C0A1D55}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3C625D82-90DA-48CC-82AD-8C2D1C0A1D55}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3C625D82-90DA-48CC-82AD-8C2D1C0A1D55}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27EC8EF4-73C8-4DD5-947A-B92B0765F6A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27EC8EF4-73C8-4DD5-947A-B92B0765F6A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27EC8EF4-73C8-4DD5-947A-B92B0765F6A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27EC8EF4-73C8-4DD5-947A-B92B0765F6A0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
