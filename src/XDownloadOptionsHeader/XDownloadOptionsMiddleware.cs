@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using PeterJuhasz.AspNetCore.Extensions.Security;
 using System;
 using System.Threading.Tasks;
 
@@ -45,10 +46,5 @@ namespace Microsoft.AspNetCore.Builder
                 await _next.Invoke(context);
             }
         }
-    }
-
-    public enum XDownloadOptions
-    {
-        NoOpen,
     }
 }

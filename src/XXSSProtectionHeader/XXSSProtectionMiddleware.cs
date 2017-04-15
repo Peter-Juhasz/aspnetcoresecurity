@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using PeterJuhasz.AspNetCore.Extensions.Security;
 using System;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Microsoft.AspNetCore.Builder
@@ -50,7 +49,7 @@ namespace Microsoft.AspNetCore.Builder
 
                 _next = next;
                 Options = options;
-                _headerValue = ConstructHeaderValue(Options);
+                _headerValue = Options.ToString();
             }
 
             private readonly RequestDelegate _next;
@@ -58,20 +57,6 @@ namespace Microsoft.AspNetCore.Builder
 
             public XXssProtectionOptions Options { get; }
             
-            internal static string ConstructHeaderValue(XXssProtectionOptions options)
-            {
-                StringBuilder builder = new StringBuilder();
-                builder.Append(options.Enabled ? "1" : "0");
-
-                if (options.Block)
-                    builder.Append("; mode=block");
-
-                if (options.ReportUri != null)
-                    builder.Append($"report={options.ReportUri}");
-
-                return builder.ToString();
-            }
-
             public async Task Invoke(HttpContext context)
             {
                 context.Response.OnStarting(() =>

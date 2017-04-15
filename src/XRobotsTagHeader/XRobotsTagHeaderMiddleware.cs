@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using PeterJuhasz.AspNetCore.Extensions.Security;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Microsoft.AspNetCore.Builder
@@ -49,38 +47,13 @@ namespace Microsoft.AspNetCore.Builder
             {
                 _next = next;
                 Options = headerValue ?? throw new ArgumentNullException(nameof(headerValue));
-                _headerValue = ConstructHeaderValue(Options);
+                _headerValue = Options.ToString();
             }
-
 
             private readonly RequestDelegate _next;
             private readonly string _headerValue;
             
             public XRobotsTagHeaderValue Options { get; }
-
-            public static string ConstructHeaderValue(XRobotsTagHeaderValue options)
-            {
-                ICollection<string> directives = new HashSet<string>();
-
-                if (!options.Directives.HasValue ||
-                    options.Directives.Value == default(RobotsTagDirectives) ||
-                    options.Directives.Value.HasFlag(RobotsTagDirectives.All))
-                {
-                    directives.Add("all");
-                }
-                else
-                { 
-                    foreach (var directive in Enum.GetValues(typeof(RobotsTagDirectives)).Cast<RobotsTagDirectives>()
-                        .Where(d => options.Directives.Value.HasFlag(d))
-                    )
-                        directives.Add(directive.ToString().ToLowerInvariant());
-                }
-
-                if (options.UnavailableAfter != null)
-                    directives.Add($"unavailable_after: {options.UnavailableAfter.Value.UtcDateTime:dddd, d-MMM-yyyy H:mm:ss UTC}");
-
-                return String.Join(", ", directives);
-            }
 
             public async Task Invoke(HttpContext context)
             {

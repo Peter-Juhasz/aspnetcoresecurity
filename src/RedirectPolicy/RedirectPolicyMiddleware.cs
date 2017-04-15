@@ -65,11 +65,18 @@ namespace Microsoft.AspNetCore.Builder
 
             public IReadOnlyCollection<Uri> AllowedBaseUris { get; }
 
-            internal bool IsAllowed(Uri requestUri, Uri location)
+            internal bool IsAllowed(HttpRequest request, Uri location)
             {
+                // normalize schema, if relative to request
+                if (location.OriginalString.StartsWith("//"))
+                    location = new Uri($"{request.Scheme}:{location}", UriKind.Absolute);
+
                 // check absolute URIs only
                 if (!location.IsAbsoluteUri)
                     return true;
+
+                // check absolute URIs
+                Uri requestUri = new Uri(request.GetDisplayUrl(), UriKind.Absolute);
 
                 bool isSameHostAndPortOrUpgrade =
                     location.Host == requestUri.Host &&
@@ -90,14 +97,7 @@ namespace Microsoft.AspNetCore.Builder
                     var location = response.GetTypedHeaders().Location;
                     if (location != null)
                     {
-                        // normalize schema, if relative to request
-                        if (location.OriginalString.StartsWith("//"))
-                            location = new Uri($"{context.Request.Scheme}:{location}", UriKind.Absolute);
-
-                        // check absolute URIs
-                        Uri requestUri = new Uri(request.GetDisplayUrl(), UriKind.Absolute);
-
-                        if (!IsAllowed(requestUri, location))
+                        if (!IsAllowed(request, location))
                             throw new InvalidOperationException($"A potentially dangerous redirect was prevented to '{location}'.");
                     }
 

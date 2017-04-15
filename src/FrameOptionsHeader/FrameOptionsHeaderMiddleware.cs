@@ -60,12 +60,9 @@ namespace Microsoft.AspNetCore.Builder
         {
             public FrameOptionsMiddleware(RequestDelegate next, FrameOptionsOptions options)
             {
-                if (options == null)
-                    throw new ArgumentNullException(nameof(options));
-
                 _next = next;
-                Options = options;
-                _headerValue = ConstructHeaderValue(Options);
+                Options = options ?? throw new ArgumentNullException(nameof(options));
+                _headerValue = Options.ToString();
             }
 
             private readonly RequestDelegate _next;
@@ -73,21 +70,6 @@ namespace Microsoft.AspNetCore.Builder
 
             public FrameOptionsOptions Options { get; }
             
-            internal static string ConstructHeaderValue(FrameOptionsOptions options)
-            {
-                switch (options.Policy)
-                {
-                    case FrameOptionsPolicy.Deny:
-                        return "DENY";
-                    case FrameOptionsPolicy.SameOrigin:
-                        return "SAMEORIGIN";
-                    case FrameOptionsPolicy.AllowFrom:
-                        return $"ALLOW-FROM {options.AllowFromUri}";
-
-                    default: throw new NotSupportedException($"Not supported Frame-Options policy '{options.Policy}'.");
-                }
-            }
-
             public async Task Invoke(HttpContext context)
             {
                 context.Response.OnStarting(() =>

@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using PeterJuhasz.AspNetCore.Extensions.Security;
 using System;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Microsoft.AspNetCore.Builder
@@ -37,12 +36,9 @@ namespace Microsoft.AspNetCore.Builder
         {
             public HttpStrictTransportSecurityMiddleware(RequestDelegate next, HttpStrictTransportSecurityOptions options)
             {
-                if (options == null)
-                    throw new ArgumentNullException(nameof(options));
-
                 _next = next;
-                Options = options;
-                _headerValue = ConstructHeaderValue(Options);
+                Options = options ?? throw new ArgumentNullException(nameof(options));
+                _headerValue = Options.ToString();
             }
 
 
@@ -50,21 +46,7 @@ namespace Microsoft.AspNetCore.Builder
             private readonly string _headerValue;
             
             public HttpStrictTransportSecurityOptions Options { get; }
-
-            private static string ConstructHeaderValue(HttpStrictTransportSecurityOptions options)
-            {
-                StringBuilder builder = new StringBuilder();
-                builder.Append($"max-age={options.MaxAge.TotalSeconds:F0}");
-
-                if (options.IncludeSubDomains)
-                    builder.Append("; includeSubDomains");
-
-                if (options.Preload)
-                    builder.Append("; preload");
-
-                return builder.ToString();
-            }
-
+            
             public async Task Invoke(HttpContext context)
             {
                 context.Response.OnStarting(() =>

@@ -2,7 +2,6 @@
 using PeterJuhasz.AspNetCore.Extensions.Security;
 using System;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Microsoft.AspNetCore.Builder
@@ -37,7 +36,7 @@ namespace Microsoft.AspNetCore.Builder
 
                 _next = next;
                 Options = options;
-                _headerValue = ConstructHeaderValue(Options);
+                _headerValue = Options.ToString();
             }
 
 
@@ -45,30 +44,7 @@ namespace Microsoft.AspNetCore.Builder
             private readonly string _headerValue;
 
             public HttpPublicKeyPinningOptions Options { get; }
-
-            internal static string ConstructHeaderValue(HttpPublicKeyPinningOptions options)
-            {
-                StringBuilder builder = new StringBuilder();
-
-                foreach (var item in options.Pins)
-                {
-                    if (builder.Length > 0)
-                        builder.Append("; ");
-
-                    builder.Append($"pin-{item.Algorithm.ToString().ToLowerInvariant()}=\"{item.Base64Fingerprint}\"");
-                }
-
-                builder.Append($"; max-age={options.MaxAge.TotalSeconds:F0}");
-
-                if (options.IncludeSubDomains)
-                    builder.Append("; includeSubDomains");
-
-                if (options.ReportUri != null)
-                    builder.Append($"; report-uri=\"{options.ReportUri}\"");
-
-                return builder.ToString();
-            }
-
+            
             public async Task Invoke(HttpContext context)
             {
                 context.Response.OnStarting(() =>

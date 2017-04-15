@@ -38,5 +38,21 @@ namespace PeterJuhasz.AspNetCore.Extensions.Security
             this.Policy = FrameOptionsPolicy.AllowFrom;
             this.AllowFromUri = uri;
         }
+
+
+        public override string ToString()
+        {
+            switch (this.Policy)
+            {
+                case FrameOptionsPolicy.Deny:
+                    return "DENY";
+                case FrameOptionsPolicy.SameOrigin:
+                    return "SAMEORIGIN";
+                case FrameOptionsPolicy.AllowFrom:
+                    return $"ALLOW-FROM {this.AllowFromUri}";
+
+                default: throw new NotSupportedException($"Not supported Frame-Options policy '{this.Policy}'.");
+            }
+        }
     }
 }
