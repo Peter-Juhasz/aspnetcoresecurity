@@ -44,7 +44,7 @@ namespace Microsoft.AspNetCore.Builder
             private readonly RequestDelegate _next;
             private readonly string _headerValue;
 
-            public HttpPublicKeyPinningOptions Options { get; private set; }
+            public HttpPublicKeyPinningOptions Options { get; }
 
             internal static string ConstructHeaderValue(HttpPublicKeyPinningOptions options)
             {
