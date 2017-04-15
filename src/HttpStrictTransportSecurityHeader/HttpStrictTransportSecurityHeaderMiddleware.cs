@@ -41,8 +41,8 @@ namespace Microsoft.AspNetCore.Builder
                     throw new ArgumentNullException(nameof(options));
 
                 _next = next;
-                _headerValue = ConstructHeaderValue(options);
                 Options = options;
+                _headerValue = ConstructHeaderValue(Options);
             }
 
 

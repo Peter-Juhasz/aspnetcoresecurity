@@ -24,8 +24,8 @@ namespace Microsoft.AspNetCore.Builder
             public XUACompatibleMiddleware(RequestDelegate next, InternetExplorerCompatibiltyMode mode)
             {
                 _next = next;
-                _headerValue = ConstructHeaderValue(mode);
                 Mode = mode;
+                _headerValue = ConstructHeaderValue(Mode);
             }
 
             private readonly RequestDelegate _next;

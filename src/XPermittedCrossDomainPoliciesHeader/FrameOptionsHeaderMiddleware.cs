@@ -24,7 +24,7 @@ namespace Microsoft.AspNetCore.Builder
             {
                 _next = next;
                 Policy = policy;
-                _headerValue = HeaderValues[policy];
+                _headerValue = HeaderValues[Policy];
             }
 
             private readonly RequestDelegate _next;
