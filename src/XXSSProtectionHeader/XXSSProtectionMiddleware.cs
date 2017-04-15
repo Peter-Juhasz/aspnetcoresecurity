@@ -8,19 +8,24 @@ namespace Microsoft.AspNetCore.Builder
 {
     public static partial class AppBuilderExtensions
     {
-        public static void UseXXSSProtection(this IApplicationBuilder app, XXssProtectionOptions options)
+        /// <summary>
+        /// Adds the X-XSS-Protection header to each response with text/html media type.
+        /// </summary>
+        /// <param name="app"></param>
+        /// <param name="options"></param>
+        public static void UseXXSSProtectionHeader(this IApplicationBuilder app, XXssProtectionOptions options)
         {
             app.UseMiddleware<XXSSProtectionMiddleware>(options);
         }
 
-        public static void UseXXSSProtection(
+        public static void UseXXSSProtectionHeader(
             this IApplicationBuilder app,
             bool enabled = true,
             bool block = true,
             Uri reportUri = null
         )
         {
-            app.UseMiddleware<XXSSProtectionMiddleware>(new XXssProtectionOptions
+            app.UseXXSSProtectionHeader(new XXssProtectionOptions
             {
                 Enabled = enabled,
                 Block = block,
@@ -60,7 +65,7 @@ namespace Microsoft.AspNetCore.Builder
                 {
                     HttpResponse response = context.Response;
 
-                    if (response.GetTypedHeaders().ContentType.MediaType?.Equals("text/html", StringComparison.OrdinalIgnoreCase) ?? false)
+                    if (response.GetTypedHeaders().ContentType?.MediaType?.Equals("text/html", StringComparison.OrdinalIgnoreCase) ?? false)
                     {
                         response.Headers["X-XSS-Protection"] = _headerValue;
                     }

@@ -6,7 +6,12 @@ namespace Microsoft.AspNetCore.Builder
 {
     public static partial class AppBuilderExtensions
     {
-        public static void UseXDownloadOptions(this IApplicationBuilder app, XDownloadOptions options = XDownloadOptions.NoOpen)
+        /// <summary>
+        /// Adds the X-Download-Options header to each file download.
+        /// </summary>
+        /// <param name="app"></param>
+        /// <param name="options"></param>
+        public static void UseXDownloadOptionsHeader(this IApplicationBuilder app, XDownloadOptions options = XDownloadOptions.NoOpen)
         {
             app.UseMiddleware<XDownloadOptionsMiddleware>();
         }
@@ -27,7 +32,7 @@ namespace Microsoft.AspNetCore.Builder
                 {
                     HttpResponse response = context.Response;
 
-                    if (response.GetTypedHeaders().ContentDisposition?.DispositionType.Equals("attachment", StringComparison.OrdinalIgnoreCase) ?? false)
+                    if (response.GetTypedHeaders().ContentDisposition?.DispositionType?.Equals("attachment", StringComparison.OrdinalIgnoreCase) ?? false)
                     {
                         response.Headers["X-Download-Options"] = "noopen";
                     }
