@@ -38,13 +38,19 @@ namespace Microsoft.AspNetCore.Builder
         {
             public XXSSProtectionMiddleware(RequestDelegate next, XXssProtectionOptions options)
             {
+                if (options == null)
+                    throw new ArgumentNullException(nameof(options));
+
                 _next = next;
                 _headerValue = ConstructHeaderValue(options);
+                Options = options;
             }
 
             private readonly RequestDelegate _next;
             private readonly string _headerValue;
 
+            public XXssProtectionOptions Options { get; }
+            
             internal static string ConstructHeaderValue(XXssProtectionOptions options)
             {
                 StringBuilder builder = new StringBuilder();

@@ -24,13 +24,14 @@ namespace Microsoft.AspNetCore.Builder
             public XUACompatibleMiddleware(RequestDelegate next, InternetExplorerCompatibiltyMode mode)
             {
                 _next = next;
-                _mode = mode;
-                _headerValue = $"IE={HeaderValues[_mode]}";
+                _headerValue = ConstructHeaderValue(mode);
+                Mode = mode;
             }
 
             private readonly RequestDelegate _next;
-            private readonly InternetExplorerCompatibiltyMode _mode;
             private readonly string _headerValue;
+
+            public InternetExplorerCompatibiltyMode Mode { get; }
 
             private static readonly IReadOnlyDictionary<InternetExplorerCompatibiltyMode, string> HeaderValues = new Dictionary<InternetExplorerCompatibiltyMode, string>
             {
@@ -47,6 +48,18 @@ namespace Microsoft.AspNetCore.Builder
                 { InternetExplorerCompatibiltyMode.EmulateIE10, "EmulateIE10" },
                 { InternetExplorerCompatibiltyMode.EmulateIE11, "EmulateIE11" },
             };
+
+            internal static string ConstructHeaderValue(InternetExplorerCompatibiltyMode mode)
+            {
+                try
+                {
+                    return $"IE={HeaderValues[mode]}";
+                }
+                catch (KeyNotFoundException)
+                {
+                    throw new NotSupportedException($"Mode '{mode}' not supported.");
+                }
+            }
 
             public async Task Invoke(HttpContext context)
             {

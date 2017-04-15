@@ -26,6 +26,8 @@ namespace Microsoft.AspNetCore.Builder
 
             private readonly RequestDelegate _next;
 
+            public XDownloadOptions Mode { get; } = default(XDownloadOptions);
+
             public async Task Invoke(HttpContext context)
             {
                 context.Response.OnStarting(() =>
