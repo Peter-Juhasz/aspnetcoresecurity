@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard1.4</TargetFramework>
-    <AssemblyName>PeterJuhasz.AspNetCore.Security.Extensions.HttpPublicKeyPinning</AssemblyName>
+    <AssemblyName>PeterJuhasz.AspNetCore.Security.Extensions.XContentTypeOptionsHeader</AssemblyName>
     <RootNamespace>Microsoft.AspNetCore.Builder</RootNamespace>
   </PropertyGroup>
 
