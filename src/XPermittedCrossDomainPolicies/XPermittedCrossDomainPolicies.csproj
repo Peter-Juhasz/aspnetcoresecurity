@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard1.4</TargetFramework>
-    <AssemblyName>PeterJuhasz.AspNetCore.Security.Extensions.XPermittedCrossDomainPoliciesHeader</AssemblyName>
+    <AssemblyName>PeterJuhasz.AspNetCore.Security.Extensions.XPermittedCrossDomainPolicies</AssemblyName>
     <RootNamespace>Microsoft.AspNetCore.Builder</RootNamespace>
   </PropertyGroup>
 

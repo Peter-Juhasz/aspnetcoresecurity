@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard1.4</TargetFramework>
-    <AssemblyName>PeterJuhasz.AspNetCore.Security.Extensions.XRobotsTagHeader</AssemblyName>
+    <AssemblyName>PeterJuhasz.AspNetCore.Security.Extensions.FrameOptions</AssemblyName>
     <RootNamespace>Microsoft.AspNetCore.Builder</RootNamespace>
   </PropertyGroup>
 
