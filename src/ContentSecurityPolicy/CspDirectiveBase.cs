@@ -35,7 +35,7 @@ namespace PeterJuhasz.AspNetCore.Extensions.Security
             if (this.Sources.Contains(source))
                 return this.Sources;
 
-            return new ReadOnlyCollection<string>(this.Sources.Append(source).ToList());
+            return new ReadOnlyCollection<string>(this.Sources.Union(new[] { source }).ToList());
         }
 
         public override string ToString()
