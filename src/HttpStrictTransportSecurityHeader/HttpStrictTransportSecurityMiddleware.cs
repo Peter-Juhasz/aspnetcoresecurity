@@ -11,9 +11,9 @@ namespace Microsoft.AspNetCore.Builder
         /// Adds the Strict-Transport-Security header to all responses with the default settings (max-age: 1 year).
         /// </summary>
         /// <param name="app"></param>
-        public static void UseHttpStrictTransportSecurityHeader(this IApplicationBuilder app)
+        public static void UseHttpStrictTransportSecurity(this IApplicationBuilder app)
         {
-            app.UseHttpStrictTransportSecurityHeader(new HttpStrictTransportSecurityOptions
+            app.UseHttpStrictTransportSecurity(new HttpStrictTransportSecurityOptions
             {
                 MaxAge = TimeSpan.FromDays(365),
                 IncludeSubDomains = true,
@@ -26,7 +26,7 @@ namespace Microsoft.AspNetCore.Builder
         /// </summary>
         /// <param name="app"></param>
         /// <param name="options"></param>
-        public static void UseHttpStrictTransportSecurityHeader(this IApplicationBuilder app, HttpStrictTransportSecurityOptions options)
+        public static void UseHttpStrictTransportSecurity(this IApplicationBuilder app, HttpStrictTransportSecurityOptions options)
         {
             app.UseMiddleware<HttpStrictTransportSecurityMiddleware>(options);
         }

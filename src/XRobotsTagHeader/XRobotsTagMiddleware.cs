@@ -13,7 +13,7 @@ namespace Microsoft.AspNetCore.Builder
         /// <param name="app"></param>
         /// <param name="noIndex"></param>
         /// <param name="noFollow"></param>
-        public static void UseXRobotsTagHeader(this IApplicationBuilder app, bool noIndex = true, bool noFollow = true)
+        public static void UseXRobotsTag(this IApplicationBuilder app, bool noIndex = true, bool noFollow = true)
         {
             RobotsTagDirectives directives = noIndex
                 ? noFollow
@@ -24,7 +24,7 @@ namespace Microsoft.AspNetCore.Builder
                     : RobotsTagDirectives.All
             ;
 
-            app.UseXRobotsTagHeader(new XRobotsTagHeaderValue
+            app.UseXRobotsTag(new XRobotsTagHeaderValue
             {
                 Directives = directives,
             });
@@ -35,7 +35,7 @@ namespace Microsoft.AspNetCore.Builder
         /// </summary>
         /// <param name="app"></param>
         /// <param name="headerValue"></param>
-        public static void UseXRobotsTagHeader(this IApplicationBuilder app, XRobotsTagHeaderValue headerValue)
+        public static void UseXRobotsTag(this IApplicationBuilder app, XRobotsTagHeaderValue headerValue)
         {
             app.UseMiddleware<XRobotsTagMiddleware>(headerValue);
         }

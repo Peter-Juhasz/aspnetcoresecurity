@@ -1,31 +1,31 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26403.3
+VisualStudioVersion = 15.0.26228.4
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PeterJuhasz.AspNetCore.Extensions.Security", "src\PeterJuhasz.AspNetCore.Extensions.Security\PeterJuhasz.AspNetCore.Extensions.Security.csproj", "{3352FBF1-317B-48A0-8D11-46550C62539A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XXSSProtectionHeader", "src\XXSSProtectionHeader\XXSSProtectionHeader.csproj", "{1653137C-AA19-4C68-847E-02B2494B35F3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XXSSProtection", "src\XXSSProtectionHeader\XXSSProtection.csproj", "{1653137C-AA19-4C68-847E-02B2494B35F3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XDownloadOptionsHeader", "src\XDownloadOptionsHeader\XDownloadOptionsHeader.csproj", "{C20660CF-D100-4BC5-956D-25B06B4056E7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XDownloadOptions", "src\XDownloadOptionsHeader\XDownloadOptions.csproj", "{C20660CF-D100-4BC5-956D-25B06B4056E7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XUACompatibleHeader", "src\XUACompatibleHeader\XUACompatibleHeader.csproj", "{EC2259B2-3ADF-4DFE-93F8-1E05ACA01B24}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XUACompatible", "src\XUACompatibleHeader\XUACompatible.csproj", "{EC2259B2-3ADF-4DFE-93F8-1E05ACA01B24}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FrameOptionsHeader", "src\FrameOptionsHeader\FrameOptionsHeader.csproj", "{3C625D82-90DA-48CC-82AD-8C2D1C0A1D55}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FrameOptions", "src\FrameOptionsHeader\FrameOptions.csproj", "{3C625D82-90DA-48CC-82AD-8C2D1C0A1D55}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HttpStrictTransportSecurityHeader", "src\HttpStrictTransportSecurityHeader\HttpStrictTransportSecurityHeader.csproj", "{27EC8EF4-73C8-4DD5-947A-B92B0765F6A0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HttpStrictTransportSecurity", "src\HttpStrictTransportSecurityHeader\HttpStrictTransportSecurity.csproj", "{27EC8EF4-73C8-4DD5-947A-B92B0765F6A0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XPermittedCrossDomainPoliciesHeader", "src\XPermittedCrossDomainPoliciesHeader\XPermittedCrossDomainPoliciesHeader.csproj", "{445B1EBE-8092-4F6C-814E-3346CE37A364}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XPermittedCrossDomainPolicies", "src\XPermittedCrossDomainPoliciesHeader\XPermittedCrossDomainPolicies.csproj", "{445B1EBE-8092-4F6C-814E-3346CE37A364}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReferrerPolicyHeader", "src\ReferrerPolicyHeader\ReferrerPolicyHeader.csproj", "{E1E6FB65-D42D-4973-B4CC-4A8189701B81}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReferrerPolicy", "src\ReferrerPolicyHeader\ReferrerPolicy.csproj", "{E1E6FB65-D42D-4973-B4CC-4A8189701B81}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XRobotsTagHeader", "src\XRobotsTagHeader\XRobotsTagHeader.csproj", "{934AEB16-8D4C-4103-A8B3-8EDC3D011C7B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XRobotsTag", "src\XRobotsTagHeader\XRobotsTag.csproj", "{934AEB16-8D4C-4103-A8B3-8EDC3D011C7B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RedirectPolicy", "src\RedirectPolicy\RedirectPolicy.csproj", "{09A22489-8A60-47C5-980B-473DB540DBE0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HttpPublicKeyPinning", "src\HttpPublicKeyPinning\HttpPublicKeyPinning.csproj", "{291F6EDA-29C8-4A4C-AED4-500EB518DB58}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XContentTypeOptionsHeader", "src\XContentTypeOptionsHeader\XContentTypeOptionsHeader.csproj", "{A4A345D5-DFF8-4005-B202-9AD646DA1707}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XContentTypeOptions", "src\XContentTypeOptionsHeader\XContentTypeOptions.csproj", "{A4A345D5-DFF8-4005-B202-9AD646DA1707}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContentSecurityPolicy", "src\ContentSecurityPolicy\ContentSecurityPolicy.csproj", "{DE103A99-151F-4AF8-BD8C-8EA26A003023}"
 EndProject

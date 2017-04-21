@@ -12,7 +12,7 @@ namespace Microsoft.AspNetCore.Builder
         /// </summary>
         /// <param name="app"></param>
         /// <param name="policy"></param>
-        public static void UseXPermittedCrossDomainPoliciesHeader(this IApplicationBuilder app, PermittedCrossDomainPolicy policy = PermittedCrossDomainPolicy.None)
+        public static void UseXPermittedCrossDomainPolicies(this IApplicationBuilder app, PermittedCrossDomainPolicy policy = PermittedCrossDomainPolicy.None)
         {
             app.UseMiddleware<XPermittedCrossDomainPoliciesMiddleware>(policy);
         }
