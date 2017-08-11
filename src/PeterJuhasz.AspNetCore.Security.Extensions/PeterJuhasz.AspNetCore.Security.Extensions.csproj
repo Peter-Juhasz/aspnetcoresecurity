@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.6</TargetFramework>
+    <Company>www.PeterJuhasz.net</Company>
+    <Authors>Peter Juhasz</Authors>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Copyright>Peter Juhasz</Copyright>
+    <PackageProjectUrl>https://github.com/Peter-Juhasz/aspnetcoresecurity</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Peter-Juhasz/aspnetcoresecurity</RepositoryUrl>
+    <PackageTags>asp.net core security xss csp</PackageTags>
+    <PackageLicenseUrl>https://github.com/Peter-Juhasz/aspnetcoresecurity/blob/master/LICENSE</PackageLicenseUrl>
+    <AssemblyName>PeterJuhasz.AspNetCore.Security.Extensions</AssemblyName>
+    <RootNamespace>PeterJuhasz.AspNetCore.Security.Extensions</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="PeterJuhasz.AspNetCore.Security.Extensions.ContentSecurityPolicy" Version="1.0.0" />
+    <PackageReference Include="PeterJuhasz.AspNetCore.Security.Extensions.FrameOptionsHeader" Version="1.0.0" />
+    <PackageReference Include="PeterJuhasz.AspNetCore.Security.Extensions.HttpPublicKeyPinning" Version="1.0.0" />
+    <PackageReference Include="PeterJuhasz.AspNetCore.Security.Extensions.HttpStrictTransportSecurityHeader" Version="1.0.0" />
+    <PackageReference Include="PeterJuhasz.AspNetCore.Security.Extensions.RedirectPolicy" Version="1.0.0" />
+    <PackageReference Include="PeterJuhasz.AspNetCore.Security.Extensions.ReferrerPolicyHeader" Version="1.0.0" />
+    <PackageReference Include="PeterJuhasz.AspNetCore.Security.Extensions.XContentTypeOptionsHeader" Version="1.0.0" />
+    <PackageReference Include="PeterJuhasz.AspNetCore.Security.Extensions.XDownloadOptionsHeader" Version="1.0.0" />
+    <PackageReference Include="PeterJuhasz.AspNetCore.Security.Extensions.XPermittedCrossDomainPoliciesHeader" Version="1.0.0" />
+    <PackageReference Include="PeterJuhasz.AspNetCore.Security.Extensions.XRobotsTagHeader" Version="1.0.0" />
+    <PackageReference Include="PeterJuhasz.AspNetCore.Security.Extensions.XUACompatibleHeader" Version="1.0.0" />
+    <PackageReference Include="PeterJuhasz.AspNetCore.Security.Extensions.XXSSProtectionHeader" Version="1.0.0" />
+  </ItemGroup>
+
+</Project>

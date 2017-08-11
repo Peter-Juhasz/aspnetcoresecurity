@@ -4,6 +4,14 @@
     <TargetFramework>netstandard1.4</TargetFramework>
     <AssemblyName>PeterJuhasz.AspNetCore.Security.Extensions.XPermittedCrossDomainPoliciesHeader</AssemblyName>
     <RootNamespace>Microsoft.AspNetCore.Builder</RootNamespace>
+    <Company>www.PeterJuhasz.net</Company>
+    <Authors>Peter Juhasz</Authors>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Copyright>Peter Juhasz</Copyright>
+    <PackageProjectUrl>https://github.com/Peter-Juhasz/aspnetcoresecurity</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Peter-Juhasz/aspnetcoresecurity</RepositoryUrl>
+    <PackageTags>asp.net core security x-permitted-cross-domain</PackageTags>
+    <PackageLicenseUrl>https://github.com/Peter-Juhasz/aspnetcoresecurity/blob/master/LICENSE</PackageLicenseUrl>
   </PropertyGroup>
 
   <ItemGroup>
