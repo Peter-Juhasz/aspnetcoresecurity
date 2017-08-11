@@ -15,6 +15,8 @@
     <RepositoryUrl>https://github.com/Peter-Juhasz/aspnetcoresecurity</RepositoryUrl>
     <PackageTags>asp.net core security frame x-frame-options</PackageTags>
     <PackageLicenseUrl>https://github.com/Peter-Juhasz/aspnetcoresecurity/blob/master/LICENSE</PackageLicenseUrl>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+    <Description>Adds the Frame-Options and X-Frame-Options headers to responses with content type text/html.</Description>
   </PropertyGroup>
 
   <ItemGroup>

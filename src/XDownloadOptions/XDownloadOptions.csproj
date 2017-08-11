@@ -13,8 +13,10 @@
     <Copyright>Peter Juhasz</Copyright>
     <PackageProjectUrl>https://github.com/Peter-Juhasz/aspnetcoresecurity</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Peter-Juhasz/aspnetcoresecurity</RepositoryUrl>
-    <PackageTags>asp.net core security x-download-options</PackageTags>
+    <PackageTags>asp.net core security file x-download-options</PackageTags>
     <PackageLicenseUrl>https://github.com/Peter-Juhasz/aspnetcoresecurity/blob/master/LICENSE</PackageLicenseUrl>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+    <Description>Adds the X-Download-Options header with 'noopen' value to all file downloads.</Description>
   </PropertyGroup>
 
   <ItemGroup>

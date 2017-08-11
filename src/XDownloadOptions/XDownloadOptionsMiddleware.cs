@@ -8,7 +8,7 @@ namespace Microsoft.AspNetCore.Builder
     public static partial class AppBuilderExtensions
     {
         /// <summary>
-        /// Adds the X-Download-Options header with 'noopen' value to each file download.
+        /// Adds the X-Download-Options header with 'noopen' value to all file downloads.
         /// </summary>
         /// <param name="app"></param>
         /// <param name="options"></param>

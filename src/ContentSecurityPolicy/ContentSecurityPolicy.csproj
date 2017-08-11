@@ -15,6 +15,8 @@
     <RepositoryUrl>https://github.com/Peter-Juhasz/aspnetcoresecurity</RepositoryUrl>
     <PackageTags>asp.net core security csp content-security-policy</PackageTags>
     <PackageLicenseUrl>https://github.com/Peter-Juhasz/aspnetcoresecurity/blob/master/LICENSE</PackageLicenseUrl>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+    <Description>Adds the Content-Security-Policy header to responses with content type text/html.</Description>
   </PropertyGroup>
 
   <ItemGroup>

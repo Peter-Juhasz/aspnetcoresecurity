@@ -8,7 +8,7 @@ namespace Microsoft.AspNetCore.Builder
     public static partial class AppBuilderExtensions
     {
         /// <summary>
-        /// Adds the Strict-Transport-Security header to all responses with the default settings (max-age: 1 year).
+        /// Adds the Strict-Transport-Security header to all secure responses with the default settings (max-age: 1 year).
         /// </summary>
         /// <param name="app"></param>
         public static void UseHttpStrictTransportSecurity(this IApplicationBuilder app)
@@ -22,7 +22,7 @@ namespace Microsoft.AspNetCore.Builder
         }
 
         /// <summary>
-        /// Adds the Strict-Transport-Security header to all responses.
+        /// Adds the Strict-Transport-Security header to all secure responses.
         /// </summary>
         /// <param name="app"></param>
         /// <param name="options"></param>
