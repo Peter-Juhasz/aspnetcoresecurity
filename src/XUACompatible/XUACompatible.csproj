@@ -4,6 +4,9 @@
     <TargetFramework>netstandard1.3</TargetFramework>
     <AssemblyName>PeterJuhasz.AspNetCore.Security.Extensions.XUACompatible</AssemblyName>
     <RootNamespace>Microsoft.AspNetCore.Builder</RootNamespace>
+    <Version>1.0.1</Version>
+    <AssemblyVersion>1.0.1.0</AssemblyVersion>
+    <FileVersion>1.0.1.0</FileVersion>
     <Company>www.PeterJuhasz.net</Company>
     <Authors>Peter Juhasz</Authors>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
