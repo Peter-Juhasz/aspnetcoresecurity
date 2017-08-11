@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PeterJuhasz.AspNetCore.Secu
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XXSSProtection", "src\XXSSProtection\XXSSProtection.csproj", "{1653137C-AA19-4C68-847E-02B2494B35F3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XDownloadOptionsHeader", "src\XDownloadOptionsHeader\XDownloadOptionsHeader.csproj", "{C20660CF-D100-4BC5-956D-25B06B4056E7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XDownloadOptions", "src\XDownloadOptions\XDownloadOptions.csproj", "{C20660CF-D100-4BC5-956D-25B06B4056E7}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XUACompatible", "src\XUACompatible\XUACompatible.csproj", "{EC2259B2-3ADF-4DFE-93F8-1E05ACA01B24}"
 EndProject
