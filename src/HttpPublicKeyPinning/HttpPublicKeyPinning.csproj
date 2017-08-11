@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.4</TargetFramework>
+    <TargetFramework>netstandard1.3</TargetFramework>
     <AssemblyName>PeterJuhasz.AspNetCore.Security.Extensions.HttpPublicKeyPinning</AssemblyName>
     <RootNamespace>Microsoft.AspNetCore.Builder</RootNamespace>
     <Company>www.PeterJuhasz.net</Company>
@@ -15,8 +15,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="1.1.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Http.Extensions" Version="1.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="1.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Extensions" Version="1.0.0" />
   </ItemGroup>
 
 </Project>

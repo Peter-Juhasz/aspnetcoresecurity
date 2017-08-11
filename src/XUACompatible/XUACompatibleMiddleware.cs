@@ -13,7 +13,7 @@ namespace Microsoft.AspNetCore.Builder
         /// </summary>
         /// <param name="app"></param>
         /// <param name="mode"></param>
-        public static void UseXUACompatibleHeader(this IApplicationBuilder app, InternetExplorerCompatibiltyMode mode = InternetExplorerCompatibiltyMode.Edge)
+        public static void UseXUACompatible(this IApplicationBuilder app, InternetExplorerCompatibiltyMode mode = InternetExplorerCompatibiltyMode.Edge)
         {
             app.UseMiddleware<XUACompatibleMiddleware>(mode);
         }

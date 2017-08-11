@@ -12,7 +12,7 @@ namespace Microsoft.AspNetCore.Builder
         /// </summary>
         /// <param name="app"></param>
         /// <param name="options"></param>
-        public static void UseFrameOptionsHeader(this IApplicationBuilder app, FrameOptionsOptions options)
+        public static void UseFrameOptions(this IApplicationBuilder app, FrameOptionsOptions options)
         {
             app.UseMiddleware<FrameOptionsMiddleware>(options);
         }
@@ -22,14 +22,14 @@ namespace Microsoft.AspNetCore.Builder
         /// </summary>
         /// <param name="app"></param>
         /// <param name="configure"></param>
-        public static void UseFrameOptionsHeader(this IApplicationBuilder app, Action<FrameOptionsOptions> configure)
+        public static void UseFrameOptions(this IApplicationBuilder app, Action<FrameOptionsOptions> configure)
         {
             if (configure == null)
                 throw new ArgumentNullException(nameof(configure));
 
             FrameOptionsOptions options = new FrameOptionsOptions();
             configure(options);
-            app.UseFrameOptionsHeader(options);
+            app.UseFrameOptions(options);
         }
 
         /// <summary>
@@ -37,12 +37,12 @@ namespace Microsoft.AspNetCore.Builder
         /// </summary>
         /// <param name="app"></param>
         /// <param name="policy"></param>
-        public static void UseFrameOptionsHeader(this IApplicationBuilder app, FrameOptionsPolicy policy = FrameOptionsPolicy.Deny)
+        public static void UseFrameOptions(this IApplicationBuilder app, FrameOptionsPolicy policy = FrameOptionsPolicy.Deny)
         {
             if (policy == FrameOptionsPolicy.AllowFrom)
                 throw new ArgumentException("This overload can't be used to configure ALLOW-FROM policy.", nameof(policy));
 
-            app.UseFrameOptionsHeader(new FrameOptionsOptions(policy));
+            app.UseFrameOptions(new FrameOptionsOptions(policy));
         }
 
         /// <summary>
@@ -50,9 +50,9 @@ namespace Microsoft.AspNetCore.Builder
         /// </summary>
         /// <param name="app"></param>
         /// <param name="allowFromUri"></param>
-        public static void UseFrameOptionsHeader(this IApplicationBuilder app, Uri allowFromUri)
+        public static void UseFrameOptions(this IApplicationBuilder app, Uri allowFromUri)
         {
-            app.UseFrameOptionsHeader(new FrameOptionsOptions(allowFromUri));
+            app.UseFrameOptions(new FrameOptionsOptions(allowFromUri));
         }
 
 

@@ -10,7 +10,7 @@ namespace Microsoft.AspNetCore.Builder
     public static partial class AppBuilderExtensions
     {
         /// <summary>
-        /// Adds Content-Security-Policy header to responses with content type text/html.
+        /// Adds the Content-Security-Policy header to responses with content type text/html.
         /// </summary>
         /// <param name="app"></param>
         /// <param name="options"></param>

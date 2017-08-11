@@ -11,7 +11,7 @@ namespace Microsoft.AspNetCore.Builder
         /// </summary>
         /// <param name="app"></param>
         /// <param name="policy"></param>
-        public static void UseXContentTypeOptionsHeader(this IApplicationBuilder app, XContentTypeOptions policy = XContentTypeOptions.NoSniff)
+        public static void UseXContentTypeOptions(this IApplicationBuilder app, XContentTypeOptions policy = XContentTypeOptions.NoSniff)
         {
             app.UseMiddleware<XContentTypeOptionsMiddleware>();
         }

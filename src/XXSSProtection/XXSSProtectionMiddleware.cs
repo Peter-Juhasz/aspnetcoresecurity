@@ -12,7 +12,7 @@ namespace Microsoft.AspNetCore.Builder
         /// </summary>
         /// <param name="app"></param>
         /// <param name="options"></param>
-        public static void UseXXSSProtectionHeader(this IApplicationBuilder app, XXssProtectionOptions options)
+        public static void UseXXSSProtection(this IApplicationBuilder app, XXssProtectionOptions options)
         {
             app.UseMiddleware<XXSSProtectionMiddleware>(options);
         }
@@ -24,14 +24,14 @@ namespace Microsoft.AspNetCore.Builder
         /// <param name="enabled">Enables XSS protection.</param>
         /// <param name="block">Sets Block mode.</param>
         /// <param name="reportUri">Sets the URI the browser is going to report violations to.</param>
-        public static void UseXXSSProtectionHeader(
+        public static void UseXXSSProtection(
             this IApplicationBuilder app,
             bool enabled = true,
             bool block = true,
             Uri reportUri = null
         )
         {
-            app.UseXXSSProtectionHeader(new XXssProtectionOptions
+            app.UseXXSSProtection(new XXssProtectionOptions
             {
                 Enabled = enabled,
                 Block = block,
@@ -44,11 +44,8 @@ namespace Microsoft.AspNetCore.Builder
         {
             public XXSSProtectionMiddleware(RequestDelegate next, XXssProtectionOptions options)
             {
-                if (options == null)
-                    throw new ArgumentNullException(nameof(options));
-
                 _next = next;
-                Options = options;
+                Options = options ?? throw new ArgumentNullException(nameof(options));
                 _headerValue = Options.ToString();
             }
 

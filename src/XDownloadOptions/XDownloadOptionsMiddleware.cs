@@ -12,7 +12,7 @@ namespace Microsoft.AspNetCore.Builder
         /// </summary>
         /// <param name="app"></param>
         /// <param name="options"></param>
-        public static void UseXDownloadOptionsHeader(this IApplicationBuilder app, XDownloadOptions options = XDownloadOptions.NoOpen)
+        public static void UseXDownloadOptions(this IApplicationBuilder app, XDownloadOptions options = XDownloadOptions.NoOpen)
         {
             app.UseMiddleware<XDownloadOptionsMiddleware>();
         }
