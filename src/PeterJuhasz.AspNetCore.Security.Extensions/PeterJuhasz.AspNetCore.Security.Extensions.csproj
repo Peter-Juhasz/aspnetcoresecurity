@@ -19,7 +19,7 @@
   <ItemGroup>
     <PackageReference Include="PeterJuhasz.AspNetCore.Security.Extensions.ContentSecurityPolicy" Version="1.0.1" />
     <PackageReference Include="PeterJuhasz.AspNetCore.Security.Extensions.FrameOptions" Version="1.0.1" />
-    <PackageReference Include="PeterJuhasz.AspNetCore.Security.Extensions.HttpPublicKeyPinning" Version="1.0.1" />
+    <PackageReference Include="PeterJuhasz.AspNetCore.Security.Extensions.HttpPublicKeyPinning" Version="1.0.2" />
     <PackageReference Include="PeterJuhasz.AspNetCore.Security.Extensions.HttpStrictTransportSecurity" Version="1.0.1" />
     <PackageReference Include="PeterJuhasz.AspNetCore.Security.Extensions.RedirectPolicy" Version="1.0.1" />
     <PackageReference Include="PeterJuhasz.AspNetCore.Security.Extensions.ReferrerPolicy" Version="1.0.1" />
