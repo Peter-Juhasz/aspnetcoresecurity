@@ -1,12 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.3</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>PeterJuhasz.AspNetCore.Security.Extensions.XUACompatible</AssemblyName>
     <RootNamespace>Microsoft.AspNetCore.Builder</RootNamespace>
-    <Version>1.0.1</Version>
-    <AssemblyVersion>1.0.1.0</AssemblyVersion>
-    <FileVersion>1.0.1.0</FileVersion>
+    <Version>2.0.0</Version>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <FileVersion>2.0.0.0</FileVersion>
     <Company>www.PeterJuhasz.net</Company>
     <Authors>Peter Juhasz</Authors>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
@@ -20,8 +20,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="1.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Http.Extensions" Version="1.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Extensions" Version="2.0.0" />
   </ItemGroup>
 
 </Project>

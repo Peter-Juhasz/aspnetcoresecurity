@@ -76,7 +76,7 @@ namespace Microsoft.AspNetCore.Builder
                 {
                     HttpResponse response = context.Response;
 
-                    if (response.GetTypedHeaders().ContentType?.MediaType?.Equals("text/html", StringComparison.OrdinalIgnoreCase) ?? false)
+                    if (response.GetTypedHeaders().ContentType?.MediaType.Equals("text/html", StringComparison.OrdinalIgnoreCase) ?? false)
                     {
                         response.Headers["X-Frame-Options"] = _headerValue;
                         response.Headers["Frame-Options"] = _headerValue;

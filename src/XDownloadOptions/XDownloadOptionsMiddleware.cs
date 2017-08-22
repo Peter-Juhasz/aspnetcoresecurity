@@ -35,7 +35,7 @@ namespace Microsoft.AspNetCore.Builder
                 {
                     HttpResponse response = context.Response;
 
-                    if (response.GetTypedHeaders().ContentDisposition?.DispositionType?.Equals("attachment", StringComparison.OrdinalIgnoreCase) ?? false)
+                    if (response.GetTypedHeaders().ContentDisposition?.DispositionType.Equals("attachment", StringComparison.OrdinalIgnoreCase) ?? false)
                     {
                         response.Headers["X-Download-Options"] = "noopen";
                     }
