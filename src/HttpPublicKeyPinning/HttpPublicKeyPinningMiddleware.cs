@@ -50,7 +50,7 @@ namespace Microsoft.AspNetCore.Builder
                 context.Response.OnStarting(() =>
                 {
                     HttpResponse response = context.Response;
-                    response.Headers["Strict-Transport-Security"] = _headerValue;
+                    response.Headers["Public-Key-Pins"] = _headerValue;
 
                     return Task.CompletedTask;
                 });
