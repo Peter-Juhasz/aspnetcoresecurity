@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>PeterJuhasz.AspNetCore.Security.Extensions</id>
+    <version>1.0.3</version>
+    <authors>Peter Juhasz</authors>
+    <owners>Peter Juhasz</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <licenseUrl>https://github.com/Peter-Juhasz/aspnetcoresecurity/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/Peter-Juhasz/aspnetcoresecurity</projectUrl>
+    <description>Contains a rich set of security-related middlewares for ASP.NET Core with strongly-typed configuration.</description>
+    <copyright>Peter Juhasz</copyright>
+    <tags>asp.net core security xss csp</tags>
+    <repository url="https://github.com/Peter-Juhasz/aspnetcoresecurity" />
+    <dependencies>
+      <group targetFramework=".NETStandard1.3">
+        <dependency id="NETStandard.Library" version="1.6.1" exclude="Build,Analyzers" />
+        <dependency id="PeterJuhasz.AspNetCore.Security.Extensions.XDownloadOptions" version="[1.0.1, 2.0.0)" exclude="Build,Analyzers" />
+        <dependency id="PeterJuhasz.AspNetCore.Security.Extensions.XUACompatible" version="[1.0.1, 2.0.0)" exclude="Build,Analyzers" />
+        <dependency id="PeterJuhasz.AspNetCore.Security.Extensions.ContentSecurityPolicy" version="[1.0.1, 2.0.0)" exclude="Build,Analyzers" />
+        <dependency id="PeterJuhasz.AspNetCore.Security.Extensions.XPermittedCrossDomainPolicies" version="[1.0.1, 2.0.0)" exclude="Build,Analyzers" />
+        <dependency id="PeterJuhasz.AspNetCore.Security.Extensions.XContentTypeOptions" version="[1.0.1, 2.0.0)" exclude="Build,Analyzers" />
+        <dependency id="PeterJuhasz.AspNetCore.Security.Extensions.FrameOptions" version="[1.0.1, 2.0.0)" exclude="Build,Analyzers" />
+        <dependency id="PeterJuhasz.AspNetCore.Security.Extensions.XRobotsTag" version="[1.0.1, 2.0.0)" exclude="Build,Analyzers" />
+        <dependency id="PeterJuhasz.AspNetCore.Security.Extensions.XXSSProtection" version="[1.0.1, 2.0.0)" exclude="Build,Analyzers" />
+        <dependency id="PeterJuhasz.AspNetCore.Security.Extensions.ReferrerPolicy" version="[1.0.1, 2.0.0)" exclude="Build,Analyzers" />
+        <dependency id="PeterJuhasz.AspNetCore.Security.Extensions.HttpStrictTransportSecurity" version="[1.0.1, 2.0.0)" exclude="Build,Analyzers" />
+        <dependency id="PeterJuhasz.AspNetCore.Security.Extensions.HttpPublicKeyPinning" version="[1.0.2, 2.0.0)" exclude="Build,Analyzers" />
+        <dependency id="PeterJuhasz.AspNetCore.Security.Extensions.RedirectPolicy" version="[1.0.1, 2.0.0)" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+</package>
