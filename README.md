@@ -1,5 +1,9 @@
 # ASP.NET Core Security Extensions
 
+```
+dotnet add package PeterJuhasz.AspNetCore.Security.Extensions
+```
+
 Contains a set of extensions which help you make your web applications more secure.
 
 
