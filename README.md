@@ -6,6 +6,8 @@ dotnet add package PeterJuhasz.AspNetCore.Security.Extensions
 
 Contains a set of extensions which help you make your web applications more secure.
 
+Note: for ASP.NET Core 1.0 use package version `1.0.0`, otherwise for ASP.NET Core 2.0 use `2.0.0`.
+
 
 ## Features
 
