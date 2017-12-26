@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>PeterJuhasz.AspNetCore.Security.Extensions.ExpectCT</AssemblyName>
+    <RootNamespace>Microsoft.AspNetCore.Builder</RootNamespace>
+    <Version>2.0.0</Version>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <FileVersion>2.0.0.0</FileVersion>
+    <Company>www.PeterJuhasz.net</Company>
+    <Authors>Peter Juhasz</Authors>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Copyright>Peter Juhasz</Copyright>
+    <PackageProjectUrl>https://github.com/Peter-Juhasz/aspnetcoresecurity</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Peter-Juhasz/aspnetcoresecurity</RepositoryUrl>
+    <PackageTags>asp.net core security expect-ct certificate https</PackageTags>
+    <PackageLicenseUrl>https://github.com/Peter-Juhasz/aspnetcoresecurity/blob/master/LICENSE</PackageLicenseUrl>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+    <Description>Adds the Expect-CT header which allows sites to opt in to reporting and/or enforcement of Certificate Transparency requirements.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Extensions" Version="2.0.0" />
+  </ItemGroup>
+
+</Project>
