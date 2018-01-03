@@ -61,5 +61,14 @@ namespace PeterJuhasz.AspNetCore.Extensions.Security
             string base64 = Convert.ToBase64String(hash);
             return this.AddSource($"'{algorithmName}-{base64}'");
         }
+
+        public CspDirective AddHashOf(CspHashAlgorithm algorithm, byte[] content)
+        {
+            if (content == null)
+                throw new ArgumentNullException(nameof(content));
+
+            using (var hashAlgorithm = algorithm.CreateHashAlgorithm())
+                return this.AddHash(algorithm, hashAlgorithm.ComputeHash(content));
+        }
     }
 }
