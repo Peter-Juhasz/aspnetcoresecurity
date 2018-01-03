@@ -46,25 +46,20 @@ namespace PeterJuhasz.AspNetCore.Extensions.Security
             return this.AddSource($"{scheme}:");
         }
 
-        public CspDirective AddDataScheme()
+        public CspDirective AddDataScheme() => this.AddScheme("data");
+        public CspDirective AddBlobScheme() => this.AddScheme("blob");
+        public CspDirective AddHttpsScheme() => this.AddScheme("https");
+        public CspDirective AddMediaStreamScheme() => this.AddScheme("mediastream");
+        public CspDirective AddFileSystemScheme() => this.AddScheme("filesystem");
+
+        public CspDirective AddHash(CspHashAlgorithm algorithm, byte[] hash)
         {
-            return this.AddScheme("data");
-        }
-        public CspDirective AddBlobScheme()
-        {
-            return this.AddScheme("blob");
-        }
-        public CspDirective AddHttpsScheme()
-        {
-            return this.AddScheme("https");
-        }
-        public CspDirective AddMediaStreamScheme()
-        {
-            return this.AddScheme("mediastream");
-        }
-        public CspDirective AddFileSystemScheme()
-        {
-            return this.AddScheme("filesystem");
+            if (hash == null)
+                throw new ArgumentNullException(nameof(hash));
+
+            string algorithmName = algorithm.ToString().ToLowerInvariant();
+            string base64 = Convert.ToBase64String(hash);
+            return this.AddSource($"'{algorithmName}-{base64}'");
         }
     }
 }
