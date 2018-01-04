@@ -62,7 +62,7 @@ namespace PeterJuhasz.AspNetCore.Extensions.Security
             return this.AddSource($"'{algorithmName}-{base64}'");
         }
 
-        public CspDirective AddHashOf(CspHashAlgorithm algorithm, byte[] content)
+        public CspDirective AddHashOf(byte[] content, CspHashAlgorithm algorithm = CspHashAlgorithm.Sha256)
         {
             if (content == null)
                 throw new ArgumentNullException(nameof(content));
