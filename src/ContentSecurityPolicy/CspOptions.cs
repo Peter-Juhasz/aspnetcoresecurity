@@ -104,7 +104,7 @@ namespace PeterJuhasz.AspNetCore.Extensions.Security
         /// <summary>
         /// Instructs a user agent to activate or deactivate any heuristics used to filter or block reflected cross-site scripting attacks, equivalent to the effects of the non-standard X-XSS-Protection header.
         /// </summary>
-        public CspReflectedXss? ReflectedXss { get; set; } = CspReflectedXss.Block;
+        public CspReflectedXss? ReflectedXss { get; set; } = null;
 
         /// <summary>
         /// The upgrade-insecure-requests directive instructs user agents to treat all of a site's insecure URLs (those served over HTTP) as though they have been replaced with secure URLs (those served over HTTPS).
