@@ -11,12 +11,12 @@ namespace PeterJuhasz.AspNetCore.Extensions.Security
         public bool Enforce { get; set; } = true;
 
         /// <summary>
-        /// 
+        /// Gets or sets the time that the browser should cache and apply the received policy.
         /// </summary>
         public TimeSpan? MaxAge { get; set; } = null;
 
         /// <summary>
-        /// 
+        /// Gets or sets the URI the browser is going to report violations to.
         /// </summary>
         public Uri ReportUri { get; set; }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace PeterJuhasz.AspNetCore.Extensions.Security
 {
@@ -33,31 +34,16 @@ namespace PeterJuhasz.AspNetCore.Extensions.Security
             return this.AddSource(uri.ToString());
         }
 
-        public ScriptCspDirective AddSelf()
-        {
-            return this.AddSource("'self'");
-        }
+        public ScriptCspDirective AddSelf() => this.AddSource("'self'");
 
-        public ScriptCspDirective AddHttpsScheme()
-        {
-            return this.AddSource("https:");
-        }
+        public ScriptCspDirective AddHttpsScheme() => this.AddSource("https:");
 
 
-        public ScriptCspDirective AddUnsafeInline()
-        {
-            return this.AddSource("'unsafe-inline'");
-        }
+        public ScriptCspDirective AddUnsafeInline() => this.AddSource("'unsafe-inline'");
 
-        public ScriptCspDirective AddUnsafeEval()
-        {
-            return this.AddSource("'unsafe-eval'");
-        }
+        public ScriptCspDirective AddUnsafeEval() => this.AddSource("'unsafe-eval'");
 
-        public ScriptCspDirective AddStrictDynamic()
-        {
-            return this.AddSource("'strict-dynamic'");
-        }
+        public ScriptCspDirective AddStrictDynamic() => this.AddSource("'strict-dynamic'");
 
 
         public ScriptCspDirective AddNonce(string base64Nonce)
@@ -74,16 +60,47 @@ namespace PeterJuhasz.AspNetCore.Extensions.Security
         }
 
 
-        public ScriptCspDirective AddHash(CspHashAlgorithm algorithm, string base64Hash)
-        {
-            if (base64Hash == null)
-                throw new ArgumentNullException(nameof(base64Hash));
-
-            return this.AddSource($"{algorithm.ToString().ToLower()}-{base64Hash}");
-        }
         public ScriptCspDirective AddHash(CspHashAlgorithm algorithm, byte[] hash)
         {
-            return this.AddHash(algorithm, Convert.ToBase64String(hash));
+            if (hash == null)
+                throw new ArgumentNullException(nameof(hash));
+
+            string algorithmName = algorithm.ToString().ToLowerInvariant();
+            string base64 = Convert.ToBase64String(hash);
+            return this.AddSource($"'{algorithmName}-{base64}'");
         }
+
+        public ScriptCspDirective AddHash(CspHashAlgorithm algorithm, string base64hash)
+        {
+            if (base64hash == null)
+                throw new ArgumentNullException(nameof(base64hash));
+
+            string algorithmName = algorithm.ToString().ToLowerInvariant();
+            return this.AddSource($"'{algorithmName}-{base64hash}'");
+        }
+
+        public ScriptCspDirective AddHashOf(byte[] content, CspHashAlgorithm algorithm = CspHashAlgorithm.Sha256)
+        {
+            if (content == null)
+                throw new ArgumentNullException(nameof(content));
+
+            using (var hashAlgorithm = algorithm.CreateHashAlgorithm())
+                return this.AddHash(algorithm, hashAlgorithm.ComputeHash(content));
+        }
+
+        public ScriptCspDirective AddHashOf(string content, Encoding encoding, CspHashAlgorithm algorithm = CspHashAlgorithm.Sha256)
+        {
+            if (content == null)
+                throw new ArgumentNullException(nameof(content));
+
+            if (encoding == null)
+                throw new ArgumentNullException(nameof(encoding));
+
+            byte[] rawContent = encoding.GetBytes(content);
+            using (var hashAlgorithm = algorithm.CreateHashAlgorithm())
+                return this.AddHash(algorithm, hashAlgorithm.ComputeHash(rawContent));
+        }
+
+        public ScriptCspDirective AddHashOf(string content, CspHashAlgorithm algorithm = CspHashAlgorithm.Sha256) => this.AddHashOf(content, Encoding.UTF8, algorithm);
     }
 }

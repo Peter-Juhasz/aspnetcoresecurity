@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace PeterJuhasz.AspNetCore.Extensions.Security
 {
@@ -25,10 +26,7 @@ namespace PeterJuhasz.AspNetCore.Extensions.Security
             return new CspDirective(base.TryAddSource(source));
         }
 
-        public CspDirective AddSelf()
-        {
-            return this.AddSource("'self'");
-        }
+        public CspDirective AddSelf() => this.AddSource("'self'");
 
         public CspDirective AddSource(Uri uri)
         {
@@ -62,6 +60,15 @@ namespace PeterJuhasz.AspNetCore.Extensions.Security
             return this.AddSource($"'{algorithmName}-{base64}'");
         }
 
+        public CspDirective AddHash(CspHashAlgorithm algorithm, string base64hash)
+        {
+            if (base64hash == null)
+                throw new ArgumentNullException(nameof(base64hash));
+
+            string algorithmName = algorithm.ToString().ToLowerInvariant();
+            return this.AddSource($"'{algorithmName}-{base64hash}'");
+        }
+
         public CspDirective AddHashOf(byte[] content, CspHashAlgorithm algorithm = CspHashAlgorithm.Sha256)
         {
             if (content == null)
@@ -70,5 +77,20 @@ namespace PeterJuhasz.AspNetCore.Extensions.Security
             using (var hashAlgorithm = algorithm.CreateHashAlgorithm())
                 return this.AddHash(algorithm, hashAlgorithm.ComputeHash(content));
         }
+
+        public CspDirective AddHashOf(string content, Encoding encoding, CspHashAlgorithm algorithm = CspHashAlgorithm.Sha256)
+        {
+            if (content == null)
+                throw new ArgumentNullException(nameof(content));
+
+            if (encoding == null)
+                throw new ArgumentNullException(nameof(encoding));
+
+            byte[] rawContent = encoding.GetBytes(content);
+            using (var hashAlgorithm = algorithm.CreateHashAlgorithm())
+                return this.AddHash(algorithm, hashAlgorithm.ComputeHash(rawContent));
+        }
+
+        public CspDirective AddHashOf(string content, CspHashAlgorithm algorithm = CspHashAlgorithm.Sha256) => this.AddHashOf(content, Encoding.UTF8, algorithm);
     }
 }

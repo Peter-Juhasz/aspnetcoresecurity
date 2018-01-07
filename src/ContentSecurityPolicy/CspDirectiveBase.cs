@@ -38,9 +38,6 @@ namespace PeterJuhasz.AspNetCore.Extensions.Security
             return new ReadOnlyCollection<string>(this.Sources.Union(new[] { source }).ToList());
         }
 
-        public override string ToString()
-        {
-            return String.Join(" ", this.Sources);
-        }
+        public override string ToString() => String.Join(" ", this.Sources);
     }
 }
