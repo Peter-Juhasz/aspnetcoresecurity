@@ -30,6 +30,14 @@ app.UseContentSecurityPolicy(new CspOptions
 });
 ```
 
+### Expect-CT
+
+Adds the `Expect-CT` header which allows sites to opt in to reporting and/or enforcement of Certificate Transparency requirements.
+
+```csharp
+app.UseExpectCT(enforce: true, maxAge: TimeSpan.FromHours(1));
+```
+
 ### Frame Options
 
 Adds the `Frame-Options` and `X-Frame-Options` headers to responses with content type `text/html`.
@@ -132,4 +140,3 @@ Adds the `X-XSS-Protection` header to each response with `text/html` media type.
 ```csharp
 app.UseXXSSProtection();
 ```
-
