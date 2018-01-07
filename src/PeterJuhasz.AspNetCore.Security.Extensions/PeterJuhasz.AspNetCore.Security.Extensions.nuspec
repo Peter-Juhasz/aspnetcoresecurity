@@ -15,7 +15,7 @@
       <group targetFramework=".NETStandard2.0">
         <dependency id="PeterJuhasz.AspNetCore.Security.Extensions.XDownloadOptions" version="2.0.0" exclude="Build,Analyzers" />
         <dependency id="PeterJuhasz.AspNetCore.Security.Extensions.XUACompatible" version="2.0.0" exclude="Build,Analyzers" />
-        <dependency id="PeterJuhasz.AspNetCore.Security.Extensions.ContentSecurityPolicy" version="2.0.0" exclude="Build,Analyzers" />
+        <dependency id="PeterJuhasz.AspNetCore.Security.Extensions.ContentSecurityPolicy" version="2.1.0" exclude="Build,Analyzers" />
         <dependency id="PeterJuhasz.AspNetCore.Security.Extensions.XPermittedCrossDomainPolicies" version="2.0.0" exclude="Build,Analyzers" />
         <dependency id="PeterJuhasz.AspNetCore.Security.Extensions.XContentTypeOptions" version="2.0.0" exclude="Build,Analyzers" />
         <dependency id="PeterJuhasz.AspNetCore.Security.Extensions.FrameOptions" version="2.0.0" exclude="Build,Analyzers" />
