@@ -29,6 +29,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContentSecurityPolicy", "sr
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BAD0F703-0B66-4F14-A7A4-C9C773793F12}"
 	ProjectSection(SolutionItems) = preProject
+		CHANGELOG.md = CHANGELOG.md
 		src\PeterJuhasz.AspNetCore.Security.Extensions\PeterJuhasz.AspNetCore.Security.Extensions.nuspec = src\PeterJuhasz.AspNetCore.Security.Extensions\PeterJuhasz.AspNetCore.Security.Extensions.nuspec
 		README.md = README.md
 	EndProjectSection
