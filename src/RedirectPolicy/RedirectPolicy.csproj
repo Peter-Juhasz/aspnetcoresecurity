@@ -4,9 +4,9 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>PeterJuhasz.AspNetCore.Security.Extensions.RedirectPolicy</AssemblyName>
     <RootNamespace>Microsoft.AspNetCore.Builder</RootNamespace>
-    <Version>2.0.0</Version>
-    <AssemblyVersion>2.0.0.0</AssemblyVersion>
-    <FileVersion>2.0.0.0</FileVersion>
+    <Version>2.0.1</Version>
+    <AssemblyVersion>2.0.1.0</AssemblyVersion>
+    <FileVersion>2.0.1.0</FileVersion>
     <Company>www.PeterJuhasz.net</Company>
     <Authors>Peter Juhasz</Authors>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>

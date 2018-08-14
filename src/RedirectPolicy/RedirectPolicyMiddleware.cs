@@ -84,7 +84,7 @@ namespace Microsoft.AspNetCore.Builder
 
                 bool isAllowedLocation = AllowedBaseUris.Any(u => u.IsBaseOf(location));
 
-                return !isSameHostAndPortOrUpgrade && !isAllowedLocation;
+                return isSameHostAndPortOrUpgrade || isAllowedLocation;
             }
             
             public async Task Invoke(HttpContext context)
