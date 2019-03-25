@@ -30,6 +30,13 @@ app.UseContentSecurityPolicy(new CspOptions
 });
 ```
 
+Parse an existing `Content-Security-Policy` header value:
+
+```csharp
+CspParser parser = new CspParser();
+CspOptions parsedPolicy = parser.ParsePolicy(Context.Response.Headers["Content-Security-Policy"]);
+```
+
 ### Expect-CT
 
 Adds the `Expect-CT` header which allows sites to opt in to reporting and/or enforcement of Certificate Transparency requirements.

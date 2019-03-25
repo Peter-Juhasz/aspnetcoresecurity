@@ -1,3 +1,6 @@
+## 2.2.0
+- **CSP**: Parse a policy from a string
+
 ## 2.1.0
 - **Expect-CT**: support for Certificate Transparency
 - **CSP**: Add source to directives by hash

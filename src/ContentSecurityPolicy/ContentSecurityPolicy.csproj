@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>PeterJuhasz.AspNetCore.Security.Extensions.ContentSecurityPolicy</AssemblyName>
     <RootNamespace>Microsoft.AspNetCore.Builder</RootNamespace>
-    <Version>2.1.0</Version>
+    <Version>2.2.0</Version>
     <AssemblyVersion>2.1.0.0</AssemblyVersion>
     <FileVersion>2.1.0.0</FileVersion>
     <Company>www.PeterJuhasz.net</Company>
@@ -17,6 +17,7 @@
     <PackageLicenseUrl>https://github.com/Peter-Juhasz/aspnetcoresecurity/blob/master/LICENSE</PackageLicenseUrl>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
     <Description>Adds the Content-Security-Policy header to responses with content type text/html.</Description>
+    <LangVersion>default</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
