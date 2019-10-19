@@ -1,0 +1,34 @@
+﻿namespace Microsoft.AspNetCore.Builder
+{
+    public enum PolicyFeature
+    {
+        Accelerometer,
+        AmbientLightSensor,
+        Autoplay,
+        Camera,
+        DisplayCapture,
+        DocumentDomain,
+        EncryptedMedia,
+        Fullscreen,
+        Geolocation,
+        Gyroscope,
+        LayoutAnimations,
+        LegacyImageFormats,
+        Magnetometer,
+        Microphone,
+        Midi,
+        OversizedImages,
+        Payment,
+        PictureInPicture,
+        Speaker,
+        SyncXhr,
+        UnoptimizedImages,
+        UnsizedMedia,
+        Usb,
+        Vibrate,
+        Vr,
+        WakeLock,
+        Webauthn,
+        XrSpatialTracking,
+    }
+}

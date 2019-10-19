@@ -18,7 +18,7 @@ namespace PeterJuhasz.AspNetCore.Extensions.Security
         /// <summary>
         /// 
         /// </summary>
-        public Uri ReportUri { get; set; }
+        public Uri? ReportUri { get; set; }
 
 
         public override string ToString()

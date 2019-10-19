@@ -4,16 +4,16 @@
 dotnet add package PeterJuhasz.AspNetCore.Security.Extensions
 ```
 
-Contains a set of extensions which help you make your web applications more secure.
+Contains a set of extensions which help you make your web applications more secure. You can also install each feature invididually as separate packages.
 
-Note: for ASP.NET Core 1.0 use package version `1.0.0`, otherwise for ASP.NET Core 2.0 use `2.0.0`.
+Note: for ASP.NET Core 2.0+ use package version `2.0.0`+, otherwise use `3.0.0`+.
 
 
 ## Features
 
 ### Content-Security-Policy
 
-Adds the `Content-Security-Policy`, `X-Content-Security-Policy` and `X-Webkit-CSP` headers to responses with content type `text/html`.
+Adds the `Content-Security-Policy` headers to responses with content type `text/html`.
 
 ```csharp
 app.UseContentSecurityPolicy(new CspOptions
@@ -30,12 +30,29 @@ app.UseContentSecurityPolicy(new CspOptions
 });
 ```
 
+### Cross Origin Resource Sharing
+
+Use the built-in support in ASP.NET Core 3.0.
+
 ### Expect-CT
 
 Adds the `Expect-CT` header which allows sites to opt in to reporting and/or enforcement of Certificate Transparency requirements.
 
 ```csharp
 app.UseExpectCT(enforce: true, maxAge: TimeSpan.FromHours(1));
+```
+
+### Feature-Policy
+
+Adds the `Feature-Policy` header to responses with content type `text/html`.
+
+```csharp
+app.UseFeaturePolicy(
+    new FeatureDirectiveList()
+        .Add(FeatureDirective.Payment, "https://payment.example.org/")
+        .AddNone(FeatureDirective.Microphone)
+        .AddSelf(FeatureDirective.FullScreen)
+);
 ```
 
 ### Frame Options
@@ -54,11 +71,7 @@ app.UseFrameOptions(new Uri("https://www.example.org"));
 
 ### HTTP Strict Transport Security
 
-Adds the `Strict-Transport-Security` header to all responses.
-
-```csharp
-app.UseHttpStrictTransportSecurity();
-```
+Use the built-in support in ASP.NET Core 3.0.
 
 ### HTTP Public Key Pinning
 
@@ -69,6 +82,25 @@ app.UseHttpPublicKeyPinning(options => options
     .Pin(fingerprint1, HttpPublicKeyPinningHashAlgorithm.Sha256)
     .Pin(fingerprint2, HttpPublicKeyPinningHashAlgorithm.Sha256)
 );
+```
+
+### NoOpener
+
+A tag helper that adds the missing `noopener` link relationship type to your `a` tags that open in another frame and doesn't reference the same origin.
+
+Add an import for the tag helper (in your `_ViewImports.cshtml` if you have one):
+```cshtml
+@addTagHelper *, PeterJuhasz.AspNetCore.Extensions.Security.NoOpener
+```
+
+You don't need any additional changes, the tag helper applies to all links, for example:
+```html
+<a href="https://example.org/malicious.html" target="_blank">Click here</a>
+```
+
+And adds the missing `rel` attribute:
+```html
+<a href="https://example.org/malicious.html" target="_blank" rel="noopener">Click here</a>
 ```
 
 ### Redirect Policy
@@ -92,6 +124,49 @@ Adds the `Referrer-Policy` header to all responses.
 ```csharp
 app.UseReferrerPolicy(ReferrerPolicy.SameOrigin);
 ```
+
+### Require Authenticated Identity
+
+This is a middleware that you can use to require an authenticated identity on the `HttpContext` to proceed. For example, you can use this middleware to require authentication for static files.
+
+```csharp
+app.UseWhen(
+    context => context.Request.Path.StartsWithSegments("/dist"),
+    branch => branch.UseRequireAuthenticatedIdentity()
+);
+```
+
+### Subresource Integrity
+
+A tag helper that computes the `integrity` attribute for linked styles and scripts from remote origins. It also adds the `crossorigin` attribute with `anonymous` value.
+
+Add the required services (in your `Startup.cs`):
+```cs
+services.AddSubresourceIntegrity();
+```
+
+Add an import for the tag helper (in your `_ViewImports.cshtml` if you have one):
+```cshtml
+@addTagHelper *, PeterJuhasz.AspNetCore.Extensions.Security.SubresourceIntegrity
+```
+
+You don't need any additional changes, the tag helper applies to styles and scripts, for example:
+```html
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+```
+
+And adds the `integrity` and `crossorigin` attributes:
+```html
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha256-YLGeXaapI0/5IgZopewRJcFXomhRMlYYjugPLSyNjTY=" crossorigin="anonymous" />
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha256-CjSoeELFOcH0/uxWu6mC/Vlrc1AARqbm/jiiImDGV3s=" crossorigin="anonymous"></script>
+```
+
+Notes:
+ - If the `integrity` attribute is already included, it skips that element and doesn't compute and validate it.
+ - In case the remote resource is not available, a warning is logged and the integrity attribute is not included. Page rendering is not interrupted.
+ - The hash algorithm used is SHA-256.
+ - Hashes are cached in a memory cache indefinitely.
 
 ### X-Content-Type-Options
 

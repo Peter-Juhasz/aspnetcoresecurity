@@ -4,12 +4,12 @@ using System.Linq;
 
 namespace PeterJuhasz.AspNetCore.Extensions.Security
 {
-	public class CspOptions
+	public class CspDirectiveList
 	{
 		/// <summary>
 		/// The base-uri directive restricts the URLs which can be used in a document's &lt;base&gt; element. If this value is absent, then any URI is allowed. If this directive is absent, the user agent will use the value in the &lt;base&gt; element.
 		/// </summary>
-		public CspDirective BaseUri { get; set; }
+		public CspDirective? BaseUri { get; set; }
 
 		/// <summary>
 		/// Serves as a fallback for the other fetch directives.
@@ -19,72 +19,97 @@ namespace PeterJuhasz.AspNetCore.Extensions.Security
 		/// <summary>
 		/// Specifies valid sources for stylesheets.
 		/// </summary>
-		public StyleCspDirective StyleSrc { get; set; }
+		public StyleCspDirective? StyleSrc { get; set; }
 
-		/// <summary>
-		/// Specifies valid sources for JavaScript.
-		/// </summary>
-		public ScriptCspDirective ScriptSrc { get; set; }
+        /// <summary>
+        /// Specifies valid sources for inline styles applied to individual DOM elements.
+        /// </summary>
+        public StyleCspDirective? StyleSrcAttr { get; set; }
 
-		/// <summary>
-		/// Specifies valid sources of images and favicons
-		/// </summary>
-		public CspDirective ImgSrc { get; set; }
+        /// <summary>
+        /// Specifies valid sources for stylesheets &lt;style&gt; elements and &lt;link&gt; elements with rel=&quot;stylesheet&quot;.
+        /// </summary>
+        public StyleCspDirective? StyleSrcElem { get; set; }
+
+        /// <summary>
+        /// Specifies valid sources for JavaScript.
+        /// </summary>
+        public ScriptCspDirective? ScriptSrc { get; set; }
+
+        /// <summary>
+        /// Specifies valid sources for JavaScript inline event handlers.
+        /// </summary>
+        public ScriptCspDirective? ScriptSrcAttr { get; set; }
+
+        /// <summary>
+        /// Specifies valid sources for JavaScript &lt;script&gt; elements.
+        /// </summary>
+        public ScriptCspDirective? ScriptSrcElem { get; set; }
+
+        /// <summary>
+        /// Specifies valid sources of images and favicons
+        /// </summary>
+        public CspDirective? ImgSrc { get; set; }
 
 		/// <summary>
 		/// Specifies valid sources for fonts loaded using @font-face.
 		/// </summary>
-		public CspDirective FontSrc { get; set; }
+		public CspDirective? FontSrc { get; set; }
 
 		/// <summary>
 		/// Restricts the URLs which can be loaded using script interfaces.
 		/// </summary>
-		public CspDirective ConnectSrc { get; set; }
+		public CspDirective? ConnectSrc { get; set; }
 
 		/// <summary>
 		/// Specifies valid sources for the &lt;object&gt;, &lt;embed&gt;, and &lt;applet&gt; elements.
 		/// </summary>
-		public CspDirective ObjectSrc { get; set; }
+		public CspDirective? ObjectSrc { get; set; }
 
-		/// <summary>
-		/// Specifies valid sources for loading media using the &lt;audio&gt; and &lt;video&gt; elements.
-		/// </summary>
-		public CspDirective MediaSrc { get; set; }
+        /// <summary>
+        /// Specifies valid resources that may be prefetched or prerendered.
+        /// </summary>
+        public CspDirective? PrefetchSrc { get; set; }
+
+        /// <summary>
+        /// Specifies valid sources for loading media using the &lt;audio&gt; and &lt;video&gt; elements.
+        /// </summary>
+        public CspDirective? MediaSrc { get; set; }
 
 		/// <summary>
 		/// Specifies valid sources of application manifest files.
 		/// </summary>
-		public CspDirective ManifestSrc { get; set; }
+		public CspDirective? ManifestSrc { get; set; }
 
 		/// <summary>
 		/// Specifies valid sources for nested browsing contexts loading using elements such as &lt;frame&gt; and &lt;iframe&gt;.
 		/// </summary>
-		public CspDirective FrameSrc { get; set; }
+		public CspDirective? FrameSrc { get; set; }
 
 		/// <summary>
 		/// Defines the valid sources for web workers and nested browsing contexts loaded using elements such as &lt;frame&gt; and &lt;iframe&gt;.
 		/// </summary>
-		public CspDirective ChildSrc { get; set; }
+		public CspDirective? ChildSrc { get; set; }
 
 		/// <summary>
 		/// Restricts the URLs which can be used as the target of a form submissions from a given context.
 		/// </summary>
-		public CspDirective FormAction { get; set; }
+		public CspDirective? FormAction { get; set; }
 
 		/// <summary>
 		/// Specifies valid parents that may embed a page using &lt;frame&gt;, &lt;iframe&gt;, &lt;object&gt;, &lt;embed&gt;, or &lt;applet&gt;.
 		/// </summary>
-		public CspDirective FrameAncestors { get; set; }
+		public CspDirective? FrameAncestors { get; set; }
 
 		/// <summary>
 		/// Specifies valid sources for Worker, SharedWorker, or ServiceWorker scripts.
 		/// </summary>
-		public CspDirective WorkerSrc { get; set; }
+		public CspDirective? WorkerSrc { get; set; }
 
 		/// <summary>
 		/// Restricts the URLs to which a document can navigate by any means (a, form, window.location, window.open, etc.).
 		/// </summary>
-		public CspDirective NavigationTo { get; set; }
+		public CspDirective? NavigationTo { get; set; }
 
 		/// <summary>
 		/// Enables a sandbox for the requested resource similar to the &lt;iframe&gt; sandbox attribute.
@@ -94,17 +119,12 @@ namespace PeterJuhasz.AspNetCore.Extensions.Security
 		/// <summary>
 		/// Restricts the set of plugins that can be embedded into a document by limiting the types of resources which can be loaded.
 		/// </summary>
-		public IReadOnlyCollection<string> PluginTypes { get; set; }
+		public IReadOnlyCollection<string>? PluginTypes { get; set; }
 
 		/// <summary>
 		/// Requires the use of SRI for scripts or styles on the page.
 		/// </summary>
 		public CspRequireSRIResources? RequireSriFor { get; set; }
-
-        /// <summary>
-        /// Instructs a user agent to activate or deactivate any heuristics used to filter or block reflected cross-site scripting attacks, equivalent to the effects of the non-standard X-XSS-Protection header.
-        /// </summary>
-        public CspReflectedXss? ReflectedXss { get; set; } = null;
 
 		/// <summary>
 		/// The upgrade-insecure-requests directive instructs user agents to treat all of a site's insecure URLs (those served over HTTP) as though they have been replaced with secure URLs (those served over HTTPS).
@@ -116,12 +136,17 @@ namespace PeterJuhasz.AspNetCore.Extensions.Security
 		/// </summary>
 		public bool BlockAllMixedContent { get; set; } = true;
 
-		[Obsolete]
-		public Uri ReportUri { get; set; }
+        /// <summary>
+        /// Gets or sets the name of the Report-To group for reporting violations.
+        /// </summary>
+        public string? ReportTo { get; set; }
 
-		public CspOptions Clone()
+		[Obsolete]
+		public Uri? ReportUri { get; set; }
+
+		public CspDirectiveList Clone()
 		{
-			return new CspOptions
+			return new CspDirectiveList
 			{
 				BaseUri = this.BaseUri,
 				BlockAllMixedContent = this.BlockAllMixedContent,
@@ -137,14 +162,19 @@ namespace PeterJuhasz.AspNetCore.Extensions.Security
 				MediaSrc = this.MediaSrc,
 				NavigationTo = this.NavigationTo,
 				ObjectSrc = this.ObjectSrc,
-				PluginTypes = this.PluginTypes,
-				ReflectedXss = this.ReflectedXss,
+                PrefetchSrc = this.PrefetchSrc,
+                PluginTypes = this.PluginTypes,
 				RequireSriFor = this.RequireSriFor,
 				Sandbox = this.Sandbox,
 				ScriptSrc = this.ScriptSrc,
-				StyleSrc = this.StyleSrc,
+				ScriptSrcAttr = this.ScriptSrcAttr,
+                ScriptSrcElem = this.ScriptSrcElem,
+                StyleSrc = this.StyleSrc,
+                StyleSrcAttr = this.StyleSrcAttr,
+                StyleSrcElem = this.StyleSrcElem,
 				UpgradeInsecureRequests = this.UpgradeInsecureRequests,
 				WorkerSrc = this.WorkerSrc,
+                ReportTo = this.ReportTo,
 #pragma warning disable CS0612
 				ReportUri = this.ReportUri,
 #pragma warning restore CS0612
@@ -168,17 +198,22 @@ namespace PeterJuhasz.AspNetCore.Extensions.Security
 			if (this.MediaSrc != null) directives.Add($"media-src {this.MediaSrc}");
 			if (this.NavigationTo != null) directives.Add($"navigation-to {this.NavigationTo}");
 			if (this.ObjectSrc != null) directives.Add($"object-src {this.ObjectSrc}");
+			if (this.PrefetchSrc != null) directives.Add($"prefetch-src {this.PrefetchSrc}");
 			if (this.ScriptSrc != null) directives.Add($"script-src {this.ScriptSrc}");
+			if (this.ScriptSrcAttr != null) directives.Add($"script-src-attr {this.ScriptSrcAttr}");
+			if (this.ScriptSrcElem != null) directives.Add($"script-src-elem {this.ScriptSrcElem}");
 			if (this.StyleSrc != null) directives.Add($"style-src {this.StyleSrc}");
+			if (this.StyleSrcAttr != null) directives.Add($"style-src-attr {this.StyleSrcAttr}");
+			if (this.StyleSrcElem != null) directives.Add($"style-src-elem {this.StyleSrcElem}");
 			if (this.WorkerSrc != null) directives.Add($"worker-src {this.WorkerSrc}");
 
 			if (this.BlockAllMixedContent) directives.Add("block-all-mixed-content");
 			if (this.UpgradeInsecureRequests) directives.Add("upgrade-insecure-requests");
-			if (this.ReflectedXss != null) directives.Add(ConstructHeaderValue(this.ReflectedXss.Value));
 			if (this.PluginTypes?.Any() ?? false) directives.Add($"plugin-types {String.Join(" ", this.PluginTypes)}");
 			if (this.RequireSriFor != null) directives.Add(ConstructHeaderValue(this.RequireSriFor.Value));
 			if (this.Sandbox != null) directives.Add(ConstructHeaderValue(this.Sandbox.Value));
 
+            if (this.ReportTo != null) directives.Add($"report-to ${this.ReportTo}");
 #pragma warning disable CS0612
 			if (this.ReportUri != null) directives.Add($"report-uri {this.ReportUri}");
 #pragma warning restore CS0612

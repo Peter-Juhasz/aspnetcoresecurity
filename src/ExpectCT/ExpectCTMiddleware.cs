@@ -28,7 +28,7 @@ namespace Microsoft.AspNetCore.Builder
             this IApplicationBuilder app,
             bool enforce = true,
             TimeSpan? maxAge = null,
-            Uri reportUri = null
+            Uri? reportUri = null
         )
         {
             app.UseExpectCT(new ExpectCTOptions

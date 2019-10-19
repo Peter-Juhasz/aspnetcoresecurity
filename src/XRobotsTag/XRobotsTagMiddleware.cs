@@ -24,7 +24,7 @@ namespace Microsoft.AspNetCore.Builder
                     : RobotsTagDirectives.All
             ;
 
-            app.UseXRobotsTag(new XRobotsTagHeaderValue
+            app.UseXRobotsTag(new RobotsTagDirectiveList
             {
                 Directives = directives,
             });
@@ -34,26 +34,26 @@ namespace Microsoft.AspNetCore.Builder
         /// Adds the X-Robots-Tag header to all responses.
         /// </summary>
         /// <param name="app"></param>
-        /// <param name="headerValue"></param>
-        public static void UseXRobotsTag(this IApplicationBuilder app, XRobotsTagHeaderValue headerValue)
+        /// <param name="directives"></param>
+        public static void UseXRobotsTag(this IApplicationBuilder app, RobotsTagDirectiveList directives)
         {
-            app.UseMiddleware<XRobotsTagMiddleware>(headerValue);
+            app.UseMiddleware<XRobotsTagMiddleware>(directives);
         }
 
 
         internal sealed class XRobotsTagMiddleware
         {
-            public XRobotsTagMiddleware(RequestDelegate next, XRobotsTagHeaderValue headerValue)
+            public XRobotsTagMiddleware(RequestDelegate next, RobotsTagDirectiveList headerValue)
             {
                 _next = next;
-                Options = headerValue ?? throw new ArgumentNullException(nameof(headerValue));
-                _headerValue = Options.ToString();
+                Directives = headerValue ?? throw new ArgumentNullException(nameof(headerValue));
+                _headerValue = Directives.ToString();
             }
 
             private readonly RequestDelegate _next;
             private readonly string _headerValue;
             
-            public XRobotsTagHeaderValue Options { get; }
+            public RobotsTagDirectiveList Directives { get; }
 
             public async Task Invoke(HttpContext context)
             {

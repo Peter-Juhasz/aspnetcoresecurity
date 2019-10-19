@@ -18,7 +18,7 @@ namespace PeterJuhasz.AspNetCore.Extensions.Security
         /// <summary>
         /// Gets or sets the URI the browser is going to report violations to.
         /// </summary>
-        public Uri ReportUri { get; set; }
+        public Uri? ReportUri { get; set; }
 
 
         public override string ToString()

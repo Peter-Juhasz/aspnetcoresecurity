@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
-    <AssemblyName>PeterJuhasz.AspNetCore.Security.Extensions.ContentSecurityPolicy</AssemblyName>
+    <AssemblyName>PeterJuhasz.AspNetCore.Security.Extensions.NoOpener</AssemblyName>
     <RootNamespace>Microsoft.AspNetCore.Builder</RootNamespace>
     <Version>3.0.0</Version>
     <AssemblyVersion>3.0.0.0</AssemblyVersion>
@@ -13,10 +13,10 @@
     <Copyright>Peter Juhasz</Copyright>
     <PackageProjectUrl>https://github.com/Peter-Juhasz/aspnetcoresecurity</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Peter-Juhasz/aspnetcoresecurity</RepositoryUrl>
-    <PackageTags>asp.net core security csp content-security-policy</PackageTags>
+    <PackageTags>asp.net core security noopener</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
-    <Description>Adds the Content-Security-Policy header to responses with content type text/html.</Description>
+    <Description>Adds the missing noopener relationship to vulnerable links.</Description>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
   </PropertyGroup>

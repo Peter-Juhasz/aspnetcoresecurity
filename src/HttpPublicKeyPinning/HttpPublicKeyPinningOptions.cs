@@ -20,7 +20,7 @@ namespace PeterJuhasz.AspNetCore.Extensions.Security
         /// <summary>
         /// If this optional parameter is specified, pin validation failures are reported to the given URL.
         /// </summary>
-        public Uri ReportUri { get; set; }
+        public Uri? ReportUri { get; set; }
 
         internal ICollection<Pinning> Pins { get; private set; } = new Collection<Pinning>();
 

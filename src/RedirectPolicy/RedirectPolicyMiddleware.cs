@@ -49,7 +49,7 @@ namespace Microsoft.AspNetCore.Builder
         /// <param name="app"></param>
         public static void UseRedirectPolicy(this IApplicationBuilder app)
         {
-            app.UseRedirectPolicy(new Uri[0]);
+            app.UseRedirectPolicy(Array.Empty<Uri>());
         }
 
 

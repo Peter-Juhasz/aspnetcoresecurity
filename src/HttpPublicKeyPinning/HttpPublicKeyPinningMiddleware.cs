@@ -13,6 +13,7 @@ namespace Microsoft.AspNetCore.Builder
         /// </summary>
         /// <param name="app"></param>
         /// <param name="configure"></param>
+        [Obsolete]
         public static void UseHttpPublicKeyPinning(this IApplicationBuilder app, Action<HttpPublicKeyPinningOptions> configure)
         {
             if (configure == null)

@@ -12,6 +12,7 @@ namespace Microsoft.AspNetCore.Builder
         /// </summary>
         /// <param name="app"></param>
         /// <param name="options"></param>
+        [Obsolete]
         public static void UseXXSSProtection(this IApplicationBuilder app, XXssProtectionOptions options)
         {
             app.UseMiddleware<XXSSProtectionMiddleware>(options);
@@ -28,7 +29,7 @@ namespace Microsoft.AspNetCore.Builder
             this IApplicationBuilder app,
             bool enabled = true,
             bool block = true,
-            Uri reportUri = null
+            Uri? reportUri = null
         )
         {
             app.UseXXSSProtection(new XXssProtectionOptions
