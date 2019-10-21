@@ -1,5 +1,10 @@
+## 3.0.1
+ - **Report-To**: Added support for `Report-To` header
+ - **Upgrade Insecure Resources**: Tag helper to upgrade insecure resource references (like scripts, styles, images, links) to `https://`
+ - Fix: **Subresource Integrity**: increased its order, so it is the last to be executed
+
 # 3.0.0
-New features
+New features:
  - ASP.NET Core 3.0+ support
  - Nullable reference types support
  - **Subresource Integrity**: Tag helper to add `integrity` attribute to remote resources
@@ -16,19 +21,19 @@ New features
  - **X-Robots-Tag**: Added support for `max-image-preview`
  - **X-Robots-Tag**: Added support for `max-video-preview`
 
-Breaking changes
+Breaking changes:
  - `CspOptions` was renamed to `CspDirectiveList`
  - `FrameOptionOptions` was renamed to `FrameOptionsDirective`
  - `XRobotsTagHeaderValue` was renamed to `RobotsTagDirectiveList`
 
-Deprecation
+Deprecation:
  - **CSP**: Removed support for `reflected-xss`
  - **CSP**: Removed support for `X-WebKit-CSP` and `X-Content-Security-Policy` header names as CSP is widely supported now
  - **HTTP Strict Transport Security**: Removed support as it has built-in support in ASP.NET Core 3.0
  - **HTTP Public Key Pinning**: Marked as obsolete, as it has been deprecated by Chrome/IE/Edge
  - **X-XSS-Protection**: Marked as obsolete, as it has been permanently disabled by Chrome/Edge and has never been implemented in Firefox
 
-Fixes
+Fixes:
  - **CSP**: Fixed crash on developer exception page when `style-src` or `script-src` was not set
 
 

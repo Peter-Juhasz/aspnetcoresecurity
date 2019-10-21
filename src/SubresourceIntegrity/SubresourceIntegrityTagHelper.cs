@@ -29,6 +29,8 @@ namespace PeterJuhasz.AspNetCore.Extensions.Security.NoOpener
             Logger = logger;
         }
 
+        public override int Order => Int32.MaxValue;
+
         protected IMemoryCache MemoryCache { get; }
         protected IHttpClientFactory HttpClientFactory { get; }
         protected ILogger<SubresourceIntegrityTagHelper> Logger { get; }

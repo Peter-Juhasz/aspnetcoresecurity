@@ -42,6 +42,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NoOpener", "src\NoOpener\No
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SubresourceIntegrity", "src\SubresourceIntegrity\SubresourceIntegrity.csproj", "{2153E7E2-AFB4-4989-A312-D34AE29B3BEC}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UpgradeInsecureResources", "src\UpgradeInsecureResources\UpgradeInsecureResources.csproj", "{634B34AD-6811-48E5-9BFE-E3987AE75BBB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReportTo", "src\ReportTo\ReportTo.csproj", "{CD2A1CDD-0837-4554-8FF7-88D61B486019}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -112,6 +116,14 @@ Global
 		{2153E7E2-AFB4-4989-A312-D34AE29B3BEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2153E7E2-AFB4-4989-A312-D34AE29B3BEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2153E7E2-AFB4-4989-A312-D34AE29B3BEC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{634B34AD-6811-48E5-9BFE-E3987AE75BBB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{634B34AD-6811-48E5-9BFE-E3987AE75BBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{634B34AD-6811-48E5-9BFE-E3987AE75BBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{634B34AD-6811-48E5-9BFE-E3987AE75BBB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CD2A1CDD-0837-4554-8FF7-88D61B486019}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD2A1CDD-0837-4554-8FF7-88D61B486019}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD2A1CDD-0837-4554-8FF7-88D61B486019}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD2A1CDD-0837-4554-8FF7-88D61B486019}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

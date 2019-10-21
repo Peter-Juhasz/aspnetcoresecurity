@@ -4,9 +4,7 @@
 dotnet add package PeterJuhasz.AspNetCore.Security.Extensions
 ```
 
-Contains a set of extensions which help you make your web applications more secure. You can also install each feature invididually as separate packages.
-
-Note: for ASP.NET Core 2.0+ use package version `2.0.0`+, otherwise use `3.0.0`+.
+Contains a set of extensions which can help you make your web applications more secure. You can also install each feature invididually as a separate package.
 
 
 ## Features
@@ -125,8 +123,17 @@ Adds the `Referrer-Policy` header to all responses.
 app.UseReferrerPolicy(ReferrerPolicy.SameOrigin);
 ```
 
-### Require Authenticated Identity
+### Report-To
+Add the `Report-To` header to all responses.
 
+```csharp
+app.UseReportTo(new ReportingGroup(
+    maxAge: TimeSpan.FromDays(30),
+    endpoint: "https://example.org/browser-report"
+));
+```
+
+### Require Authenticated Identity
 This is a middleware that you can use to require an authenticated identity on the `HttpContext` to proceed. For example, you can use this middleware to require authentication for static files.
 
 ```csharp
@@ -136,8 +143,10 @@ app.UseWhen(
 );
 ```
 
-### Subresource Integrity
+Notes:
+ - `401` is returned in case of no authenticated user
 
+### Subresource Integrity
 A tag helper that computes the `integrity` attribute for linked styles and scripts from remote origins. It also adds the `crossorigin` attribute with `anonymous` value.
 
 Add the required services (in your `Startup.cs`):
@@ -167,6 +176,26 @@ Notes:
  - In case the remote resource is not available, a warning is logged and the integrity attribute is not included. Page rendering is not interrupted.
  - The hash algorithm used is SHA-256.
  - Hashes are cached in a memory cache indefinitely.
+
+### Upgrade Insecure Resources
+A tag helper that upgrades insecure links, style, script and image references to HTTPS.
+
+Add an import for the tag helper (in your `_ViewImports.cshtml` if you have one):
+```cshtml
+@addTagHelper *, PeterJuhasz.AspNetCore.Extensions.Security.UpgradeInscureResources
+```
+
+You don't need any additional changes, the tag helper applies to all `href` and `src` attributes:
+```html
+<a href="http://example.org/page">Click here</a>
+<script src="http://example.org/script.js"></script>
+```
+
+Will be rewritten to:
+```html
+<a href="https://example.org/page">Click here</a>
+<script src="https://example.org/script.js"></script>
+```
 
 ### X-Content-Type-Options
 
