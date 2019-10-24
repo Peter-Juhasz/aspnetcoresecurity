@@ -6,6 +6,31 @@ dotnet add package PeterJuhasz.AspNetCore.Security.Extensions
 
 Contains a set of extensions which can help you make your web applications more secure. You can also install each feature invididually as a separate package.
 
+## Table of contents
+
+Tag Helpers
+  - NoOpener
+  - Subresource Integrity
+  - Upgrade Insecure Resources
+
+Middlewares
+  - Features
+    - Redirect Policy
+    - Require Authenticated Identity
+  - Headers
+    - Content Security Policy
+	- Expect CT
+    - Feature Policy
+    - Frame Options
+    - HTTP Public Key Pinning
+    - Referrer Policy
+    - Report To
+    - X-Content-Type-Options
+    - X-Download-Options
+    - X-Permitted-Cross-Domain-Policies
+    - X-Robots-Tag
+    - X-UA-Compatible
+    - X-XSS-Protection
 
 ## Features
 
