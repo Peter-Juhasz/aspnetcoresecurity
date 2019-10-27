@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
     <id>PeterJuhasz.AspNetCore.Security.Extensions</id>
-    <version>3.0.1</version>
+    <version>3.0.2</version>
     <authors>Peter Juhasz</authors>
     <owners>Peter Juhasz</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -27,7 +27,7 @@
         <dependency id="PeterJuhasz.AspNetCore.Security.Extensions.RedirectPolicy" version="3.0.0" exclude="Build,Analyzers" />
         <dependency id="PeterJuhasz.AspNetCore.Security.Extensions.ExpectCT" version="3.0.0" exclude="Build,Analyzers" />
         <dependency id="PeterJuhasz.AspNetCore.Security.Extensions.FeaturePolicy" version="3.0.0" exclude="Build,Analyzers" />
-        <dependency id="PeterJuhasz.AspNetCore.Security.Extensions.RequireAuthenticatedIdentity" version="3.0.0" exclude="Build,Analyzers" />
+        <dependency id="PeterJuhasz.AspNetCore.Security.Extensions.RequireAuthenticatedIdentity" version="3.0.1" exclude="Build,Analyzers" />
         <dependency id="PeterJuhasz.AspNetCore.Security.Extensions.NoOpener" version="3.0.0" exclude="Build,Analyzers" />
         <dependency id="PeterJuhasz.AspNetCore.Security.Extensions.SubresourceIntegrity" version="3.0.1" exclude="Build,Analyzers" />
         <dependency id="PeterJuhasz.AspNetCore.Security.Extensions.UpgradeInsecureResources" version="3.0.0" exclude="Build,Analyzers" />

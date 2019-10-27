@@ -29,6 +29,7 @@ namespace Microsoft.AspNetCore.Builder
                 if (!context.User?.Identity.IsAuthenticated ?? false)
                 {
                     context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                    return;
                 }
 
                 await _next.Invoke(context);

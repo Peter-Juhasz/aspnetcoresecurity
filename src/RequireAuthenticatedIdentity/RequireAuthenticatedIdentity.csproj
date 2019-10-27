@@ -4,9 +4,9 @@
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <AssemblyName>PeterJuhasz.AspNetCore.Security.Extensions.RequireAuthenticatedIdentity</AssemblyName>
     <RootNamespace>Microsoft.AspNetCore.Builder</RootNamespace>
-    <Version>3.0.0</Version>
-    <AssemblyVersion>3.0.0.0</AssemblyVersion>
-    <FileVersion>3.0.0.0</FileVersion>
+    <Version>3.0.1</Version>
+    <AssemblyVersion>3.0.1.0</AssemblyVersion>
+    <FileVersion>3.0.1.0</FileVersion>
     <Company>www.PeterJuhasz.net</Company>
     <Authors>Peter Juhasz</Authors>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>

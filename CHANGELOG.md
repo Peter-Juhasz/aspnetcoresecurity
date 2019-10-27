@@ -1,3 +1,6 @@
+## 3.0.2
+ - Fix: **Require Authenticated Identity**: middleware didn't interrupt the pipeline.
+
 ## 3.0.1
  - **Report-To**: Added support for `Report-To` header
  - **Upgrade Insecure Resources**: Tag helper to upgrade insecure resource references (like scripts, styles, images, links) to `https://`
