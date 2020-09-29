@@ -23,6 +23,7 @@ Middlewares
     - Feature Policy
     - Frame Options
     - HTTP Public Key Pinning
+    - Permissions Policy
     - Referrer Policy
     - Report To
     - X-Content-Type-Options
@@ -65,7 +66,7 @@ Adds the `Expect-CT` header which allows sites to opt in to reporting and/or enf
 app.UseExpectCT(enforce: true, maxAge: TimeSpan.FromHours(1));
 ```
 
-### Feature-Policy
+### Feature-Policy (deprecated)
 
 Adds the `Feature-Policy` header to responses with content type `text/html`.
 
@@ -124,6 +125,19 @@ You don't need any additional changes, the tag helper applies to all links, for 
 And adds the missing `rel` attribute:
 ```html
 <a href="https://example.org/malicious.html" target="_blank" rel="noopener">Click here</a>
+```
+
+### Permissions-Policy
+
+Adds the `Permissions-Policy` header to responses with content type `text/html`.
+
+```csharp
+app.UsePermissionsPolicy(
+    new PermissionsPolicyDirectiveList()
+        .Add(PermissionsPolicyPermissions.Payment, "https://payment.example.org/")
+        .AddNone(PermissionsPolicyPermissions.Microphone)
+        .AddSelf(PermissionsPolicyPermissions.FullScreen)
+);
 ```
 
 ### Redirect Policy

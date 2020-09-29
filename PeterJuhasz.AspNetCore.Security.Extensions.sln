@@ -46,6 +46,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UpgradeInsecureResources", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReportTo", "src\ReportTo\ReportTo.csproj", "{CD2A1CDD-0837-4554-8FF7-88D61B486019}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PermissionsPolicy", "src\PermissionsPolicy\PermissionsPolicy.csproj", "{0AE15607-7A67-480B-B5CE-5C973DDEA194}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -124,6 +126,10 @@ Global
 		{CD2A1CDD-0837-4554-8FF7-88D61B486019}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CD2A1CDD-0837-4554-8FF7-88D61B486019}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CD2A1CDD-0837-4554-8FF7-88D61B486019}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0AE15607-7A67-480B-B5CE-5C973DDEA194}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0AE15607-7A67-480B-B5CE-5C973DDEA194}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0AE15607-7A67-480B-B5CE-5C973DDEA194}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0AE15607-7A67-480B-B5CE-5C973DDEA194}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

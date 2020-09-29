@@ -1,3 +1,7 @@
+## 3.1.0
+ - **Permissions-Policy**: support for [Permissions Policy](https://w3c.github.io/webappsec-permissions-policy/)
+ - **Feature-Policy**: marked as obsolete
+
 ## 3.0.2
  - Fix: **Require Authenticated Identity**: middleware didn't interrupt the pipeline.
 
