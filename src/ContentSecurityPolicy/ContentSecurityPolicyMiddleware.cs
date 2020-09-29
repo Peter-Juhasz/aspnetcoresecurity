@@ -1,8 +1,11 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Primitives;
+using Microsoft.Net.Http.Headers;
 using PeterJuhasz.AspNetCore.Extensions.Security;
 using System;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -21,31 +24,33 @@ namespace Microsoft.AspNetCore.Builder
         }
 
 
-        internal sealed class ContentSecurityPolicyMiddleware
+        internal sealed class ContentSecurityPolicyMiddleware : IMiddleware
         {
-            public ContentSecurityPolicyMiddleware(RequestDelegate next, IWebHostEnvironment environment, CspDirectiveList directives)
+            public ContentSecurityPolicyMiddleware(IWebHostEnvironment environment, CspDirectiveList directives)
             {
-                _next = next;
-                _environment = environment;
                 Directives = directives ?? throw new ArgumentNullException(nameof(directives));
+                _headerValue = Directives.ToString();
+                _isDevelopment = environment.IsDevelopment();
             }
 
-            private readonly RequestDelegate _next;
-            private readonly IWebHostEnvironment _environment;
             public CspDirectiveList Directives { get; }
+            private readonly StringValues _headerValue;
+            private readonly bool _isDevelopment;
             
-            public async Task Invoke(HttpContext context)
+            public async Task InvokeAsync(HttpContext context, RequestDelegate next)
             {
                 context.Response.OnStarting(() =>
                 {
                     HttpResponse response = context.Response;
 
-                    if (response.GetTypedHeaders().ContentType?.MediaType.Equals("text/html", StringComparison.OrdinalIgnoreCase) ?? false)
+                    if (response.Headers.TryGetValue(HeaderNames.ContentType, out var values) &&
+                        values.Any(v => v.StartsWith("text/html", StringComparison.OrdinalIgnoreCase)))
                     {
                         var options = Directives;
+                        var headerValue = _headerValue;
 
                         // allow inline styles and scripts for developer exception page
-                        if (_environment.IsDevelopment())
+                        if (_isDevelopment)
                         {
                             if (response.StatusCode == (int)HttpStatusCode.InternalServerError)
                             {
@@ -54,17 +59,16 @@ namespace Microsoft.AspNetCore.Builder
                                 developerOptions.ScriptSrc = (developerOptions.ScriptSrc ?? ScriptCspDirective.Empty).AddUnsafeInline();
                                 options = developerOptions;
                             }
+                            headerValue = options.ToString();
                         }
 
-                        string csp = options.ToString();
-
-                        response.Headers["Content-Security-Policy"] = csp;
+                        response.Headers["Content-Security-Policy"] = headerValue;
                     }
 
                     return Task.CompletedTask;
                 });
 
-                await _next.Invoke(context);
+                await next.Invoke(context);
             }
         }
     }

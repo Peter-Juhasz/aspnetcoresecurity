@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Primitives;
+using Microsoft.Net.Http.Headers;
 using PeterJuhasz.AspNetCore.Extensions.Security;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Microsoft.AspNetCore.Builder
@@ -19,17 +22,15 @@ namespace Microsoft.AspNetCore.Builder
         }
 
 
-        internal sealed class XUACompatibleMiddleware
+        internal sealed class XUACompatibleMiddleware : IMiddleware
         {
-            public XUACompatibleMiddleware(RequestDelegate next, InternetExplorerCompatibiltyMode mode)
+            public XUACompatibleMiddleware(InternetExplorerCompatibiltyMode mode)
             {
-                _next = next;
                 Mode = mode;
                 _headerValue = ConstructHeaderValue(Mode);
             }
 
-            private readonly RequestDelegate _next;
-            private readonly string _headerValue;
+            private readonly StringValues _headerValue;
 
             public InternetExplorerCompatibiltyMode Mode { get; }
 
@@ -61,13 +62,14 @@ namespace Microsoft.AspNetCore.Builder
                 }
             }
 
-            public async Task Invoke(HttpContext context)
+            public async Task InvokeAsync(HttpContext context, RequestDelegate next)
             {
                 context.Response.OnStarting(() =>
                 {
                     HttpResponse response = context.Response;
 
-                    if (response.GetTypedHeaders().ContentType?.MediaType.Equals("text/html", StringComparison.OrdinalIgnoreCase) ?? false)
+                    if (response.Headers.TryGetValue(HeaderNames.ContentType, out var values) &&
+                        values.Any(v => v.StartsWith("text/html", StringComparison.OrdinalIgnoreCase)))
                     {
                         response.Headers["X-UA-Compatible"] = _headerValue;
                     }
@@ -75,7 +77,7 @@ namespace Microsoft.AspNetCore.Builder
                     return Task.CompletedTask;
                 });
 
-                await _next.Invoke(context);
+                await next.Invoke(context);
             }
         }
     }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Primitives;
 using Microsoft.Net.Http.Headers;
 using System;
 using System.Linq;
@@ -19,20 +20,20 @@ namespace Microsoft.AspNetCore.Builder
         }
 
 
-        internal sealed class PermissionsPolicyMiddleware
+        internal sealed class PermissionsPolicyMiddleware : IMiddleware
         {
-            public PermissionsPolicyMiddleware(RequestDelegate next, PermissionsPolicyDirectiveList options)
+            public PermissionsPolicyMiddleware(PermissionsPolicyDirectiveList options)
             {
-                _next = next;
                 Options = options ?? throw new ArgumentNullException(nameof(options));
+                _headerValue = Options.ToString();
             }
 
             private const string HeaderName = "Permissions-Policy";
+            private readonly StringValues _headerValue;
 
-            private readonly RequestDelegate _next;
             public PermissionsPolicyDirectiveList Options { get; }
             
-            public async Task Invoke(HttpContext context)
+            public async Task InvokeAsync(HttpContext context, RequestDelegate next)
             {
                 context.Response.OnStarting(() =>
                 {
@@ -41,13 +42,13 @@ namespace Microsoft.AspNetCore.Builder
                     if (response.Headers.TryGetValue(HeaderNames.ContentType, out var values) &&
                         values.Any(v => v.StartsWith("text/html", StringComparison.OrdinalIgnoreCase)))
                     {
-                        response.Headers[HeaderName] = Options.ToString();
+                        response.Headers[HeaderName] = _headerValue;
                     }
 
                     return Task.CompletedTask;
                 });
 
-                await _next.Invoke(context);
+                await next.Invoke(context);
             }
         }
     }

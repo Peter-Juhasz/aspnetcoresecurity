@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Primitives;
+using Microsoft.Net.Http.Headers;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Microsoft.AspNetCore.Builder
@@ -18,32 +21,33 @@ namespace Microsoft.AspNetCore.Builder
         }
 
 
-        internal sealed class FeaturePolicyMiddleware
+        internal sealed class FeaturePolicyMiddleware : IMiddleware
         {
-            public FeaturePolicyMiddleware(RequestDelegate next, FeatureDirectiveList options)
+            public FeaturePolicyMiddleware(FeatureDirectiveList options)
             {
-                _next = next;
                 Options = options ?? throw new ArgumentNullException(nameof(options));
+                _headerValue = Options.ToString();
             }
 
-            private readonly RequestDelegate _next;
             public FeatureDirectiveList Options { get; }
+            private readonly StringValues _headerValue;
             
-            public async Task Invoke(HttpContext context)
+            public async Task InvokeAsync(HttpContext context, RequestDelegate next)
             {
                 context.Response.OnStarting(() =>
                 {
                     HttpResponse response = context.Response;
 
-                    if (response.GetTypedHeaders().ContentType?.MediaType.Equals("text/html", StringComparison.OrdinalIgnoreCase) ?? false)
+                    if (response.Headers.TryGetValue(HeaderNames.ContentType, out var values) &&
+                        values.Any(v => v.StartsWith("text/html", StringComparison.OrdinalIgnoreCase)))
                     {
-                        response.Headers["Feature-Policy"] = Options.ToString();
+                        response.Headers["Feature-Policy"] = _headerValue;
                     }
 
                     return Task.CompletedTask;
                 });
 
-                await _next.Invoke(context);
+                await next.Invoke(context);
             }
         }
     }

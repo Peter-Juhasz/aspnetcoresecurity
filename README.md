@@ -276,7 +276,7 @@ Adds the `X-UA-Compatible` header to each response with `text/html` media type.
 app.UseXUACompatible(InternetExplorerCompatibiltyMode.Edge);
 ```
 
-### X-XSS-Protection
+### X-XSS-Protection (deprecated)
 
 Adds the `X-XSS-Protection` header to each response with `text/html` media type. The default setting enables protection and sets it to `block` mode.
 

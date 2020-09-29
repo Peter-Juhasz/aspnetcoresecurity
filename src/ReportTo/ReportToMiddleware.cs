@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Primitives;
 using PeterJuhasz.AspNetCore.Extensions.Security;
 using System;
 using System.Collections.Generic;
@@ -25,11 +26,10 @@ namespace Microsoft.AspNetCore.Builder
         public static void UseReportTo(this IApplicationBuilder app, ReportingGroup group) => app.UseReportTo(new[] { group });
 
 
-        internal sealed class ReportToMiddleware
+        internal sealed class ReportToMiddleware : IMiddleware
         {
-            public ReportToMiddleware(RequestDelegate next, IReadOnlyList<ReportingGroup> groups)
+            public ReportToMiddleware(IReadOnlyList<ReportingGroup> groups)
             {
-                _next = next;
                 Groups = groups;
                 _headerValue = Groups.Count switch
                 {
@@ -39,12 +39,11 @@ namespace Microsoft.AspNetCore.Builder
                 };
             }
 
-            private readonly RequestDelegate _next;
-            private readonly string _headerValue;
+            private readonly StringValues _headerValue;
 
             public IReadOnlyList<ReportingGroup> Groups { get; }
             
-            public async Task Invoke(HttpContext context)
+            public async Task InvokeAsync(HttpContext context, RequestDelegate next)
             {
                 context.Response.OnStarting(() =>
                 {
@@ -53,7 +52,7 @@ namespace Microsoft.AspNetCore.Builder
                     return Task.CompletedTask;
                 });
 
-                await _next.Invoke(context);
+                await next.Invoke(context);
             }
         }
     }

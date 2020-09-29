@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Primitives;
+using Microsoft.Net.Http.Headers;
 using PeterJuhasz.AspNetCore.Extensions.Security;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Microsoft.AspNetCore.Builder
@@ -24,9 +27,6 @@ namespace Microsoft.AspNetCore.Builder
         /// <param name="configure"></param>
         public static void UseFrameOptions(this IApplicationBuilder app, Action<FrameOptionsDirective> configure)
         {
-            if (configure == null)
-                throw new ArgumentNullException(nameof(configure));
-
             FrameOptionsDirective options = new FrameOptionsDirective();
             configure(options);
             app.UseFrameOptions(options);
@@ -56,27 +56,26 @@ namespace Microsoft.AspNetCore.Builder
         }
 
 
-        internal sealed class FrameOptionsMiddleware
+        internal sealed class FrameOptionsMiddleware : IMiddleware
         {
-            public FrameOptionsMiddleware(RequestDelegate next, FrameOptionsDirective options)
+            public FrameOptionsMiddleware(FrameOptionsDirective options)
             {
-                _next = next;
                 Options = options ?? throw new ArgumentNullException(nameof(options));
                 _headerValue = Options.ToString();
             }
 
-            private readonly RequestDelegate _next;
-            private readonly string _headerValue;
+            private readonly StringValues _headerValue;
 
             public FrameOptionsDirective Options { get; }
             
-            public async Task Invoke(HttpContext context)
+            public async Task InvokeAsync(HttpContext context, RequestDelegate next)
             {
                 context.Response.OnStarting(() =>
                 {
                     HttpResponse response = context.Response;
 
-                    if (response.GetTypedHeaders().ContentType?.MediaType.Equals("text/html", StringComparison.OrdinalIgnoreCase) ?? false)
+                    if (response.Headers.TryGetValue(HeaderNames.ContentType, out var values) &&
+                        values.Any(v => v.StartsWith("text/html", StringComparison.OrdinalIgnoreCase)))
                     {
                         response.Headers["X-Frame-Options"] = _headerValue;
                         response.Headers["Frame-Options"] = _headerValue;
@@ -85,7 +84,7 @@ namespace Microsoft.AspNetCore.Builder
                     return Task.CompletedTask;
                 });
 
-                await _next.Invoke(context);
+                await next.Invoke(context);
             }
         }
     }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Primitives;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -17,17 +18,15 @@ namespace Microsoft.AspNetCore.Builder
         }
 
 
-        internal sealed class ReferrerPolicyMiddleware
+        internal sealed class ReferrerPolicyMiddleware : IMiddleware
         {
-            public ReferrerPolicyMiddleware(RequestDelegate next, ReferrerPolicy policy)
+            public ReferrerPolicyMiddleware(ReferrerPolicy policy)
             {
-                _next = next;
                 Policy = policy;
                 _headerValue = HeaderValues[Policy];
             }
 
-            private readonly RequestDelegate _next;
-            private readonly string _headerValue;
+            private readonly StringValues _headerValue;
 
             public ReferrerPolicy Policy { get; }
 
@@ -43,7 +42,7 @@ namespace Microsoft.AspNetCore.Builder
                 { ReferrerPolicy.UnsafeUrl, "unsafe-url" },
             };
 
-            public async Task Invoke(HttpContext context)
+            public async Task InvokeAsync(HttpContext context, RequestDelegate next)
             {
                 context.Response.OnStarting(() =>
                 {
@@ -53,7 +52,7 @@ namespace Microsoft.AspNetCore.Builder
                     return Task.CompletedTask;
                 });
 
-                await _next(context);
+                await next(context);
             }
         }
     }

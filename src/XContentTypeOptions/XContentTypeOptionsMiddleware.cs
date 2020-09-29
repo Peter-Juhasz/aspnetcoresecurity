@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Primitives;
 using PeterJuhasz.AspNetCore.Extensions.Security;
 using System.Threading.Tasks;
 
@@ -17,26 +18,21 @@ namespace Microsoft.AspNetCore.Builder
         }
 
 
-        internal sealed class XContentTypeOptionsMiddleware
+        internal sealed class XContentTypeOptionsMiddleware : IMiddleware
         {
-            public XContentTypeOptionsMiddleware(RequestDelegate next)
-            {
-                _next = next;
-            }
+            private static readonly StringValues HeaderValue = "nosniff";
 
-            private readonly RequestDelegate _next;
-
-            public async Task Invoke(HttpContext context)
+            public async Task InvokeAsync(HttpContext context, RequestDelegate next)
             {
                 context.Response.OnStarting(() =>
                 {
                     HttpResponse response = context.Response;
-                    response.Headers["X-Content-Type-Options"] = "nosniff";
+                    response.Headers["X-Content-Type-Options"] = HeaderValue;
 
                     return Task.CompletedTask;
                 });
 
-                await _next.Invoke(context);
+                await next.Invoke(context);
             }
         }
     }

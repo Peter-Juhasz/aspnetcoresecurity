@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Primitives;
+using Microsoft.Net.Http.Headers;
 using PeterJuhasz.AspNetCore.Extensions.Security;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Microsoft.AspNetCore.Builder
@@ -18,32 +21,28 @@ namespace Microsoft.AspNetCore.Builder
         }
 
 
-        internal sealed class XDownloadOptionsMiddleware
+        internal sealed class XDownloadOptionsMiddleware : IMiddleware
         {
-            public XDownloadOptionsMiddleware(RequestDelegate next)
-            {
-                _next = next;
-            }
+            private static readonly StringValues HeaderValue = "noopen";
 
-            private readonly RequestDelegate _next;
+            public XDownloadOptions Mode { get; } = default;
 
-            public XDownloadOptions Mode { get; } = default(XDownloadOptions);
-
-            public async Task Invoke(HttpContext context)
+            public async Task InvokeAsync(HttpContext context, RequestDelegate next)
             {
                 context.Response.OnStarting(() =>
                 {
                     HttpResponse response = context.Response;
 
-                    if (response.GetTypedHeaders().ContentDisposition?.DispositionType.Equals("attachment", StringComparison.OrdinalIgnoreCase) ?? false)
+                    if (response.Headers.TryGetValue(HeaderNames.ContentDisposition, out var values) &&
+                        values.Any(v => v.StartsWith("attachment", StringComparison.OrdinalIgnoreCase)))
                     {
-                        response.Headers["X-Download-Options"] = "noopen";
+                        response.Headers["X-Download-Options"] = HeaderValue;
                     }
 
                     return Task.CompletedTask;
                 });
 
-                await _next.Invoke(context);
+                await next.Invoke(context);
             }
         }
     }

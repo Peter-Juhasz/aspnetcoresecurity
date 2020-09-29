@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Primitives;
 using PeterJuhasz.AspNetCore.Extensions.Security;
 using System;
 using System.Linq;
@@ -16,37 +17,28 @@ namespace Microsoft.AspNetCore.Builder
         [Obsolete]
         public static void UseHttpPublicKeyPinning(this IApplicationBuilder app, Action<HttpPublicKeyPinningOptions> configure)
         {
-            if (configure == null)
-                throw new ArgumentNullException(nameof(configure));
-
             var options = new HttpPublicKeyPinningOptions();
             configure(options);
             app.UseMiddleware<HttpPublicKeyPinningMiddleware>(options);
         }
 
 
-        internal sealed class HttpPublicKeyPinningMiddleware
+        internal sealed class HttpPublicKeyPinningMiddleware : IMiddleware
         {
-            public HttpPublicKeyPinningMiddleware(RequestDelegate next, HttpPublicKeyPinningOptions options)
+            public HttpPublicKeyPinningMiddleware(HttpPublicKeyPinningOptions options)
             {
-                if (options == null)
-                    throw new ArgumentNullException(nameof(options));
-
                 if (!options.Pins.Any())
                     throw new InvalidOperationException("At least one fingerprint have to be pinned.");
 
-                _next = next;
                 Options = options;
                 _headerValue = Options.ToString();
             }
 
-
-            private readonly RequestDelegate _next;
-            private readonly string _headerValue;
+            private readonly StringValues _headerValue;
 
             public HttpPublicKeyPinningOptions Options { get; }
             
-            public async Task Invoke(HttpContext context)
+            public async Task InvokeAsync(HttpContext context, RequestDelegate next)
             {
                 context.Response.OnStarting(() =>
                 {
@@ -56,7 +48,7 @@ namespace Microsoft.AspNetCore.Builder
                     return Task.CompletedTask;
                 });
 
-                await _next.Invoke(context);
+                await next.Invoke(context);
             }
         }
     }

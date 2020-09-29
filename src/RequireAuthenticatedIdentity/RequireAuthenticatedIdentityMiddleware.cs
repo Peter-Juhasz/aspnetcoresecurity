@@ -15,16 +15,9 @@ namespace Microsoft.AspNetCore.Builder
         }
 
 
-        internal sealed class RequireAuthenticatedIdentityMiddleware
+        internal sealed class RequireAuthenticatedIdentityMiddleware : IMiddleware
         {
-            public RequireAuthenticatedIdentityMiddleware(RequestDelegate next)
-            {
-                _next = next;
-            }
-
-            private readonly RequestDelegate _next;
-
-            public async Task Invoke(HttpContext context)
+            public async Task InvokeAsync(HttpContext context, RequestDelegate next)
             {
                 if (!context.User?.Identity.IsAuthenticated ?? false)
                 {
@@ -32,7 +25,7 @@ namespace Microsoft.AspNetCore.Builder
                     return;
                 }
 
-                await _next.Invoke(context);
+                await next.Invoke(context);
             }
         }
     }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Primitives;
 using PeterJuhasz.AspNetCore.Extensions.Security;
 using System;
 using System.Threading.Tasks;
@@ -40,21 +41,19 @@ namespace Microsoft.AspNetCore.Builder
         }
 
 
-        internal sealed class ExpectCTMiddleware
+        internal sealed class ExpectCTMiddleware : IMiddleware
         {
-            public ExpectCTMiddleware(RequestDelegate next, ExpectCTOptions options)
+            public ExpectCTMiddleware(ExpectCTOptions options)
             {
-                _next = next;
                 Options = options ?? throw new ArgumentNullException(nameof(options));
                 _headerValue = Options.ToString();
             }
 
-            private readonly RequestDelegate _next;
-            private readonly string _headerValue;
+            private readonly StringValues _headerValue;
 
             public ExpectCTOptions Options { get; }
             
-            public async Task Invoke(HttpContext context)
+            public async Task InvokeAsync(HttpContext context, RequestDelegate next)
             {
                 context.Response.OnStarting(() =>
                 {
@@ -63,7 +62,7 @@ namespace Microsoft.AspNetCore.Builder
                     return Task.CompletedTask;
                 });
 
-                await _next.Invoke(context);
+                await next.Invoke(context);
             }
         }
     }

@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Primitives;
+using Microsoft.Net.Http.Headers;
 using PeterJuhasz.AspNetCore.Extensions.Security;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Microsoft.AspNetCore.Builder
@@ -25,6 +28,7 @@ namespace Microsoft.AspNetCore.Builder
         /// <param name="enabled">Enables XSS protection.</param>
         /// <param name="block">Sets Block mode.</param>
         /// <param name="reportUri">Sets the URI the browser is going to report violations to.</param>
+        [Obsolete]
         public static void UseXXSSProtection(
             this IApplicationBuilder app,
             bool enabled = true,
@@ -41,27 +45,26 @@ namespace Microsoft.AspNetCore.Builder
         }
 
 
-        internal sealed class XXSSProtectionMiddleware
+        internal sealed class XXSSProtectionMiddleware : IMiddleware
         {
-            public XXSSProtectionMiddleware(RequestDelegate next, XXssProtectionOptions options)
+            public XXSSProtectionMiddleware(XXssProtectionOptions options)
             {
-                _next = next;
                 Options = options ?? throw new ArgumentNullException(nameof(options));
                 _headerValue = Options.ToString();
             }
 
-            private readonly RequestDelegate _next;
-            private readonly string _headerValue;
+            private readonly StringValues _headerValue;
 
             public XXssProtectionOptions Options { get; }
             
-            public async Task Invoke(HttpContext context)
+            public async Task InvokeAsync(HttpContext context, RequestDelegate next)
             {
                 context.Response.OnStarting(() =>
                 {
                     HttpResponse response = context.Response;
 
-                    if (response.GetTypedHeaders().ContentType?.MediaType.Equals("text/html", StringComparison.OrdinalIgnoreCase) ?? false)
+                    if (response.Headers.TryGetValue(HeaderNames.ContentType, out var values) &&
+                        values.Any(v => v.StartsWith("text/html", StringComparison.OrdinalIgnoreCase)))
                     {
                         response.Headers["X-XSS-Protection"] = _headerValue;
                     }
@@ -69,7 +72,7 @@ namespace Microsoft.AspNetCore.Builder
                     return Task.CompletedTask;
                 });
 
-                await _next.Invoke(context);
+                await next.Invoke(context);
             }
         }
     }

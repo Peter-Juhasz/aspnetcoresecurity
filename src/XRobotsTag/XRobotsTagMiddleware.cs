@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Primitives;
 using PeterJuhasz.AspNetCore.Extensions.Security;
 using System;
 using System.Threading.Tasks;
@@ -41,21 +42,19 @@ namespace Microsoft.AspNetCore.Builder
         }
 
 
-        internal sealed class XRobotsTagMiddleware
+        internal sealed class XRobotsTagMiddleware : IMiddleware
         {
-            public XRobotsTagMiddleware(RequestDelegate next, RobotsTagDirectiveList headerValue)
+            public XRobotsTagMiddleware(RobotsTagDirectiveList headerValue)
             {
-                _next = next;
                 Directives = headerValue ?? throw new ArgumentNullException(nameof(headerValue));
                 _headerValue = Directives.ToString();
             }
 
-            private readonly RequestDelegate _next;
-            private readonly string _headerValue;
+            private readonly StringValues _headerValue;
             
             public RobotsTagDirectiveList Directives { get; }
 
-            public async Task Invoke(HttpContext context)
+            public async Task InvokeAsync(HttpContext context, RequestDelegate next)
             {
                 context.Response.OnStarting(() =>
                 {
@@ -65,7 +64,7 @@ namespace Microsoft.AspNetCore.Builder
                     return Task.CompletedTask;
                 });
 
-                await _next.Invoke(context);
+                await next.Invoke(context);
             }
         }
     }

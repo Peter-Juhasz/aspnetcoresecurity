@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.Net.Http.Headers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -53,15 +54,12 @@ namespace Microsoft.AspNetCore.Builder
         }
 
 
-        internal sealed class RedirectFilterMiddleware
+        internal sealed class RedirectFilterMiddleware : IMiddleware
         {
-            public RedirectFilterMiddleware(RequestDelegate next, IReadOnlyCollection<Uri> allowedBaseUris)
+            public RedirectFilterMiddleware(IReadOnlyCollection<Uri> allowedBaseUris)
             {
-                _next = next;
                 AllowedBaseUris = allowedBaseUris ?? throw new ArgumentNullException(nameof(allowedBaseUris));
             }
-
-            private readonly RequestDelegate _next;
 
             public IReadOnlyCollection<Uri> AllowedBaseUris { get; }
 
@@ -87,24 +85,26 @@ namespace Microsoft.AspNetCore.Builder
                 return isSameHostAndPortOrUpgrade || isAllowedLocation;
             }
             
-            public async Task Invoke(HttpContext context)
+            public async Task InvokeAsync(HttpContext context, RequestDelegate next)
             {
                 context.Response.OnStarting(() =>
                 {
                     var request = context.Request;
                     var response = context.Response;
 
-                    var location = response.GetTypedHeaders().Location;
-                    if (location != null)
+                    if (response.Headers.TryGetValue(HeaderNames.Location, out var values))
                     {
-                        if (!IsAllowed(request, location))
-                            throw new InvalidOperationException($"A potentially dangerous redirect was prevented to '{location}'.");
+                        foreach (var location in values)
+                        {
+                            if (!IsAllowed(request, location))
+                                throw new InvalidOperationException($"A potentially dangerous redirect was prevented to '{location}'.");
+                        }
                     }
 
                     return Task.CompletedTask;
                 });
 
-                await _next(context);
+                await next(context);
             }
         }
     }

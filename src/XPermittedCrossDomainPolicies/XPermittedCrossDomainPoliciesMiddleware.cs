@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Primitives;
 using PeterJuhasz.AspNetCore.Extensions.Security;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -18,17 +19,15 @@ namespace Microsoft.AspNetCore.Builder
         }
 
 
-        internal sealed class XPermittedCrossDomainPoliciesMiddleware
+        internal sealed class XPermittedCrossDomainPoliciesMiddleware : IMiddleware
         {
-            public XPermittedCrossDomainPoliciesMiddleware(RequestDelegate next, PermittedCrossDomainPolicy policy)
+            public XPermittedCrossDomainPoliciesMiddleware(PermittedCrossDomainPolicy policy)
             {
-                _next = next;
                 Policy = policy;
                 _headerValue = HeaderValues[Policy];
             }
 
-            private readonly RequestDelegate _next;
-            private readonly string _headerValue;
+            private readonly StringValues _headerValue;
 
             private static readonly IReadOnlyDictionary<PermittedCrossDomainPolicy, string> HeaderValues = new Dictionary<PermittedCrossDomainPolicy, string>
             {
@@ -41,7 +40,7 @@ namespace Microsoft.AspNetCore.Builder
 
             public PermittedCrossDomainPolicy Policy { get; }
 
-            public async Task Invoke(HttpContext context)
+            public async Task InvokeAsync(HttpContext context, RequestDelegate next)
             {
                 context.Response.OnStarting(() =>
                 {
@@ -51,7 +50,7 @@ namespace Microsoft.AspNetCore.Builder
                     return Task.CompletedTask;
                 });
 
-                await _next.Invoke(context);
+                await next.Invoke(context);
             }
         }
     }
