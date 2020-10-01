@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc.Filters;
 using PeterJuhasz.AspNetCore.Extensions.Security;
+using System;
 
 namespace Microsoft.AspNetCore.Builder
 {
+    [Obsolete]
     public class FrameOptionsAttribute : ActionFilterAttribute
     {
         public FrameOptionsAttribute(FrameOptionsPolicy policy)

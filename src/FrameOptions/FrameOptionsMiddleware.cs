@@ -15,6 +15,7 @@ namespace Microsoft.AspNetCore.Builder
         /// </summary>
         /// <param name="app"></param>
         /// <param name="options"></param>
+        [Obsolete]
         public static void UseFrameOptions(this IApplicationBuilder app, FrameOptionsDirective options)
         {
             app.UseMiddleware<FrameOptionsMiddleware>(options);
@@ -25,6 +26,7 @@ namespace Microsoft.AspNetCore.Builder
         /// </summary>
         /// <param name="app"></param>
         /// <param name="configure"></param>
+        [Obsolete]
         public static void UseFrameOptions(this IApplicationBuilder app, Action<FrameOptionsDirective> configure)
         {
             FrameOptionsDirective options = new FrameOptionsDirective();
@@ -37,6 +39,7 @@ namespace Microsoft.AspNetCore.Builder
         /// </summary>
         /// <param name="app"></param>
         /// <param name="policy"></param>
+        [Obsolete]
         public static void UseFrameOptions(this IApplicationBuilder app, FrameOptionsPolicy policy = FrameOptionsPolicy.Deny)
         {
             if (policy == FrameOptionsPolicy.AllowFrom)

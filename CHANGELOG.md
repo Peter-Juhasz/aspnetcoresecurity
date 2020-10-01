@@ -9,6 +9,7 @@ New features:
 
 Deprecation:
  - **Frame-Options**: `allow-from`
+ - **Frame-Options**: use Content Security Policy instead
 
 ## 3.1.0
  - **Permissions-Policy**: support for [Permissions Policy](https://w3c.github.io/webappsec-permissions-policy/)
