@@ -40,11 +40,15 @@ namespace PeterJuhasz.AspNetCore.Extensions.Security
 
         public override string ToString() => this.Policy switch
         {
+            FrameOptionsPolicy.AllowFrom => $"ALLOW-FROM {this.AllowFromUri!}",
+            _ => ToString(Policy),
+        };
+
+        public static string ToString(FrameOptionsPolicy policy) => policy switch
+        {
             FrameOptionsPolicy.Deny => "DENY",
             FrameOptionsPolicy.SameOrigin => "SAMEORIGIN",
-            FrameOptionsPolicy.AllowFrom => $"ALLOW-FROM {this.AllowFromUri!}",
-
-            _ => throw new NotSupportedException($"Not supported Frame-Options policy '{this.Policy}'."),
+            _ => throw new NotSupportedException($"Not supported Frame-Options policy '{policy}'."),
         };
     }
 }

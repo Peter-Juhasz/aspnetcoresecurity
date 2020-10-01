@@ -75,11 +75,20 @@ namespace Microsoft.AspNetCore.Builder
                 {
                     HttpResponse response = context.Response;
 
+                    // check whether it is applicable
                     if (response.Headers.TryGetValue(HeaderNames.ContentType, out var values) &&
                         values.Any(v => v.StartsWith("text/html", StringComparison.OrdinalIgnoreCase)))
                     {
-                        response.Headers["X-Frame-Options"] = _headerValue;
-                        response.Headers["Frame-Options"] = _headerValue;
+                        var effectiveValue = _headerValue;
+
+                        // check for overwrite
+                        if (context.Items.TryGetValue(nameof(FrameOptionsPolicy), out var policy))
+                        {
+                            effectiveValue = FrameOptionsDirective.ToString((FrameOptionsPolicy)policy);
+                        }
+
+                        response.Headers["X-Frame-Options"] = effectiveValue;
+                        response.Headers["Frame-Options"] = effectiveValue;
                     }
 
                     return Task.CompletedTask;
