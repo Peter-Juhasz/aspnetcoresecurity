@@ -1,4 +1,6 @@
-﻿namespace PeterJuhasz.AspNetCore.Extensions.Security
+﻿using System;
+
+namespace PeterJuhasz.AspNetCore.Extensions.Security
 {
     /// <summary>
     /// Defines the Frame Options policy.
@@ -18,6 +20,7 @@
         /// <summary>
         /// The page can only be displayed in a frame on the specified origin.
         /// </summary>
+        [Obsolete]
         AllowFrom,
     }
 }

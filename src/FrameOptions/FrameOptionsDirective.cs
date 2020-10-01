@@ -30,6 +30,7 @@ namespace PeterJuhasz.AspNetCore.Extensions.Security
             this.AllowFromUri = null;
         }
 
+        [Obsolete]
         public void AllowFrom(Uri uri)
         {
             this.Policy = FrameOptionsPolicy.AllowFrom;

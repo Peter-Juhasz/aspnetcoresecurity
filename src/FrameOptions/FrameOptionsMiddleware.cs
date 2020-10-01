@@ -50,6 +50,7 @@ namespace Microsoft.AspNetCore.Builder
         /// </summary>
         /// <param name="app"></param>
         /// <param name="allowFromUri"></param>
+        [Obsolete]
         public static void UseFrameOptions(this IApplicationBuilder app, Uri allowFromUri)
         {
             app.UseFrameOptions(new FrameOptionsDirective(allowFromUri));
