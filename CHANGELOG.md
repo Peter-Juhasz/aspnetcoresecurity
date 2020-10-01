@@ -1,18 +1,20 @@
 # 5.0.0
 New features:
- - **.NET 5** and ASP.NET Core 5.0+ support
- - **Performance improvements**
-   - All middlewares are strongly typed using the [`IMiddleware`](https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.http.imiddleware) interface
-   - All middlewares are stateless, so they don't have to be instantiated for each and every request
-   - Response headers are not parsed into objects, low level APIs are satisfactory while providing the same security
-   - Header values are pre-rendered, so middlewares are basically allocation free from now (instead of constructing them on the fly, which resulted in lots of new `String` objects on the heap). *Note: this also means that configuration changes won't take effect while running.*
- - **MVC Action Filter** support:
-   - **Frame-Options**
-   - **X-UA-Compatible**
+ - **ASP.NET Core 5.0+** support
+ - **MVC Action Filter** support, and extension methods for **HttpContext**:
+   - **Frame-Options**: set policy
+   - **Permissions-Policy**: Allow and disallow
+   - **X-UA-Compatible**: set compatibility mode
    - *Note: middlewares still has to be added to the pipeline as they contain the logic that modifies the headers of the HTTP response, while the action filters only set which values to set.*
+   
+Performance improvements:
+ - All middlewares are strongly typed using the [`IMiddleware`](https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.http.imiddleware) interface
+ - All middlewares are stateless, so they don't have to be instantiated for each and every request
+ - Response headers are not parsed into objects, low level APIs are satisfactory while providing the same security
+ - Header values are pre-rendered, so middlewares are basically allocation free from now (instead of constructing them on the fly, which resulted in lots of new `String` objects on the heap). *Note: this also means that configuration changes won't take effect while running.*
 
 Deprecation:
- - **Frame-Options**: `allow-from`
+ - **Frame-Options**: `allow-from` policy
  - **Frame-Options**: use Content Security Policy instead
 
 ## 3.1.0

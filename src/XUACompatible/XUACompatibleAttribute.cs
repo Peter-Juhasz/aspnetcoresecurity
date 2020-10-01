@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc.Filters;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Filters;
 using PeterJuhasz.AspNetCore.Extensions.Security;
 using System;
 
-namespace Microsoft.AspNetCore.Builder
+namespace Microsoft.AspNetCore.Mvc
 {
     public class XUACompatibleAttribute : ActionFilterAttribute
     {
@@ -17,7 +18,7 @@ namespace Microsoft.AspNetCore.Builder
         {
             base.OnActionExecuting(context);
 
-            context.HttpContext.Items[nameof(InternetExplorerCompatibiltyMode)] = Mode;
+            context.HttpContext.SetXUACompatible(Mode);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,15 @@ namespace Microsoft.AspNetCore.Builder
 {
     public class PermissionsPolicyDirectiveList : IEnumerable<KeyValuePair<string, ISet<string>>>
     {
-        protected IDictionary<string, ISet<string>> Items { get; } = new Dictionary<string, ISet<string>>();
+        public PermissionsPolicyDirectiveList()
+            : this(new Dictionary<string, ISet<string>>()) 
+        { }
+        internal PermissionsPolicyDirectiveList(IDictionary<string, ISet<string>> items)
+        {
+            Items = items;
+        }
+
+        protected IDictionary<string, ISet<string>> Items { get; }
 
 
         protected PermissionsPolicyDirectiveList AddCore(string feature, string value)
@@ -19,7 +28,7 @@ namespace Microsoft.AspNetCore.Builder
             return this;
         }
 
-        protected ISet<string> EnsureAllowList(string feature)
+        internal ISet<string> EnsureAllowList(string feature)
         {
             if (!Items.TryGetValue(feature, out var allowList))
             {
@@ -50,7 +59,7 @@ namespace Microsoft.AspNetCore.Builder
             {
                 allowList.Clear();
             }
-            allowList.Add("*");
+            allowList.Add(PermissionsPolicyTokens.All);
             return this;
         }
 
@@ -59,7 +68,7 @@ namespace Microsoft.AspNetCore.Builder
         /// </summary>
         /// <param name="feature"></param>
         /// <returns></returns>
-        public PermissionsPolicyDirectiveList AddSelf(string feature) => AddCore(feature, "self");
+        public PermissionsPolicyDirectiveList AddSelf(string feature) => AddCore(feature, PermissionsPolicyTokens.Self);
 
         /// <summary>
         /// The feature is disabled in top-level and nested browsing contexts.
@@ -74,6 +83,52 @@ namespace Microsoft.AspNetCore.Builder
                 throw new InvalidOperationException("The allow list can not be set to none, because it already contains values.");
             }
             return this;
+        }
+
+
+        public PermissionsPolicyDirectiveList Copy() => new PermissionsPolicyDirectiveList(new Dictionary<string, ISet<string>>(Items));
+
+        internal PermissionsPolicyDirectiveList Merge(IList<Change> changes)
+        {
+            var copy = Copy();
+
+            foreach (var change in changes)
+            {
+                switch (change.Operation)
+                {
+                    case ChangeOperation.Allow:
+                        switch (change.Value)
+                        {
+                            case PermissionsPolicyTokens.All:
+                                copy.AddAll(change.Feature);
+                                break;
+
+                            default:
+                                copy.Add(change.Feature, change.Value);
+                                break;
+                        }
+                        break;
+
+                    case ChangeOperation.Disallow:
+                        var list = copy.EnsureAllowList(change.Feature);
+                        switch (change.Value)
+                        {
+                            case PermissionsPolicyTokens.All:
+                                list.Clear();
+                                break;
+
+                            default:
+                                if (!list.Remove(change.Value))
+                                {
+                                    throw new InvalidOperationException($"Value '{change.Value}' can't be removed for feature '{change.Feature}', because it has never been added.");
+                                }
+                                break;
+                        }
+                        break;
+                }
+            }
+
+            return copy;
         }
 
 

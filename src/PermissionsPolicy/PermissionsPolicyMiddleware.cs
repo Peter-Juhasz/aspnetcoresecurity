@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Primitives;
 using Microsoft.Net.Http.Headers;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -42,6 +43,12 @@ namespace Microsoft.AspNetCore.Builder
                     if (response.Headers.TryGetValue(HeaderNames.ContentType, out var values) &&
                         values.Any(v => v.StartsWith("text/html", StringComparison.OrdinalIgnoreCase)))
                     {
+                        if (context.Items.TryGetValue(nameof(PermissionsPolicyDirectiveList), out var value))
+                        {
+                            var changes = (IList<Change>)value!;
+                            
+                        }
+
                         response.Headers[HeaderName] = _headerValue;
                     }
 
