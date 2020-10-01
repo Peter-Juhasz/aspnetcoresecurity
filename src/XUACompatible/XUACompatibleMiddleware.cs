@@ -71,7 +71,14 @@ namespace Microsoft.AspNetCore.Builder
                     if (response.Headers.TryGetValue(HeaderNames.ContentType, out var values) &&
                         values.Any(v => v.StartsWith("text/html", StringComparison.OrdinalIgnoreCase)))
                     {
-                        response.Headers["X-UA-Compatible"] = _headerValue;
+                        var effectiveValue = _headerValue;
+
+                        if (context.Items.TryGetValue(nameof(InternetExplorerCompatibiltyMode), out var mode))
+                        {
+                            effectiveValue = ConstructHeaderValue((InternetExplorerCompatibiltyMode)mode);
+                        }
+
+                        response.Headers["X-UA-Compatible"] = effectiveValue;
                     }
 
                     return Task.CompletedTask;
