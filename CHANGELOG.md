@@ -1,6 +1,13 @@
+# 6.0.1
+New features:
+ - **ASP.NET 6.0+** support
+ - **Breaking change**: middlewares must be registered as services before use.
+ - **X-UA-Compatible**: MVC attribute
+ - **Permissions-Policy**: MVC attribute to allow/deny permissions
+
 # 5.0.0
 New features:
- - **ASP.NET Core 5.0+** support
+ - **ASP.NET 5.0+** support
  - **MVC Action Filter** support, and extension methods for **HttpContext**:
    - **Frame-Options**: set policy
    - **Permissions-Policy**: Allow and disallow
@@ -9,9 +16,10 @@ New features:
    
 Performance improvements:
  - All middlewares are strongly typed using the [`IMiddleware`](https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.http.imiddleware) interface
- - All middlewares are stateless, so they don't have to be instantiated for each and every request
+ - All middlewares are singletons, so they don't have to be instantiated for each and every request
  - Response headers are not parsed into objects, low level APIs are satisfactory while providing the same security
  - Header values are pre-rendered, so middlewares are basically allocation free from now (instead of constructing them on the fly, which resulted in lots of new `String` objects on the heap). *Note: this also means that configuration changes won't take effect while running.*
+ - **Breaking change**: middlewares must be registered as services before use.
 
 Deprecation:
  - **Frame-Options**: `allow-from` policy

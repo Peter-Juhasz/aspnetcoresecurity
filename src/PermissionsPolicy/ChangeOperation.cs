@@ -1,8 +1,7 @@
-﻿namespace Microsoft.AspNetCore.Http
+﻿namespace Microsoft.AspNetCore.Http;
+
+internal enum ChangeOperation
 {
-    internal enum ChangeOperation
-    {
-        Allow,
-        Disallow,
-    }
+    Allow,
+    Disallow,
 }

@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Microsoft.AspNetCore.Builder
-{
-    public class FeatureDirectiveList : IEnumerable<FeatureDirective>
-    {
-        protected IList<FeatureDirective> Items { get; } = new List<FeatureDirective>();
+namespace Microsoft.AspNetCore.Builder;
 
-        private static readonly IReadOnlyDictionary<PolicyFeature, string> FeatureNames = new Dictionary<PolicyFeature, string>
+public class FeatureDirectiveList : IEnumerable<FeatureDirective>
+{
+    protected IList<FeatureDirective> Items { get; } = new List<FeatureDirective>();
+
+    private static readonly IReadOnlyDictionary<PolicyFeature, string> FeatureNames = new Dictionary<PolicyFeature, string>
         {
              { PolicyFeature.Accelerometer, "accelerometer" },
              { PolicyFeature.AmbientLightSensor, "ambient-light-sensor" },
@@ -41,65 +41,64 @@ namespace Microsoft.AspNetCore.Builder
         };
 
 
-        protected FeatureDirectiveList AddCore(PolicyFeature directive, string value)
-        {
-            Items.Add(new FeatureDirective(directive, value));
-            return this;
-        }
-
-        /// <summary>
-        /// The feature is allowed for specific origins (for example, https://example.com). Origins should be separated by a space.
-        /// </summary>
-        /// <param name="directive"></param>
-        /// <param name="origin">The feature is allowed for specific origins (for example, https://example.com). Origins should be separated by a space.</param>
-        /// <returns></returns>
-        public FeatureDirectiveList Add(PolicyFeature directive, string origin) => AddCore(directive, origin);
-
-        /// <summary>
-        /// The feature is allowed for specific origins (for example, https://example.com). Origins should be separated by a space.
-        /// </summary>
-        /// <param name="directive"></param>
-        /// <param name="origins"></param>
-        /// <returns></returns>
-        public FeatureDirectiveList Add(PolicyFeature directive, IEnumerable<string> origins) => AddCore(directive, string.Join(' ', origins));
-
-        /// <summary>
-        /// The feature is allowed by default in top-level browsing contexts and all nested browsing contexts (iframes).
-        /// </summary>
-        /// <param name="directive"></param>
-        /// <returns></returns>
-        public FeatureDirectiveList AddAll(PolicyFeature directive) => AddCore(directive, "*");
-
-        /// <summary>
-        /// The feature is allowed by default in top-level browsing contexts and in nested browsing contexts (iframes) in the same origin. The feature is not allowed in cross-origin documents in nested browsing contexts.
-        /// </summary>
-        /// <param name="directive"></param>
-        /// <returns></returns>
-        public FeatureDirectiveList AddSelf(PolicyFeature directive) => AddCore(directive, "'self'");
-
-        /// <summary>
-        /// The feature is disabled in top-level and nested browsing contexts.
-        /// </summary>
-        /// <param name="directive"></param>
-        /// <returns></returns>
-        public FeatureDirectiveList AddNone(PolicyFeature directive) => AddCore(directive, "'none'");
-
-        /// <summary>
-        /// The feature will be allowed in this document, and in all nested browsing contexts (iframes) in the same origin.
-        /// </summary>
-        /// <param name="directive"></param>
-        /// <returns></returns>
-        public FeatureDirectiveList AddSrc(PolicyFeature directive) => AddCore(directive, "'src'");
-
-
-        public override string ToString()
-        {
-            return string.Join("; ", this.Select(i => $"{FeatureNames[i.Directive]} {i.AllowList}"));
-        }
-
-
-        public IEnumerator<FeatureDirective> GetEnumerator() => Items.GetEnumerator();
-
-        IEnumerator IEnumerable.GetEnumerator() => Items.GetEnumerator();
+    protected FeatureDirectiveList AddCore(PolicyFeature directive, string value)
+    {
+        Items.Add(new FeatureDirective(directive, value));
+        return this;
     }
+
+    /// <summary>
+    /// The feature is allowed for specific origins (for example, https://example.com). Origins should be separated by a space.
+    /// </summary>
+    /// <param name="directive"></param>
+    /// <param name="origin">The feature is allowed for specific origins (for example, https://example.com). Origins should be separated by a space.</param>
+    /// <returns></returns>
+    public FeatureDirectiveList Add(PolicyFeature directive, string origin) => AddCore(directive, origin);
+
+    /// <summary>
+    /// The feature is allowed for specific origins (for example, https://example.com). Origins should be separated by a space.
+    /// </summary>
+    /// <param name="directive"></param>
+    /// <param name="origins"></param>
+    /// <returns></returns>
+    public FeatureDirectiveList Add(PolicyFeature directive, IEnumerable<string> origins) => AddCore(directive, string.Join(' ', origins));
+
+    /// <summary>
+    /// The feature is allowed by default in top-level browsing contexts and all nested browsing contexts (iframes).
+    /// </summary>
+    /// <param name="directive"></param>
+    /// <returns></returns>
+    public FeatureDirectiveList AddAll(PolicyFeature directive) => AddCore(directive, "*");
+
+    /// <summary>
+    /// The feature is allowed by default in top-level browsing contexts and in nested browsing contexts (iframes) in the same origin. The feature is not allowed in cross-origin documents in nested browsing contexts.
+    /// </summary>
+    /// <param name="directive"></param>
+    /// <returns></returns>
+    public FeatureDirectiveList AddSelf(PolicyFeature directive) => AddCore(directive, "'self'");
+
+    /// <summary>
+    /// The feature is disabled in top-level and nested browsing contexts.
+    /// </summary>
+    /// <param name="directive"></param>
+    /// <returns></returns>
+    public FeatureDirectiveList AddNone(PolicyFeature directive) => AddCore(directive, "'none'");
+
+    /// <summary>
+    /// The feature will be allowed in this document, and in all nested browsing contexts (iframes) in the same origin.
+    /// </summary>
+    /// <param name="directive"></param>
+    /// <returns></returns>
+    public FeatureDirectiveList AddSrc(PolicyFeature directive) => AddCore(directive, "'src'");
+
+
+    public override string ToString()
+    {
+        return string.Join("; ", this.Select(i => $"{FeatureNames[i.Directive]} {i.AllowList}"));
+    }
+
+
+    public IEnumerator<FeatureDirective> GetEnumerator() => Items.GetEnumerator();
+
+    IEnumerator IEnumerable.GetEnumerator() => Items.GetEnumerator();
 }

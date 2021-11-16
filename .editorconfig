@@ -5,6 +5,8 @@ end_of_line = crlf
 tab_width = 4
 
 [*.cs]
+csharp_style_namespace_declarations = file_scoped:warning
+
 # CA1032: Implement standard exception constructors
 dotnet_diagnostic.CA1032.severity = none
 

@@ -1,7 +1,6 @@
-﻿namespace PeterJuhasz.AspNetCore.Extensions.Security
+﻿namespace PeterJuhasz.AspNetCore.Extensions.Security;
+
+public enum HttpPublicKeyPinningHashAlgorithm
 {
-    public enum HttpPublicKeyPinningHashAlgorithm
-    {
-        Sha256,
-    }
+    Sha256,
 }
