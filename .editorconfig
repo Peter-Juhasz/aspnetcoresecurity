@@ -1,0 +1,21 @@
+﻿root = true
+
+[*]
+end_of_line = crlf
+tab_width = 4
+
+[*.cs]
+csharp_style_namespace_declarations = file_scoped:warning
+
+# CA1032: Implement standard exception constructors
+dotnet_diagnostic.CA1032.severity = none
+
+# IDE0017: Simplify object initialization
+dotnet_style_object_initializer = false:suggestion
+
+# IDE0028: Simplify collection initialization
+dotnet_style_collection_initializer = false:suggestion
+
+# IDE0037: Use inferred member name
+dotnet_style_prefer_inferred_tuple_names = false:suggestion
+dotnet_style_prefer_inferred_anonymous_type_member_names = false:suggestion

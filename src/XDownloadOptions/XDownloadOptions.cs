@@ -1,7 +1,6 @@
-﻿namespace PeterJuhasz.AspNetCore.Extensions.Security
+﻿namespace PeterJuhasz.AspNetCore.Extensions.Security;
+
+public enum XDownloadOptions
 {
-    public enum XDownloadOptions
-    {
-        NoOpen,
-    }
+    NoOpen,
 }

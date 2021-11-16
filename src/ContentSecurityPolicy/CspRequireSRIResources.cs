@@ -1,11 +1,10 @@
 ﻿using System;
 
-namespace PeterJuhasz.AspNetCore.Extensions.Security
+namespace PeterJuhasz.AspNetCore.Extensions.Security;
+
+[Flags]
+public enum CspRequireSRIResources
 {
-    [Flags]
-    public enum CspRequireSRIResources
-    {
-        Style,
-        Script,
-    }
+    Style,
+    Script,
 }

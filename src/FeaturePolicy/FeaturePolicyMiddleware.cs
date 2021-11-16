@@ -1,50 +1,62 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Primitives;
+using Microsoft.Net.Http.Headers;
+
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
-namespace Microsoft.AspNetCore.Builder
+namespace Microsoft.AspNetCore.Builder;
+
+public static partial class AppBuilderExtensions
 {
-    public static partial class AppBuilderExtensions
+    /// <summary>
+    /// Adds the Feature-Policy header to responses with content type text/html.
+    /// </summary>
+    /// <param name="app"></param>
+    [Obsolete]
+    public static void UseFeaturePolicy(this IApplicationBuilder app)
     {
-        /// <summary>
-        /// Adds the Feature-Policy header to responses with content type text/html.
-        /// </summary>
-        /// <param name="app"></param>
-        /// <param name="options"></param>
-        [Obsolete]
-        public static void UseFeaturePolicy(this IApplicationBuilder app, FeatureDirectiveList options)
+        app.UseMiddleware<FeaturePolicyMiddleware>();
+    }
+
+    [Obsolete]
+    public static IServiceCollection AddFeaturePolicy(this IServiceCollection services, FeatureDirectiveList options)
+    {
+        services.AddSingleton<FeaturePolicyMiddleware>();
+        services.AddSingleton(options);
+        return services;
+    }
+
+
+    internal sealed class FeaturePolicyMiddleware : IMiddleware
+    {
+        public FeaturePolicyMiddleware(FeatureDirectiveList options)
         {
-            app.UseMiddleware<FeaturePolicyMiddleware>(options);
+            Options = options ?? throw new ArgumentNullException(nameof(options));
+            _headerValue = Options.ToString();
         }
 
+        public FeatureDirectiveList Options { get; }
+        private readonly StringValues _headerValue;
 
-        internal sealed class FeaturePolicyMiddleware
+        public async Task InvokeAsync(HttpContext context, RequestDelegate next)
         {
-            public FeaturePolicyMiddleware(RequestDelegate next, FeatureDirectiveList options)
+            context.Response.OnStarting(() =>
             {
-                _next = next;
-                Options = options ?? throw new ArgumentNullException(nameof(options));
-            }
+                HttpResponse response = context.Response;
 
-            private readonly RequestDelegate _next;
-            public FeatureDirectiveList Options { get; }
-            
-            public async Task Invoke(HttpContext context)
-            {
-                context.Response.OnStarting(() =>
+                if (response.Headers.TryGetValue(HeaderNames.ContentType, out var values) &&
+                    values.Any(v => v.StartsWith("text/html", StringComparison.OrdinalIgnoreCase)))
                 {
-                    HttpResponse response = context.Response;
+                    response.Headers["Feature-Policy"] = _headerValue;
+                }
 
-                    if (response.GetTypedHeaders().ContentType?.MediaType.Equals("text/html", StringComparison.OrdinalIgnoreCase) ?? false)
-                    {
-                        response.Headers["Feature-Policy"] = Options.ToString();
-                    }
+                return Task.CompletedTask;
+            });
 
-                    return Task.CompletedTask;
-                });
-
-                await _next.Invoke(context);
-            }
+            await next.Invoke(context);
         }
     }
 }

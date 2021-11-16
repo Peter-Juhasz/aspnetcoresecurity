@@ -1,71 +1,82 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Primitives;
+using Microsoft.Net.Http.Headers;
+
 using PeterJuhasz.AspNetCore.Extensions.Security;
+
 using System;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace Microsoft.AspNetCore.Builder
+namespace Microsoft.AspNetCore.Builder;
+
+public static partial class AppBuilderExtensions
 {
-    public static partial class AppBuilderExtensions
+    /// <summary>
+    /// Adds the Content-Security-Policy header to responses with content type text/html.
+    /// </summary>
+    /// <param name="app"></param>
+    public static void UseContentSecurityPolicy(this IApplicationBuilder app)
     {
-        /// <summary>
-        /// Adds the Content-Security-Policy header to responses with content type text/html.
-        /// </summary>
-        /// <param name="app"></param>
-        /// <param name="directives"></param>
-        public static void UseContentSecurityPolicy(this IApplicationBuilder app, CspDirectiveList directives)
+        app.UseMiddleware<ContentSecurityPolicyMiddleware>();
+    }
+
+    public static IServiceCollection AddContentSecurityPolicy(this IServiceCollection services, CspDirectiveList directives)
+    {
+        services.AddSingleton<ContentSecurityPolicyMiddleware>();
+        services.AddSingleton<CspDirectiveList>(directives);
+        return services;
+    }
+
+    internal sealed class ContentSecurityPolicyMiddleware : IMiddleware
+    {
+        public ContentSecurityPolicyMiddleware(IHostEnvironment environment, CspDirectiveList directives)
         {
-            app.UseMiddleware<ContentSecurityPolicyMiddleware>(directives);
+            Directives = directives ?? throw new ArgumentNullException(nameof(directives));
+            _headerValue = Directives.ToString();
+            _isDevelopment = environment.IsDevelopment();
         }
 
+        public CspDirectiveList Directives { get; }
+        private readonly StringValues _headerValue;
+        private readonly bool _isDevelopment;
 
-        internal sealed class ContentSecurityPolicyMiddleware
+        public async Task InvokeAsync(HttpContext context, RequestDelegate next)
         {
-            public ContentSecurityPolicyMiddleware(RequestDelegate next, IWebHostEnvironment environment, CspDirectiveList directives)
+            context.Response.OnStarting(() =>
             {
-                _next = next;
-                _environment = environment;
-                Directives = directives ?? throw new ArgumentNullException(nameof(directives));
-            }
+                HttpResponse response = context.Response;
 
-            private readonly RequestDelegate _next;
-            private readonly IWebHostEnvironment _environment;
-            public CspDirectiveList Directives { get; }
-            
-            public async Task Invoke(HttpContext context)
-            {
-                context.Response.OnStarting(() =>
+                if (response.Headers.TryGetValue(HeaderNames.ContentType, out var values) &&
+                    values.Any(v => v.StartsWith("text/html", StringComparison.OrdinalIgnoreCase)))
                 {
-                    HttpResponse response = context.Response;
-
-                    if (response.GetTypedHeaders().ContentType?.MediaType.Equals("text/html", StringComparison.OrdinalIgnoreCase) ?? false)
-                    {
-                        var options = Directives;
+                    var options = Directives;
+                    var headerValue = _headerValue;
 
                         // allow inline styles and scripts for developer exception page
-                        if (_environment.IsDevelopment())
+                        if (_isDevelopment)
+                    {
+                        if (response.StatusCode == (int)HttpStatusCode.InternalServerError)
                         {
-                            if (response.StatusCode == (int)HttpStatusCode.InternalServerError)
-                            {
-                                var developerOptions = Directives.Clone();
-                                developerOptions.StyleSrc = (developerOptions.StyleSrc ?? StyleCspDirective.Empty).AddUnsafeInline();
-                                developerOptions.ScriptSrc = (developerOptions.ScriptSrc ?? ScriptCspDirective.Empty).AddUnsafeInline();
-                                options = developerOptions;
-                            }
+                            var developerOptions = Directives.Clone();
+                            developerOptions.StyleSrc = (developerOptions.StyleSrc ?? StyleCspDirective.Empty).AddUnsafeInline();
+                            developerOptions.ScriptSrc = (developerOptions.ScriptSrc ?? ScriptCspDirective.Empty).AddUnsafeInline();
+                            options = developerOptions;
                         }
-
-                        string csp = options.ToString();
-
-                        response.Headers["Content-Security-Policy"] = csp;
+                        headerValue = options.ToString();
                     }
 
-                    return Task.CompletedTask;
-                });
+                    response.Headers.ContentSecurityPolicy = headerValue;
+                }
 
-                await _next.Invoke(context);
-            }
+                return Task.CompletedTask;
+            });
+
+            await next.Invoke(context);
         }
     }
 }

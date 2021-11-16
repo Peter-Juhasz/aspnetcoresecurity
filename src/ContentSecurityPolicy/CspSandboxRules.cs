@@ -1,21 +1,20 @@
 ﻿using System;
 
-namespace PeterJuhasz.AspNetCore.Extensions.Security
-{
-    [Flags]
-    public enum CspSandboxRules
-    {
-        Sandbox = 0,
+namespace PeterJuhasz.AspNetCore.Extensions.Security;
 
-        AllowForms,
-        AllowSameOrigin,
-        AllowScripts,
-        AllowPopups,
-        AllowModals,
-        AllowOrientationLock,
-        AllowPointerLock,
-        AllowPresentation,
-        AllowPopupsToEscapeSandbox,
-        AllowTopNavigation,
-    }
+[Flags]
+public enum CspSandboxRules
+{
+    Sandbox = 0,
+
+    AllowForms,
+    AllowSameOrigin,
+    AllowScripts,
+    AllowPopups,
+    AllowModals,
+    AllowOrientationLock,
+    AllowPointerLock,
+    AllowPresentation,
+    AllowPopupsToEscapeSandbox,
+    AllowTopNavigation,
 }

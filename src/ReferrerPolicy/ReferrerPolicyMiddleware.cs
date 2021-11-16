@@ -1,37 +1,49 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Primitives;
+
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Microsoft.AspNetCore.Builder
+namespace Microsoft.AspNetCore.Builder;
+
+public static partial class AppBuilderExtensions
 {
-    public static partial class AppBuilderExtensions
+    /// <summary>
+    /// Adds the Referrer-Policy header to all responses.
+    /// </summary>
+    /// <param name="app"></param>
+    public static void UseReferrerPolicy(this IApplicationBuilder app)
     {
-        /// <summary>
-        /// Adds the Referrer-Policy header to all responses.
-        /// </summary>
-        /// <param name="app"></param>
-        /// <param name="policy"></param>
-        public static void UseReferrerPolicy(this IApplicationBuilder app, ReferrerPolicy policy = ReferrerPolicy.SameOrigin)
+        app.UseMiddleware<ReferrerPolicyMiddleware>();
+    }
+
+    public static IServiceCollection AddReferrerPolicy(this IServiceCollection services, ReferrerPolicy policy = ReferrerPolicy.SameOrigin)
+    {
+        return services.AddReferrerPolicy(new ReferrerPolicyOptions(policy));
+    }
+
+    public static IServiceCollection AddReferrerPolicy(this IServiceCollection services, ReferrerPolicyOptions options)
+    {
+        services.AddSingleton<ReferrerPolicyMiddleware>();
+        services.AddSingleton(options);
+        return services;
+    }
+
+
+    internal sealed class ReferrerPolicyMiddleware : IMiddleware
+    {
+        public ReferrerPolicyMiddleware(ReferrerPolicyOptions options)
         {
-            app.UseMiddleware<ReferrerPolicyMiddleware>(policy);
+            Policy = options.Policy;
+            _headerValue = HeaderValues[Policy];
         }
 
+        private readonly StringValues _headerValue;
 
-        internal sealed class ReferrerPolicyMiddleware
-        {
-            public ReferrerPolicyMiddleware(RequestDelegate next, ReferrerPolicy policy)
-            {
-                _next = next;
-                Policy = policy;
-                _headerValue = HeaderValues[Policy];
-            }
+        public ReferrerPolicy Policy { get; }
 
-            private readonly RequestDelegate _next;
-            private readonly string _headerValue;
-
-            public ReferrerPolicy Policy { get; }
-
-            private static readonly IReadOnlyDictionary<ReferrerPolicy, string> HeaderValues = new Dictionary<ReferrerPolicy, string>
+        private static readonly IReadOnlyDictionary<ReferrerPolicy, string> HeaderValues = new Dictionary<ReferrerPolicy, string>
             {
                 { ReferrerPolicy.NoReferrer, "no-referrer" },
                 { ReferrerPolicy.NoReferrerWhenDowngrade, "no-referrer-when-downgrade" },
@@ -43,18 +55,17 @@ namespace Microsoft.AspNetCore.Builder
                 { ReferrerPolicy.UnsafeUrl, "unsafe-url" },
             };
 
-            public async Task Invoke(HttpContext context)
+        public async Task InvokeAsync(HttpContext context, RequestDelegate next)
+        {
+            context.Response.OnStarting(() =>
             {
-                context.Response.OnStarting(() =>
-                {
-                    var response = context.Response;
-                    response.Headers["Referrer-Policy"] = _headerValue;
+                var response = context.Response;
+                response.Headers["Referrer-Policy"] = _headerValue;
 
-                    return Task.CompletedTask;
-                });
+                return Task.CompletedTask;
+            });
 
-                await _next(context);
-            }
+            await next(context);
         }
     }
 }

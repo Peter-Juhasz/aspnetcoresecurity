@@ -4,7 +4,7 @@
 dotnet add package PeterJuhasz.AspNetCore.Security.Extensions
 ```
 
-Contains a set of extensions which can help you make your web applications more secure. You can also install each feature invididually as a separate package.
+Contains a set of high-performance extensions which can help you make your web applications more secure. You can also install each feature invididually as a separate package.
 
 ## Table of contents
 
@@ -40,7 +40,7 @@ Middlewares
 Adds the `Content-Security-Policy` headers to responses with content type `text/html`.
 
 ```csharp
-app.UseContentSecurityPolicy(new CspOptions
+services.AddContentSecurityPolicy(new CspOptions
 {
     DefaultSrc = CspDirective.None,
     StyleSrc = StyleCspDirective.Self,
@@ -52,6 +52,10 @@ app.UseContentSecurityPolicy(new CspOptions
     ConnectSrc = CspDirective.Empty
         .AddSource(new Uri("https://dc.services.visualstudio.com/")),
 });
+
+// ...
+
+app.UseContentSecurityPolicy();
 ```
 
 ### Cross Origin Resource Sharing
@@ -79,7 +83,7 @@ app.UseFeaturePolicy(
 );
 ```
 
-### Frame Options
+### Frame Options (deprecated)
 
 Adds the `Frame-Options` and `X-Frame-Options` headers to responses with content type `text/html`.
 
@@ -97,7 +101,7 @@ app.UseFrameOptions(new Uri("https://www.example.org"));
 
 Use the built-in support in ASP.NET Core 3.0.
 
-### HTTP Public Key Pinning
+### HTTP Public Key Pinning (deprecated)
 
 Adds the `Public-Key-Pinning` header to all responses.
 
@@ -276,10 +280,17 @@ Adds the `X-UA-Compatible` header to each response with `text/html` media type.
 app.UseXUACompatible(InternetExplorerCompatibiltyMode.Edge);
 ```
 
-### X-XSS-Protection
+### X-XSS-Protection (deprecated)
 
 Adds the `X-XSS-Protection` header to each response with `text/html` media type. The default setting enables protection and sets it to `block` mode.
 
 ```csharp
 app.UseXXSSProtection();
 ```
+
+## Performance
+ - All middlewares are strongly typed using the [`IMiddleware`](https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.http.imiddleware) interface
+ - All middlewares are singletons, so they don't have to be instantiated for each and every request
+ - Response headers are not parsed into objects, low level APIs are satisfactory while providing the same security
+ - Header values are pre-rendered, so middlewares are basically allocation free from now (instead of constructing them on the fly, which resulted in lots of new `String` objects on the heap). *Note: this also means that configuration changes won't take effect while running.*
+ - **Breaking change**: middlewares must be registered as services before use.

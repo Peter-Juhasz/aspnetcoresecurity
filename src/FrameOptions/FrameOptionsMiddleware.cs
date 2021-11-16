@@ -1,92 +1,110 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Primitives;
+using Microsoft.Net.Http.Headers;
+
 using PeterJuhasz.AspNetCore.Extensions.Security;
+
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
-namespace Microsoft.AspNetCore.Builder
+namespace Microsoft.AspNetCore.Builder;
+
+public static partial class AppBuilderExtensions
 {
-    public static partial class AppBuilderExtensions
+    /// <summary>
+    /// Adds the Frame-Options and X-Frame-Options headers to responses with content type text/html.
+    /// </summary>
+    /// <param name="app"></param>
+    [Obsolete]
+    public static void UseFrameOptions(this IApplicationBuilder app)
     {
-        /// <summary>
-        /// Adds the Frame-Options and X-Frame-Options headers to responses with content type text/html.
-        /// </summary>
-        /// <param name="app"></param>
-        /// <param name="options"></param>
-        public static void UseFrameOptions(this IApplicationBuilder app, FrameOptionsDirective options)
+        app.UseMiddleware<FrameOptionsMiddleware>();
+    }
+
+    [Obsolete]
+    public static IServiceCollection AddFrameOptions(this IServiceCollection services, FrameOptionsDirective options)
+    {
+        services.AddSingleton<FrameOptionsMiddleware>();
+        services.AddSingleton(options);
+        return services;
+    }
+
+    /// <summary>
+    /// Adds the Frame-Options and X-Frame-Options headers to responses with content type text/html.
+    /// </summary>
+    /// <param name="configure"></param>
+    [Obsolete]
+    public static IServiceCollection AddFrameOptions(this IServiceCollection services, Action<FrameOptionsDirective> configure)
+    {
+        FrameOptionsDirective options = new FrameOptionsDirective();
+        configure(options);
+        return services.AddFrameOptions(options);
+    }
+
+    /// <summary>
+    /// Adds the Frame-Options and X-Frame-Options headers to responses with content type text/html.
+    /// </summary>
+    /// <param name="policy"></param>
+    [Obsolete]
+    public static IServiceCollection AddFrameOptions(this IServiceCollection services, FrameOptionsPolicy policy = FrameOptionsPolicy.Deny)
+    {
+        if (policy == FrameOptionsPolicy.AllowFrom)
+            throw new ArgumentException("This overload can't be used to configure ALLOW-FROM policy.", nameof(policy));
+
+        return services.AddFrameOptions(new FrameOptionsDirective(policy));
+    }
+
+    /// <summary>
+    /// Adds the Frame-Options and X-Frame-Options headers to responses with content type text/html.
+    /// </summary>
+    /// <param name="allowFromUri"></param>
+    [Obsolete]
+    public static IServiceCollection AddFrameOptions(this IServiceCollection services, Uri allowFromUri)
+    {
+        return services.AddFrameOptions(new FrameOptionsDirective(allowFromUri));
+    }
+
+
+    internal sealed class FrameOptionsMiddleware : IMiddleware
+    {
+        public FrameOptionsMiddleware(FrameOptionsDirective options)
         {
-            app.UseMiddleware<FrameOptionsMiddleware>(options);
+            Options = options ?? throw new ArgumentNullException(nameof(options));
+            _headerValue = Options.ToString();
         }
 
-        /// <summary>
-        /// Adds the Frame-Options and X-Frame-Options headers to responses with content type text/html.
-        /// </summary>
-        /// <param name="app"></param>
-        /// <param name="configure"></param>
-        public static void UseFrameOptions(this IApplicationBuilder app, Action<FrameOptionsDirective> configure)
+        private readonly StringValues _headerValue;
+
+        public FrameOptionsDirective Options { get; }
+
+        public async Task InvokeAsync(HttpContext context, RequestDelegate next)
         {
-            if (configure == null)
-                throw new ArgumentNullException(nameof(configure));
-
-            FrameOptionsDirective options = new FrameOptionsDirective();
-            configure(options);
-            app.UseFrameOptions(options);
-        }
-
-        /// <summary>
-        /// Adds the Frame-Options and X-Frame-Options headers to responses with content type text/html.
-        /// </summary>
-        /// <param name="app"></param>
-        /// <param name="policy"></param>
-        public static void UseFrameOptions(this IApplicationBuilder app, FrameOptionsPolicy policy = FrameOptionsPolicy.Deny)
-        {
-            if (policy == FrameOptionsPolicy.AllowFrom)
-                throw new ArgumentException("This overload can't be used to configure ALLOW-FROM policy.", nameof(policy));
-
-            app.UseFrameOptions(new FrameOptionsDirective(policy));
-        }
-
-        /// <summary>
-        /// Adds the Frame-Options and X-Frame-Options headers to responses with content type text/html.
-        /// </summary>
-        /// <param name="app"></param>
-        /// <param name="allowFromUri"></param>
-        public static void UseFrameOptions(this IApplicationBuilder app, Uri allowFromUri)
-        {
-            app.UseFrameOptions(new FrameOptionsDirective(allowFromUri));
-        }
-
-
-        internal sealed class FrameOptionsMiddleware
-        {
-            public FrameOptionsMiddleware(RequestDelegate next, FrameOptionsDirective options)
+            context.Response.OnStarting(() =>
             {
-                _next = next;
-                Options = options ?? throw new ArgumentNullException(nameof(options));
-                _headerValue = Options.ToString();
-            }
+                HttpResponse response = context.Response;
 
-            private readonly RequestDelegate _next;
-            private readonly string _headerValue;
-
-            public FrameOptionsDirective Options { get; }
-            
-            public async Task Invoke(HttpContext context)
-            {
-                context.Response.OnStarting(() =>
+                    // check whether it is applicable
+                    if (response.Headers.TryGetValue(HeaderNames.ContentType, out var values) &&
+                    values.Any(v => v.StartsWith("text/html", StringComparison.OrdinalIgnoreCase)))
                 {
-                    HttpResponse response = context.Response;
+                    var effectiveValue = _headerValue;
 
-                    if (response.GetTypedHeaders().ContentType?.MediaType.Equals("text/html", StringComparison.OrdinalIgnoreCase) ?? false)
+                        // check for overwrite
+                        if (context.Items.TryGetValue(nameof(FrameOptionsPolicy), out var policy))
                     {
-                        response.Headers["X-Frame-Options"] = _headerValue;
-                        response.Headers["Frame-Options"] = _headerValue;
+                        effectiveValue = FrameOptionsDirective.ToString((FrameOptionsPolicy)policy);
                     }
 
-                    return Task.CompletedTask;
-                });
+                    response.Headers["X-Frame-Options"] = effectiveValue;
+                    response.Headers["Frame-Options"] = effectiveValue;
+                }
 
-                await _next.Invoke(context);
-            }
+                return Task.CompletedTask;
+            });
+
+            await next.Invoke(context);
         }
     }
 }

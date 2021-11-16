@@ -1,39 +1,56 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Primitives;
+using Microsoft.Net.Http.Headers;
+
 using PeterJuhasz.AspNetCore.Extensions.Security;
+
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
-namespace Microsoft.AspNetCore.Builder
+namespace Microsoft.AspNetCore.Builder;
+
+public record class XUACompatibleOptions(InternetExplorerCompatibiltyMode Mode);
+
+public static partial class AppBuilderExtensions
 {
-    public static partial class AppBuilderExtensions
+    /// <summary>
+    /// Adds the X-UA-Compatible header to each response with text/html media type.
+    /// </summary>
+    /// <param name="app"></param>
+    public static void UseXUACompatible(this IApplicationBuilder app)
     {
-        /// <summary>
-        /// Adds the X-UA-Compatible header to each response with text/html media type.
-        /// </summary>
-        /// <param name="app"></param>
-        /// <param name="mode"></param>
-        public static void UseXUACompatible(this IApplicationBuilder app, InternetExplorerCompatibiltyMode mode = InternetExplorerCompatibiltyMode.Edge)
+        app.UseMiddleware<XUACompatibleMiddleware>();
+    }
+
+    public static IServiceCollection AddXUACompatible(this IServiceCollection services, XUACompatibleOptions options)
+    {
+        services.AddSingleton<XUACompatibleMiddleware>();
+        services.AddSingleton(options);
+        return services;
+    }
+
+    public static IServiceCollection AddXUACompatible(this IServiceCollection services, InternetExplorerCompatibiltyMode mode = InternetExplorerCompatibiltyMode.Edge)
+    {
+        return services.AddXUACompatible(new XUACompatibleOptions(mode));
+    }
+
+
+    internal sealed class XUACompatibleMiddleware : IMiddleware
+    {
+        public XUACompatibleMiddleware(XUACompatibleOptions options)
         {
-            app.UseMiddleware<XUACompatibleMiddleware>(mode);
+            Mode = options.Mode;
+            _headerValue = ConstructHeaderValue(Mode);
         }
 
+        private readonly StringValues _headerValue;
 
-        internal sealed class XUACompatibleMiddleware
-        {
-            public XUACompatibleMiddleware(RequestDelegate next, InternetExplorerCompatibiltyMode mode)
-            {
-                _next = next;
-                Mode = mode;
-                _headerValue = ConstructHeaderValue(Mode);
-            }
+        public InternetExplorerCompatibiltyMode Mode { get; }
 
-            private readonly RequestDelegate _next;
-            private readonly string _headerValue;
-
-            public InternetExplorerCompatibiltyMode Mode { get; }
-
-            private static readonly IReadOnlyDictionary<InternetExplorerCompatibiltyMode, string> HeaderValues = new Dictionary<InternetExplorerCompatibiltyMode, string>
+        private static readonly IReadOnlyDictionary<InternetExplorerCompatibiltyMode, string> HeaderValues = new Dictionary<InternetExplorerCompatibiltyMode, string>
             {
                 { InternetExplorerCompatibiltyMode.Edge, "Edge" },
                 { InternetExplorerCompatibiltyMode.IE5, "5" },
@@ -49,34 +66,41 @@ namespace Microsoft.AspNetCore.Builder
                 { InternetExplorerCompatibiltyMode.EmulateIE11, "EmulateIE11" },
             };
 
-            internal static string ConstructHeaderValue(InternetExplorerCompatibiltyMode mode)
+        internal static string ConstructHeaderValue(InternetExplorerCompatibiltyMode mode)
+        {
+            try
             {
-                try
-                {
-                    return $"IE={HeaderValues[mode]}";
-                }
-                catch (KeyNotFoundException)
-                {
-                    throw new NotSupportedException($"Mode '{mode}' not supported.");
-                }
+                return $"IE={HeaderValues[mode]}";
             }
-
-            public async Task Invoke(HttpContext context)
+            catch (KeyNotFoundException)
             {
-                context.Response.OnStarting(() =>
-                {
-                    HttpResponse response = context.Response;
+                throw new NotSupportedException($"Mode '{mode}' not supported.");
+            }
+        }
 
-                    if (response.GetTypedHeaders().ContentType?.MediaType.Equals("text/html", StringComparison.OrdinalIgnoreCase) ?? false)
+        public async Task InvokeAsync(HttpContext context, RequestDelegate next)
+        {
+            context.Response.OnStarting(() =>
+            {
+                HttpResponse response = context.Response;
+
+                if (response.Headers.TryGetValue(HeaderNames.ContentType, out var values) &&
+                    values.Any(v => v.StartsWith("text/html", StringComparison.OrdinalIgnoreCase)))
+                {
+                    var effectiveValue = _headerValue;
+
+                    if (context.Items.TryGetValue(nameof(InternetExplorerCompatibiltyMode), out var mode))
                     {
-                        response.Headers["X-UA-Compatible"] = _headerValue;
+                        effectiveValue = ConstructHeaderValue((InternetExplorerCompatibiltyMode)mode);
                     }
 
-                    return Task.CompletedTask;
-                });
+                    response.Headers.XUACompatible = effectiveValue;
+                }
 
-                await _next.Invoke(context);
-            }
+                return Task.CompletedTask;
+            });
+
+            await next.Invoke(context);
         }
     }
 }
