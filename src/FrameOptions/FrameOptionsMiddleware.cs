@@ -96,7 +96,7 @@ public static partial class AppBuilderExtensions
 						effectiveValue = FrameOptionsDirective.ToString(policy);
 					}
 
-					response.Headers["X-Frame-Options"] = effectiveValue;
+					response.Headers.XFrameOptions = effectiveValue;
 					response.Headers["Frame-Options"] = effectiveValue;
 				}
 
