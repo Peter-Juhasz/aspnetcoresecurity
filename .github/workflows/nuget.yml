@@ -1,0 +1,66 @@
+name: NuGet
+
+env:
+  DOTNET_VERSION: '10'
+  BUILD_CONFIGURATION: 'Release'
+
+on:
+  push:
+    branches:
+      - master
+    paths-ignore:
+      - docs/**
+      - "**.md"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    permissions:
+      id-token: write
+
+    steps:
+    - uses: actions/checkout@v7
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v6
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}.x
+        dotnet-quality: ga
+
+    - name: Clean
+      run: dotnet clean
+    - name: NuGet clear cache
+      run: dotnet nuget locals all --clear
+
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Check dependencies for deprecated packages
+      run: dotnet list package --deprecated
+    - name: Check dependencies for vulnerable packages
+      run: dotnet list package --vulnerable --include-transitive
+
+    - name: Build
+      run: dotnet build --no-restore --configuration ${{ env.BUILD_CONFIGURATION }}
+
+    - name: Pack
+      run: dotnet pack --no-build --configuration ${{ env.BUILD_CONFIGURATION }} -p:IncludeSymbols=true -p:SymbolPackageFormat=snupkg
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v7
+      if: always()
+      with:
+        name: packages
+        path: |
+          src/*/bin/${{ env.BUILD_CONFIGURATION }}/*.nupkg
+          src/*/bin/${{ env.BUILD_CONFIGURATION }}/*.snupkg
+
+    - name: NuGet Authenticate
+      uses: NuGet/login@v1
+      id: login
+      with:
+        user: Peter.Juhasz
+
+    - name: NuGet Push
+      run: dotnet nuget push "src/*/bin/${{ env.BUILD_CONFIGURATION }}/*.nupkg" --source https://api.nuget.org/v3/index.json --api-key ${{steps.login.outputs.NUGET_API_KEY}} --skip-duplicate
+      if: github.ref == 'refs/heads/master' && github.event_name != 'pull_request'
