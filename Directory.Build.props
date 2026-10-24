@@ -1,0 +1,10 @@
+﻿<Project>
+	<PropertyGroup>
+		<EnableNETAnalyzers>true</EnableNETAnalyzers>
+		<AccelerateBuildsInVisualStudio>true</AccelerateBuildsInVisualStudio>
+		<MSTestAnalysisMode>Recommended</MSTestAnalysisMode>
+		<AnalysisLevel>latest</AnalysisLevel>
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+			<NoWarn>$(NoWarn);CS1591;CS1573</NoWarn>
+	</PropertyGroup>
+</Project>

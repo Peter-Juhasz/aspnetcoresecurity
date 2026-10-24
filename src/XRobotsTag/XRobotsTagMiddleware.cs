@@ -37,7 +37,6 @@ public static partial class AppBuilderExtensions
     /// Adds the X-Robots-Tag header to all responses.
     /// </summary>
     /// <param name="app"></param>
-    /// <param name="directives"></param>
     public static void UseXRobotsTag(this IApplicationBuilder app)
     {
         app.UseMiddleware<XRobotsTagMiddleware>();

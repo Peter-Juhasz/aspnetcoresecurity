@@ -16,7 +16,6 @@ public static partial class AppBuilderExtensions
     /// Adds the Permissions-Policy header to responses with content type text/html.
     /// </summary>
     /// <param name="app"></param>
-    /// <param name="options"></param>
     public static void UsePermissionsPolicy(this IApplicationBuilder app)
     {
         app.UseMiddleware<PermissionsPolicyMiddleware>();

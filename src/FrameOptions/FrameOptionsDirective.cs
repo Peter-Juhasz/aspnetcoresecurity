@@ -39,14 +39,15 @@ public class FrameOptionsDirective
         this.AllowFromUri = uri;
     }
 
-    [Obsolete]
-    public override string ToString() => this.Policy switch
+#pragma warning disable CS0612 // Type or member is obsolete
+	public override string ToString() => this.Policy switch
     {
         FrameOptionsPolicy.AllowFrom => $"ALLOW-FROM {this.AllowFromUri!}",
         _ => ToString(Policy),
     };
+#pragma warning restore CS0612 // Type or member is obsolete
 
-    public static string ToString(FrameOptionsPolicy policy) => policy switch
+	public static string ToString(FrameOptionsPolicy policy) => policy switch
     {
         FrameOptionsPolicy.Deny => "DENY",
         FrameOptionsPolicy.SameOrigin => "SAMEORIGIN",

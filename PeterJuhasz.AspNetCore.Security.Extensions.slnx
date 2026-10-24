@@ -1,0 +1,31 @@
+<Solution>
+  <Folder Name="/Middlewares/">
+    <Project Path="src/ContentSecurityPolicy/ContentSecurityPolicy.csproj" />
+    <Project Path="src/ExpectCT/ExpectCT.csproj" />
+    <Project Path="src/FeaturePolicy/FeaturePolicy.csproj" />
+    <Project Path="src/FrameOptions/FrameOptions.csproj" />
+    <Project Path="src/HttpPublicKeyPinning/HttpPublicKeyPinning.csproj" />
+    <Project Path="src/PermissionsPolicy/PermissionsPolicy.csproj" />
+    <Project Path="src/RedirectPolicy/RedirectPolicy.csproj" />
+    <Project Path="src/ReferrerPolicy/ReferrerPolicy.csproj" />
+    <Project Path="src/ReportTo/ReportTo.csproj" />
+    <Project Path="src/RequireAuthenticatedIdentity/RequireAuthenticatedIdentity.csproj" />
+    <Project Path="src/XContentTypeOptions/XContentTypeOptions.csproj" />
+    <Project Path="src/XDownloadOptions/XDownloadOptions.csproj" />
+    <Project Path="src/XPermittedCrossDomainPolicies/XPermittedCrossDomainPolicies.csproj" />
+    <Project Path="src/XRobotsTag/XRobotsTag.csproj" />
+    <Project Path="src/XUACompatible/XUACompatible.csproj" />
+    <Project Path="src/XXSSProtection/XXSSProtection.csproj" />
+  </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path="CHANGELOG.md" />
+    <File Path="README.md" />
+    <File Path="src/PeterJuhasz.AspNetCore.Security.Extensions/PeterJuhasz.AspNetCore.Security.Extensions.nuspec" />
+  </Folder>
+  <Folder Name="/TagHelpers/">
+    <Project Path="src/NoOpener/NoOpener.csproj" />
+    <Project Path="src/SubresourceIntegrity/SubresourceIntegrity.csproj" />
+    <Project Path="src/UpgradeInsecureResources/UpgradeInsecureResources.csproj" />
+  </Folder>
+</Solution>

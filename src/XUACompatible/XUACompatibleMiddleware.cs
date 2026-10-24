@@ -89,9 +89,9 @@ public static partial class AppBuilderExtensions
                 {
                     var effectiveValue = _headerValue;
 
-                    if (context.Items.TryGetValue(nameof(InternetExplorerCompatibiltyMode), out var mode))
+                    if (context.Items.TryGetValue(nameof(InternetExplorerCompatibiltyMode), out var modeObj) && modeObj is InternetExplorerCompatibiltyMode mode)
                     {
-                        effectiveValue = ConstructHeaderValue((InternetExplorerCompatibiltyMode)mode);
+                        effectiveValue = ConstructHeaderValue(mode);
                     }
 
                     response.Headers.XUACompatible = effectiveValue;

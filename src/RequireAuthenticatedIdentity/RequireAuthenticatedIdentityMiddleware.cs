@@ -26,7 +26,7 @@ public static partial class AppBuilderExtensions
     {
         public async Task InvokeAsync(HttpContext context, RequestDelegate next)
         {
-            if (!context.User?.Identity.IsAuthenticated ?? false)
+            if (!context.User?.Identity?.IsAuthenticated ?? false)
             {
                 context.Response.StatusCode = StatusCodes.Status401Unauthorized;
                 return;
