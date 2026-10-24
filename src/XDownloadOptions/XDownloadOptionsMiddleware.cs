@@ -41,7 +41,7 @@ public static partial class AppBuilderExtensions
                 HttpResponse response = context.Response;
 
                 if (response.Headers.TryGetValue(HeaderNames.ContentDisposition, out var values) &&
-                    values.Any(v => v.StartsWith("attachment", StringComparison.OrdinalIgnoreCase)))
+                    values.Any(v => v?.StartsWith("attachment", StringComparison.OrdinalIgnoreCase) ?? false))
                 {
                     response.Headers["X-Download-Options"] = HeaderValue;
                 }

@@ -85,7 +85,7 @@ public static partial class AppBuilderExtensions
                 HttpResponse response = context.Response;
 
                 if (response.Headers.TryGetValue(HeaderNames.ContentType, out var values) &&
-                    values.Any(v => v.StartsWith("text/html", StringComparison.OrdinalIgnoreCase)))
+                    values.Any(v => v?.StartsWith("text/html", StringComparison.OrdinalIgnoreCase) ?? false))
                 {
                     var effectiveValue = _headerValue;
 
