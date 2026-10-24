@@ -64,3 +64,37 @@ jobs:
     - name: NuGet Push
       run: dotnet nuget push "src/*/bin/${{ env.BUILD_CONFIGURATION }}/*.nupkg" --source https://api.nuget.org/v3/index.json --api-key ${{steps.login.outputs.NUGET_API_KEY}} --skip-duplicate
       if: github.ref == 'refs/heads/master' && github.event_name != 'pull_request'
+
+  # nuspec-only packages can't be packed by dotnet pack, and nuget.exe needs Windows
+  meta:
+    needs: build
+    runs-on: windows-latest
+
+    permissions:
+      id-token: write
+
+    steps:
+    - uses: actions/checkout@v7
+
+    - name: Setup NuGet
+      uses: NuGet/setup-nuget@v2
+
+    - name: Pack
+      run: nuget pack src/PeterJuhasz.AspNetCore.Security.Extensions/PeterJuhasz.AspNetCore.Security.Extensions.nuspec -OutputDirectory artifacts
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v7
+      if: always()
+      with:
+        name: meta-package
+        path: artifacts/*.nupkg
+
+    - name: NuGet Authenticate
+      uses: NuGet/login@v1
+      id: login
+      with:
+        user: Peter.Juhasz
+
+    - name: NuGet Push
+      run: dotnet nuget push "artifacts/*.nupkg" --source https://api.nuget.org/v3/index.json --api-key ${{steps.login.outputs.NUGET_API_KEY}} --skip-duplicate
+      if: github.ref == 'refs/heads/master' && github.event_name != 'pull_request'
