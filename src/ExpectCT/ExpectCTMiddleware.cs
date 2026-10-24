@@ -15,11 +15,13 @@ public static partial class AppBuilderExtensions
     /// Adds the Expect-CT header which allows sites to opt in to reporting and/or enforcement of Certificate Transparency requirements.
     /// </summary>
     /// <param name="app"></param>
+    [Obsolete("Avoid using this feature in new projects. This feature may be a candidate for removal from web standards or browsers. See https://chromestatus.com/feature/6244547273687040 and https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Expect-CT")]
     public static void UseExpectCT(this IApplicationBuilder app)
     {
         app.UseMiddleware<ExpectCTMiddleware>();
     }
 
+    [Obsolete("Avoid using this feature in new projects. This feature may be a candidate for removal from web standards or browsers. See https://chromestatus.com/feature/6244547273687040 and https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Expect-CT")]
     public static IServiceCollection AddExpectCT(this IServiceCollection services, ExpectCTOptions options)
     {
         services.AddSingleton<ExpectCTMiddleware>();
@@ -34,6 +36,7 @@ public static partial class AppBuilderExtensions
     /// <param name="enforce">Enforce Certificate Transparency.</param>
     /// <param name="maxAge">Specifies the number of seconds that the browser should cache and apply the received policy.</param>
     /// <param name="reportUri">Sets the URI the browser is going to report violations to.</param>
+    [Obsolete("Avoid using this feature in new projects. This feature may be a candidate for removal from web standards or browsers. See https://chromestatus.com/feature/6244547273687040 and https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Expect-CT")]
     public static IServiceCollection AddExpectCT(
         this IServiceCollection services,
         bool enforce = true,
