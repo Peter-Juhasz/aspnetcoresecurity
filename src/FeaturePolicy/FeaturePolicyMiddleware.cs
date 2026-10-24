@@ -14,14 +14,14 @@ public static partial class AppBuilderExtensions
     /// Adds the Feature-Policy header to responses with content type text/html.
     /// </summary>
     /// <param name="app"></param>
-    [Obsolete]
+    [Obsolete("Use Permissions-Policy instead.")]
     public static void UseFeaturePolicy(this IApplicationBuilder app)
     {
         app.UseMiddleware<FeaturePolicyMiddleware>();
     }
 
-    [Obsolete]
-    public static IServiceCollection AddFeaturePolicy(this IServiceCollection services, FeatureDirectiveList options)
+	[Obsolete("Use Permissions-Policy instead.")]
+	public static IServiceCollection AddFeaturePolicy(this IServiceCollection services, FeatureDirectiveList options)
     {
         services.AddSingleton<FeaturePolicyMiddleware>();
         services.AddSingleton(options);
