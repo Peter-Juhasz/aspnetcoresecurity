@@ -6,6 +6,9 @@ dotnet add package PeterJuhasz.AspNetCore.Security.Extensions
 
 Contains a set of high-performance extensions which can help you make your web applications more secure. You can also install each feature invididually as a separate package.
 
+> [!NOTE]
+> Preparing new release for .NET 11
+
 ## Table of contents
 
 Tag Helpers
@@ -62,7 +65,7 @@ app.UseContentSecurityPolicy();
 
 Use the built-in support in ASP.NET Core 3.0.
 
-### Expect-CT
+### Expect-CT (deprecated)
 
 Adds the `Expect-CT` header which allows sites to opt in to reporting and/or enforcement of Certificate Transparency requirements.
 
