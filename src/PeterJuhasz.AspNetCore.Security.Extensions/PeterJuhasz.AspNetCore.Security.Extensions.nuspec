@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
     <id>PeterJuhasz.AspNetCore.Security.Extensions</id>
-    <version>6.0.2</version>
+    <version>10.0.0</version>
     <authors>Peter Juhasz</authors>
     <owners>Peter Juhasz</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -13,26 +13,26 @@
     <copyright>Peter Juhasz</copyright>
     <tags>asp.net core security xss csp</tags>
     <dependencies>
-      <group targetFramework="net6.0">
-        <dependency id="PeterJuhasz.AspNetCore.Security.Extensions.XDownloadOptions" version="6.0.0" exclude="Build,Analyzers" />
-        <dependency id="PeterJuhasz.AspNetCore.Security.Extensions.XUACompatible" version="6.0.0" exclude="Build,Analyzers" />
-        <dependency id="PeterJuhasz.AspNetCore.Security.Extensions.ContentSecurityPolicy" version="6.0.0" exclude="Build,Analyzers" />
-        <dependency id="PeterJuhasz.AspNetCore.Security.Extensions.XPermittedCrossDomainPolicies" version="6.0.0" exclude="Build,Analyzers" />
-        <dependency id="PeterJuhasz.AspNetCore.Security.Extensions.XContentTypeOptions" version="6.0.0" exclude="Build,Analyzers" />
-		<dependency id="PeterJuhasz.AspNetCore.Security.Extensions.FrameOptions" version="6.0.0" exclude="Build,Analyzers" />
-        <dependency id="PeterJuhasz.AspNetCore.Security.Extensions.XRobotsTag" version="6.0.1" exclude="Build,Analyzers" />
-        <dependency id="PeterJuhasz.AspNetCore.Security.Extensions.XXSSProtection" version="6.0.0" exclude="Build,Analyzers" />
-        <dependency id="PeterJuhasz.AspNetCore.Security.Extensions.ReferrerPolicy" version="6.0.0" exclude="Build,Analyzers" />
-		<dependency id="PeterJuhasz.AspNetCore.Security.Extensions.HttpPublicKeyPinning" version="6.0.0" exclude="Build,Analyzers" />
-        <dependency id="PeterJuhasz.AspNetCore.Security.Extensions.RedirectPolicy" version="6.0.0" exclude="Build,Analyzers" />
-        <dependency id="PeterJuhasz.AspNetCore.Security.Extensions.ExpectCT" version="6.0.0" exclude="Build,Analyzers" />
-		<dependency id="PeterJuhasz.AspNetCore.Security.Extensions.FeaturePolicy" version="6.0.0" exclude="Build,Analyzers" />
-        <dependency id="PeterJuhasz.AspNetCore.Security.Extensions.PermissionsPolicy" version="6.0.1" exclude="Build,Analyzers" />
-        <dependency id="PeterJuhasz.AspNetCore.Security.Extensions.RequireAuthenticatedIdentity" version="6.0.0" exclude="Build,Analyzers" />
-        <dependency id="PeterJuhasz.AspNetCore.Security.Extensions.NoOpener" version="6.0.0" exclude="Build,Analyzers" />
-        <dependency id="PeterJuhasz.AspNetCore.Security.Extensions.SubresourceIntegrity" version="6.0.0" exclude="Build,Analyzers" />
-        <dependency id="PeterJuhasz.AspNetCore.Security.Extensions.UpgradeInsecureResources" version="6.0.0" exclude="Build,Analyzers" />
-        <dependency id="PeterJuhasz.AspNetCore.Security.Extensions.ReportTo" version="6.0.0" exclude="Build,Analyzers" />
+      <group targetFramework="net10.0">
+        <dependency id="PeterJuhasz.AspNetCore.Security.Extensions.XDownloadOptions" version="10.0.0" exclude="Build,Analyzers" />
+        <dependency id="PeterJuhasz.AspNetCore.Security.Extensions.XUACompatible" version="10.0.0" exclude="Build,Analyzers" />
+        <dependency id="PeterJuhasz.AspNetCore.Security.Extensions.ContentSecurityPolicy" version="10.0.0" exclude="Build,Analyzers" />
+        <dependency id="PeterJuhasz.AspNetCore.Security.Extensions.XPermittedCrossDomainPolicies" version="10.0.0" exclude="Build,Analyzers" />
+        <dependency id="PeterJuhasz.AspNetCore.Security.Extensions.XContentTypeOptions" version="10.0.0" exclude="Build,Analyzers" />
+        <dependency id="PeterJuhasz.AspNetCore.Security.Extensions.FrameOptions" version="10.0.0" exclude="Build,Analyzers" />
+        <dependency id="PeterJuhasz.AspNetCore.Security.Extensions.XRobotsTag" version="10.0.0" exclude="Build,Analyzers" />
+        <dependency id="PeterJuhasz.AspNetCore.Security.Extensions.XXSSProtection" version="10.0.0" exclude="Build,Analyzers" />
+        <dependency id="PeterJuhasz.AspNetCore.Security.Extensions.ReferrerPolicy" version="10.0.0" exclude="Build,Analyzers" />
+        <dependency id="PeterJuhasz.AspNetCore.Security.Extensions.HttpPublicKeyPinning" version="10.0.0" exclude="Build,Analyzers" />
+        <dependency id="PeterJuhasz.AspNetCore.Security.Extensions.RedirectPolicy" version="10.0.0" exclude="Build,Analyzers" />
+        <dependency id="PeterJuhasz.AspNetCore.Security.Extensions.ExpectCT" version="10.0.0" exclude="Build,Analyzers" />
+        <dependency id="PeterJuhasz.AspNetCore.Security.Extensions.FeaturePolicy" version="10.0.0" exclude="Build,Analyzers" />
+        <dependency id="PeterJuhasz.AspNetCore.Security.Extensions.PermissionsPolicy" version="10.0.0" exclude="Build,Analyzers" />
+        <dependency id="PeterJuhasz.AspNetCore.Security.Extensions.RequireAuthenticatedIdentity" version="10.0.0" exclude="Build,Analyzers" />
+        <dependency id="PeterJuhasz.AspNetCore.Security.Extensions.NoOpener" version="10.0.0" exclude="Build,Analyzers" />
+        <dependency id="PeterJuhasz.AspNetCore.Security.Extensions.SubresourceIntegrity" version="10.0.0" exclude="Build,Analyzers" />
+        <dependency id="PeterJuhasz.AspNetCore.Security.Extensions.UpgradeInsecureResources" version="10.0.0" exclude="Build,Analyzers" />
+        <dependency id="PeterJuhasz.AspNetCore.Security.Extensions.ReportTo" version="10.0.0" exclude="Build,Analyzers" />
       </group>
     </dependencies>
   </metadata>
