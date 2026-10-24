@@ -8,7 +8,6 @@ using Microsoft.Net.Http.Headers;
 using PeterJuhasz.AspNetCore.Extensions.Security;
 
 using System;
-using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -52,7 +51,7 @@ public static partial class AppBuilderExtensions
                 HttpResponse response = context.Response;
 
                 if (response.Headers.TryGetValue(HeaderNames.ContentType, out var values) &&
-                    values.Any(v => v?.StartsWith("text/html", StringComparison.OrdinalIgnoreCase) ?? false))
+                    IsHtml(values))
                 {
                     var options = Directives;
                     var headerValue = _headerValue;
@@ -77,6 +76,19 @@ public static partial class AppBuilderExtensions
             });
 
             await next.Invoke(context);
+        }
+
+        private static bool IsHtml(StringValues values)
+        {
+            foreach (var value in values)
+            {
+                if (value?.StartsWith("text/html", StringComparison.OrdinalIgnoreCase) is true)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }
