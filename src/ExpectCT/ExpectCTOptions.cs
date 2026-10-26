@@ -3,37 +3,27 @@ using System.Collections.Generic;
 
 namespace PeterJuhasz.AspNetCore.Extensions.Security;
 
-public class ExpectCTOptions
+/// <summary>
+/// Represents the options of the Expect-CT header.
+/// </summary>
+/// <param name="Enforce">Whether to enforce the policy or keep it in report-only mode.</param>
+/// <param name="MaxAge">The time that the browser should cache and apply the received policy.</param>
+/// <param name="ReportUri">The URI the browser is going to report violations to.</param>
+public record class ExpectCTOptions(bool Enforce = true, TimeSpan? MaxAge = null, Uri? ReportUri = null)
 {
-    /// <summary>
-    /// Gets or sets whether enforce policy or keep it in report-only mode.
-    /// </summary>
-    public bool Enforce { get; set; } = true;
-
-    /// <summary>
-    /// Gets or sets the time that the browser should cache and apply the received policy.
-    /// </summary>
-    public TimeSpan? MaxAge { get; set; } = null;
-
-    /// <summary>
-    /// Gets or sets the URI the browser is going to report violations to.
-    /// </summary>
-    public Uri? ReportUri { get; set; }
-
-
     public override string ToString()
     {
-        IList<string> directives = new List<string>();
+        var directives = new List<string>();
 
-        if (this.Enforce)
+        if (Enforce)
             directives.Add("enforce");
 
-        if (this.MaxAge != null)
-            directives.Add($"max-age={(int)this.MaxAge.Value.TotalSeconds}");
+        if (MaxAge is { } maxAge)
+            directives.Add($"max-age={(int)maxAge.TotalSeconds}");
 
-        if (this.ReportUri != null)
-            directives.Add($"report-uri={this.ReportUri}");
+        if (ReportUri is not null)
+            directives.Add($"report-uri={ReportUri}");
 
-        return String.Join(", ", directives);
+        return string.Join(", ", directives);
     }
 }

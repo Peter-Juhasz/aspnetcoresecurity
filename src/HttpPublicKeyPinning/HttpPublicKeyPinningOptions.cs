@@ -1,59 +1,53 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text;
 
 namespace PeterJuhasz.AspNetCore.Extensions.Security;
 
-public class HttpPublicKeyPinningOptions
+/// <summary>
+/// Represents a pinned public key fingerprint.
+/// </summary>
+public record class HttpPublicKeyPin(HttpPublicKeyPinningHashAlgorithm Algorithm, string Base64Fingerprint);
+
+/// <summary>
+/// Represents the options of the Public-Key-Pins header.
+/// </summary>
+/// <param name="MaxAge">The time, that the browser should remember that this site is only to be accessed using one of the pinned keys.</param>
+/// <param name="Pins">The pinned keys.</param>
+/// <param name="IncludeSubDomains">Whether this rule applies to all of the site's subdomains as well.</param>
+/// <param name="ReportUri">The URI pin validation failures are reported to.</param>
+public record class HttpPublicKeyPinningOptions(
+    TimeSpan MaxAge,
+    IReadOnlyList<HttpPublicKeyPin> Pins,
+    bool IncludeSubDomains = true,
+    Uri? ReportUri = null
+)
 {
-    /// <summary>
-    /// The time, that the browser should remember that this site is only to be accessed using one of the pinned keys. 
-    /// </summary>
-    public TimeSpan MaxAge { get; set; } = TimeSpan.FromDays(365);
 
     /// <summary>
-    /// If this optional parameter is specified, this rule applies to all of the site's subdomains as well.
+    /// Returns a copy with the fingerprint of a certificate added to the pinned keys.
     /// </summary>
-    public bool IncludeSubDomains { get; set; } = true;
-
-    /// <summary>
-    /// If this optional parameter is specified, pin validation failures are reported to the given URL.
-    /// </summary>
-    public Uri? ReportUri { get; set; }
-
-    internal ICollection<Pinning> Pins { get; private set; } = new Collection<Pinning>();
-
-
-    /// <summary>
-    /// Adds the fingerprint of a certificate to the pinned keys.
-    /// </summary>
-    /// <param name="base64Fingerprint"></param>
-    /// <param name="algorithm"></param>
-    /// <returns></returns>
     public HttpPublicKeyPinningOptions Pin(string base64Fingerprint, HttpPublicKeyPinningHashAlgorithm algorithm = HttpPublicKeyPinningHashAlgorithm.Sha256)
     {
-        this.Pins.Add(new Pinning(algorithm, base64Fingerprint));
-        return this;
+        ArgumentNullException.ThrowIfNull(base64Fingerprint);
+        return this with { Pins = [.. Pins, new(Algorithm: algorithm, Base64Fingerprint: base64Fingerprint)] };
     }
 
     /// <summary>
-    /// Adds the fingerprint of a certificate to the pinned keys.
+    /// Returns a copy with the fingerprint of a certificate added to the pinned keys.
     /// </summary>
-    /// <param name="fingerprint"></param>
-    /// <param name="algorithm"></param>
-    /// <returns></returns>
     public HttpPublicKeyPinningOptions Pin(byte[] fingerprint, HttpPublicKeyPinningHashAlgorithm algorithm = HttpPublicKeyPinningHashAlgorithm.Sha256)
     {
-        return this.Pin(Convert.ToBase64String(fingerprint), algorithm);
+        return Pin(Convert.ToBase64String(fingerprint), algorithm);
     }
 
 
     public override string ToString()
     {
-        StringBuilder builder = new StringBuilder();
+        var builder = new StringBuilder();
 
-        foreach (var item in this.Pins)
+        foreach (var item in Pins)
         {
             if (builder.Length > 0)
                 builder.Append("; ");
@@ -61,28 +55,14 @@ public class HttpPublicKeyPinningOptions
             builder.Append($"pin-{item.Algorithm.ToString().ToLowerInvariant()}=\"{item.Base64Fingerprint}\"");
         }
 
-        builder.Append($"; max-age={this.MaxAge.TotalSeconds:F0}");
+        builder.Append($"; max-age={MaxAge.TotalSeconds:F0}");
 
-        if (this.IncludeSubDomains)
+        if (IncludeSubDomains)
             builder.Append("; includeSubDomains");
 
-        if (this.ReportUri != null)
-            builder.Append($"; report-uri=\"{this.ReportUri}\"");
+        if (ReportUri is not null)
+            builder.Append($"; report-uri=\"{ReportUri}\"");
 
         return builder.ToString();
-    }
-
-
-    internal sealed class Pinning
-    {
-        public Pinning(HttpPublicKeyPinningHashAlgorithm algorithm, string base64Fingerprint)
-        {
-            this.Algorithm = algorithm;
-            this.Base64Fingerprint = base64Fingerprint ?? throw new ArgumentNullException(nameof(base64Fingerprint));
-        }
-
-        public HttpPublicKeyPinningHashAlgorithm Algorithm { get; private set; }
-
-        public string Base64Fingerprint { get; private set; }
     }
 }

@@ -43,7 +43,7 @@ public class FeatureDirectiveList : IEnumerable<FeatureDirective>
 
     protected FeatureDirectiveList AddCore(PolicyFeature directive, string value)
     {
-        Items.Add(new FeatureDirective(directive, value));
+        Items.Add(new FeatureDirective(Directive: directive, AllowList: value));
         return this;
     }
 

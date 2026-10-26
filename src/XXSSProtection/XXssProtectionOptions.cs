@@ -3,40 +3,26 @@ using System.Text;
 
 namespace PeterJuhasz.AspNetCore.Extensions.Security;
 
-public class XXssProtectionOptions
+/// <summary>
+/// Represents the options of the X-XSS-Protection header.
+/// </summary>
+/// <param name="Enabled">Whether XSS protection is enabled.</param>
+/// <param name="Block">Whether to block the page instead of sanitizing it.</param>
+/// <param name="ReportUri">The URI the browser is going to report violations to.</param>
+public record class XXssProtectionOptions(bool Enabled = true, bool Block = true, Uri? ReportUri = null)
 {
-    /// <summary>
-    /// Gets or sets whether XSS protection is enabled.
-    /// </summary>
-    public bool Enabled { get; set; } = true;
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public bool Block { get; set; } = true;
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public Uri? ReportUri { get; set; }
-
-
     public override string ToString()
     {
-        StringBuilder builder = new StringBuilder();
+        if (!Enabled)
+            return "0";
 
-        if (this.Enabled)
-        {
-            builder.Append("1");
+        var builder = new StringBuilder("1");
 
-            if (this.Block)
-                builder.Append("; mode=block");
+        if (Block)
+            builder.Append("; mode=block");
 
-            if (this.ReportUri != null)
-                builder.Append($"report={this.ReportUri}");
-        }
-        else
-            builder.Append("0");
+        if (ReportUri is not null)
+            builder.Append($"report={ReportUri}");
 
         return builder.ToString();
     }

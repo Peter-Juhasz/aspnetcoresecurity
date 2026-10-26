@@ -44,12 +44,7 @@ public static partial class AppBuilderExtensions
         Uri? reportUri = null
     )
     {
-        return services.AddExpectCT(new ExpectCTOptions
-        {
-            Enforce = enforce,
-            MaxAge = maxAge,
-            ReportUri = reportUri,
-        });
+        return services.AddExpectCT(new ExpectCTOptions(Enforce: enforce, MaxAge: maxAge, ReportUri: reportUri));
     }
 
 

@@ -46,12 +46,7 @@ public static partial class AppBuilderExtensions
         Uri? reportUri = null
     )
     {
-        services.AddXXSSProtection(new XXssProtectionOptions
-        {
-            Enabled = enabled,
-            Block = block,
-            ReportUri = reportUri,
-        });
+        services.AddXXSSProtection(new XXssProtectionOptions(Enabled: enabled, Block: block, ReportUri: reportUri));
         return services;
     }
 

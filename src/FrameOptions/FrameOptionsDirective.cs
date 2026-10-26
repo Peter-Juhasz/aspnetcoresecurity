@@ -2,52 +2,25 @@
 
 namespace PeterJuhasz.AspNetCore.Extensions.Security;
 
-public class FrameOptionsDirective
+/// <summary>
+/// Represents the value of the X-Frame-Options header.
+/// </summary>
+/// <param name="Policy">The framing policy.</param>
+/// <param name="AllowFromUri">The allowed origin, used only with <see cref="FrameOptionsPolicy.AllowFrom"/>.</param>
+public record class FrameOptionsDirective(
+    FrameOptionsPolicy Policy = FrameOptionsPolicy.Deny,
+    Uri? AllowFromUri = null
+)
 {
-    public FrameOptionsDirective(FrameOptionsPolicy policy = FrameOptionsPolicy.Deny)
-    {
-        this.Policy = policy;
-    }
-
-    [Obsolete]
-    public FrameOptionsDirective(Uri allowFromUri)
-    {
-        this.AllowFrom(allowFromUri);
-    }
-
-    public FrameOptionsPolicy Policy { get; private set; } = FrameOptionsPolicy.Deny;
-
-    public Uri? AllowFromUri { get; private set; }
-
-
-    public void Deny()
-    {
-        this.Policy = FrameOptionsPolicy.Deny;
-        this.AllowFromUri = null;
-    }
-
-    public void SameOrigin()
-    {
-        this.Policy = FrameOptionsPolicy.SameOrigin;
-        this.AllowFromUri = null;
-    }
-
-    [Obsolete]
-    public void AllowFrom(Uri uri)
-    {
-        this.Policy = FrameOptionsPolicy.AllowFrom;
-        this.AllowFromUri = uri;
-    }
-
 #pragma warning disable CS0612 // Type or member is obsolete
-	public override string ToString() => this.Policy switch
+    public override string ToString() => Policy switch
     {
-        FrameOptionsPolicy.AllowFrom => $"ALLOW-FROM {this.AllowFromUri!}",
+        FrameOptionsPolicy.AllowFrom => $"ALLOW-FROM {AllowFromUri!}",
         _ => ToString(Policy),
     };
 #pragma warning restore CS0612 // Type or member is obsolete
 
-	public static string ToString(FrameOptionsPolicy policy) => policy switch
+    public static string ToString(FrameOptionsPolicy policy) => policy switch
     {
         FrameOptionsPolicy.Deny => "DENY",
         FrameOptionsPolicy.SameOrigin => "SAMEORIGIN",

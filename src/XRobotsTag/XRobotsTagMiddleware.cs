@@ -27,10 +27,7 @@ public static partial class AppBuilderExtensions
                 : RobotsTagDirectives.All
         ;
 
-        return services.AddXRobotsTag(new RobotsTagDirectiveList
-        {
-            Directives = directives,
-        });
+        return services.AddXRobotsTag(new RobotsTagDirectiveList(Directives: directives));
     }
 
     /// <summary>

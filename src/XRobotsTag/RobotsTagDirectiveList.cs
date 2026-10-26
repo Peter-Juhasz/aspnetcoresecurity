@@ -4,73 +4,52 @@ using System.Linq;
 
 namespace PeterJuhasz.AspNetCore.Extensions.Security;
 
-public class RobotsTagDirectiveList
+/// <summary>
+/// Represents the value of the X-Robots-Tag header.
+/// </summary>
+/// <param name="UserAgent">The user agent the directives apply to.</param>
+/// <param name="Directives">Directives can be used to control indexing and serving.</param>
+/// <param name="UnavailableAfter">Do not show this page in search results after the specified date/time.</param>
+/// <param name="MaxSnippet">Use a maximum of [number] characters as a textual snippet for this search result.</param>
+/// <param name="MaxVideoPreview">Use a maximum of [number] seconds as a video snippet for videos on this page in search results.</param>
+/// <param name="MaxImagePreview">Set the maximum size of an image preview for this page in a search results.</param>
+public record class RobotsTagDirectiveList(
+    string? UserAgent = null,
+    RobotsTagDirectives? Directives = RobotsTagDirectives.All,
+    DateTimeOffset? UnavailableAfter = null,
+    int? MaxSnippet = null,
+    int? MaxVideoPreview = null,
+    RobotsTxtImagePreviewSize? MaxImagePreview = null
+)
 {
-    /// <summary>
-    /// Use a maximum of [number] characters as a textual snippet for this search result.
-    /// </summary>
-    public string? UserAgent { get; set; }
-
-    /// <summary>
-    /// Directives can be used to control indexing and serving.
-    /// </summary>
-    public RobotsTagDirectives? Directives { get; set; } = RobotsTagDirectives.All;
-
-    /// <summary>
-    /// Do not show this page in search results after the specified date/time.
-    /// </summary>
-    public DateTimeOffset? UnavailableAfter { get; set; }
-
-    /// <summary>
-    /// Use a maximum of [number] characters as a textual snippet for this search result.
-    /// </summary>
-    public int? MaxSnippet { get; set; }
-
-    /// <summary>
-    /// Use a maximum of [number] seconds as a video snippet for videos on this page in search results.
-    /// </summary>
-    public int? MaxVideoPreview { get; set; }
-
-    /// <summary>
-    /// Set the maximum size of an image preview for this page in a search results.
-    /// </summary>
-    public RobotsTxtImagePreviewSize? MaxImagePreview { get; set; }
-
     public override string ToString()
     {
-        ICollection<string> directives = new HashSet<string>();
+        var directives = new HashSet<string>();
 
-        if (this.Directives == null ||
-            this.Directives.Value == default ||
-            this.Directives.Value.HasFlag(RobotsTagDirectives.All))
+        if (Directives is not { } flags || flags == default || flags.HasFlag(RobotsTagDirectives.All))
         {
             directives.Add("all");
         }
         else
         {
-            foreach (var directive in Enum.GetValues(typeof(RobotsTagDirectives)).Cast<RobotsTagDirectives>()
-                .Where(d => this.Directives.Value.HasFlag(d))
-            )
+            foreach (var directive in Enum.GetValues<RobotsTagDirectives>().Where(d => flags.HasFlag(d)))
                 directives.Add(directive.ToString().ToLowerInvariant());
         }
 
-        if (this.UnavailableAfter != null)
-            directives.Add($"unavailable_after: {this.UnavailableAfter.Value.UtcDateTime:dddd, d-MMM-yyyy H:mm:ss UTC}");
+        if (UnavailableAfter is { } unavailableAfter)
+            directives.Add($"unavailable_after: {unavailableAfter.UtcDateTime:dddd, d-MMM-yyyy H:mm:ss UTC}");
 
-        if (this.MaxSnippet != null)
-            directives.Add($"max-snippet:{MaxSnippet}");
+        if (MaxSnippet is { } maxSnippet)
+            directives.Add($"max-snippet:{maxSnippet}");
 
-        if (this.MaxVideoPreview != null)
-            directives.Add($"max-video-preview:{MaxVideoPreview}");
+        if (MaxVideoPreview is { } maxVideoPreview)
+            directives.Add($"max-video-preview:{maxVideoPreview}");
 
-        if (this.MaxImagePreview != null)
-            directives.Add($"max-image-preview:{MaxImagePreview.Value.ToString().ToLowerInvariant()}");
+        if (MaxImagePreview is { } maxImagePreview)
+            directives.Add($"max-image-preview:{maxImagePreview.ToString().ToLowerInvariant()}");
 
-        if (this.UserAgent != null)
-        {
-            return $"{UserAgent}: {String.Join(", ", directives)}";
-        }
+        var value = string.Join(", ", directives);
 
-        return String.Join(", ", directives);
+        return UserAgent is null ? value : $"{UserAgent}: {value}";
     }
 }

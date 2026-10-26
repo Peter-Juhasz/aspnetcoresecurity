@@ -7,32 +7,22 @@ using System.Text.Json;
 
 namespace PeterJuhasz.AspNetCore.Extensions.Security;
 
-public class ReportingGroup
+/// <summary>
+/// Represents a reporting group of the Report-To header.
+/// </summary>
+/// <param name="Name">The name of the group.</param>
+/// <param name="MaxAge">The time the browser should remember the group.</param>
+/// <param name="Endpoints">The endpoints of the group.</param>
+/// <param name="IncludeSubdomains">Whether the group applies to subdomains as well.</param>
+public record class ReportingGroup(TimeSpan MaxAge, IReadOnlyCollection<ReportingEndpoint> Endpoints, string? Name = null, bool IncludeSubdomains = false)
 {
-    public ReportingGroup(string? name, TimeSpan maxAge, IReadOnlyCollection<ReportingEndpoint> endpoints, bool includeSubdomains = false)
-    {
-        Name = name;
-        MaxAge = maxAge;
-        Endpoints = endpoints.ToList();
-        IncludeSubdomains = includeSubdomains;
-    }
-    public ReportingGroup(TimeSpan maxAge, IReadOnlyCollection<ReportingEndpoint> endpoints)
-        : this(null, maxAge, endpoints)
-    { }
     public ReportingGroup(TimeSpan maxAge, ReportingEndpoint endpoint)
-        : this(maxAge, new[] { endpoint })
+        : this(maxAge, [endpoint])
     { }
+
     public ReportingGroup(TimeSpan maxAge, string endpoint)
         : this(maxAge, new ReportingEndpoint(endpoint))
     { }
-
-    public string? Name { get; set; }
-
-    public TimeSpan MaxAge { get; set; }
-
-    public ICollection<ReportingEndpoint> Endpoints { get; }
-
-    public bool IncludeSubdomains { get; set; }
 
     public override string ToString()
     {
@@ -40,24 +30,20 @@ public class ReportingGroup
         using var writer = new Utf8JsonWriter(buffer);
 
         writer.WriteStartObject();
-        if (Name != null)
-        {
+        if (Name is not null)
             writer.WriteString("name", Name);
-        }
+
         writer.WriteNumber("max_age", (int)MaxAge.TotalSeconds);
-        if (IncludeSubdomains == true)
-        {
+        if (IncludeSubdomains)
             writer.WriteBoolean("include_subdomains", IncludeSubdomains);
-        }
+
         writer.WritePropertyName("endpoints");
         writer.WriteStartArray();
 
-        if (Endpoints.All(e => e.Priority == default && e.Weight == default))
+        if (Endpoints.All(e => e.Priority is null && e.Weight is null))
         {
             foreach (var endpoint in Endpoints)
-            {
                 writer.WriteStringValue(endpoint.Uri.ToString());
-            }
         }
         else
         {
@@ -65,14 +51,10 @@ public class ReportingGroup
             {
                 writer.WriteStartObject();
                 writer.WriteString("url", endpoint.Uri.ToString());
-                if (endpoint.Priority != null)
-                {
-                    writer.WriteNumber("priority", endpoint.Priority.Value);
-                }
-                if (endpoint.Weight != null)
-                {
-                    writer.WriteNumber("weight", endpoint.Weight.Value);
-                }
+                if (endpoint.Priority is { } priority)
+                    writer.WriteNumber("priority", priority);
+                if (endpoint.Weight is { } weight)
+                    writer.WriteNumber("weight", weight);
                 writer.WriteEndObject();
             }
         }

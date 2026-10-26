@@ -23,14 +23,13 @@ public static partial class AppBuilderExtensions
     }
 
     [Obsolete]
-    public static IServiceCollection AddHttpPublicKeyPinning(this IServiceCollection services, Action<HttpPublicKeyPinningOptions> configure)
+    public static IServiceCollection AddHttpPublicKeyPinning(this IServiceCollection services, HttpPublicKeyPinningOptions options)
     {
         services.AddSingleton<HttpPublicKeyPinningMiddleware>();
-        var options = new HttpPublicKeyPinningOptions();
-        configure(options);
         services.AddSingleton(options);
         return services;
     }
+
 
 
     internal sealed class HttpPublicKeyPinningMiddleware : IMiddleware

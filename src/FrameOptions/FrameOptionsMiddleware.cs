@@ -33,18 +33,6 @@ public static partial class AppBuilderExtensions
 	/// <summary>
 	/// Adds the Frame-Options and X-Frame-Options headers to responses with content type text/html.
 	/// </summary>
-	/// <param name="configure"></param>
-	[Obsolete]
-	public static IServiceCollection AddFrameOptions(this IServiceCollection services, Action<FrameOptionsDirective> configure)
-	{
-		FrameOptionsDirective options = new FrameOptionsDirective();
-		configure(options);
-		return services.AddFrameOptions(options);
-	}
-
-	/// <summary>
-	/// Adds the Frame-Options and X-Frame-Options headers to responses with content type text/html.
-	/// </summary>
 	/// <param name="policy"></param>
 	[Obsolete]
 	public static IServiceCollection AddFrameOptions(this IServiceCollection services, FrameOptionsPolicy policy = FrameOptionsPolicy.Deny)
@@ -52,7 +40,7 @@ public static partial class AppBuilderExtensions
 		if (policy == FrameOptionsPolicy.AllowFrom)
 			throw new ArgumentException("This overload can't be used to configure ALLOW-FROM policy.", nameof(policy));
 
-		return services.AddFrameOptions(new FrameOptionsDirective(policy));
+		return services.AddFrameOptions(new FrameOptionsDirective(Policy: policy));
 	}
 
 	/// <summary>
@@ -62,7 +50,7 @@ public static partial class AppBuilderExtensions
 	[Obsolete]
 	public static IServiceCollection AddFrameOptions(this IServiceCollection services, Uri allowFromUri)
 	{
-		return services.AddFrameOptions(new FrameOptionsDirective(allowFromUri));
+		return services.AddFrameOptions(new FrameOptionsDirective(Policy: FrameOptionsPolicy.AllowFrom, AllowFromUri: allowFromUri));
 	}
 
 
